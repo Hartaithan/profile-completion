@@ -17,6 +17,7 @@ export default defineConfigWithVueTs(
   {
     rules: {
       "no-console": ["error", { allow: ["info", "error"] }],
+      "vue/multi-word-component-names": "off",
     },
   },
 );
