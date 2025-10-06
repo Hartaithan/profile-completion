@@ -26,3 +26,6 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+# local env files
+.env*
