@@ -14,7 +14,7 @@ export interface Completion {
 }
 
 export interface CompletionResponseData extends CachedResponse {
-  completion: Completion;
+  completion: Completion[];
 }
 
 export type CompletionResponse = Response<CompletionResponseData>;
