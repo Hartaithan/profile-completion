@@ -32,8 +32,7 @@ const handleSubmit: (event: SubmitEvent) => void = async (event) => {
     setProfile(profile);
 
     const { completion } = await API.getCompletion({ id });
-    setCompletion(completion || []);
-    setStatus("completed");
+    setCompletion(completion || [], "completed");
   } catch (error) {
     console.error("submit error", error);
     setStatus("idle");

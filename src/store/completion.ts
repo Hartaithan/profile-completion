@@ -10,17 +10,17 @@ const keys = {
 
 type Status = "idle" | "profile-loading" | "completion-loading" | "completed";
 
-interface CompletionStore {
+interface Store {
   status: Status;
   profile: Profile | null;
   completion: Completion[];
 }
 
-const getDefaultState = (): CompletionStore => {
+const getDefaultState = (): Store => {
   return {
     status: "idle",
-    profile: readStorage(keys.profile, null),
-    completion: readStorage(keys.completion, []),
+    profile: readStorage<Store["profile"]>(keys.profile, null),
+    completion: readStorage<Store["completion"]>(keys.completion, []),
   };
 };
 
@@ -31,15 +31,16 @@ export const useCompletionStore = defineStore("completion", {
       status === "profile-loading" || status === "completion-loading",
   },
   actions: {
-    setStatus(value: CompletionStore["status"]) {
+    setStatus(value: Store["status"]) {
       this.status = value;
     },
-    setProfile(value: CompletionStore["profile"]) {
+    setProfile(value: Store["profile"]) {
       this.profile = value;
       setStorage(keys.profile, value);
     },
-    setCompletion(value: CompletionStore["completion"]) {
+    setCompletion(value: Store["completion"], status?: Store["status"]) {
       this.completion = value;
+      if (status) this.status = status;
       setStorage(keys.completion, value);
     },
   },

@@ -1,4 +1,4 @@
-export const readStorage = <T>(key: string, defaultValue: T) => {
+export const readStorage = <T>(key: string, defaultValue: T): T => {
   try {
     const value = localStorage.getItem(key);
     return value ? JSON.parse(value) : defaultValue;
