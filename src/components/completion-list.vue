@@ -8,11 +8,12 @@ const store = useCompletionStore();
   <div class="container mt-6 p-6">
     <div v-if="store.loading" class="text-center">...loading</div>
     <div
-      v-else-if="store.completion.length > 0"
+      v-else-if="store.calculated.length > 0"
       class="flex flex-col items-center justify-center gap-2">
-      <p v-for="item in store.completion" :key="item.title">
-        {{ item.title }}
-      </p>
+      <div v-for="item in store.calculated" :key="item.title" class="min-w-2xl">
+        <p class="font-bold">{{ item.title }} | Progress: {{ item.progress }}%</p>
+        <pre class="text-sm">{{ JSON.stringify(item.counts) }}</pre>
+      </div>
     </div>
     <p v-else class="text-center">nothing found :(</p>
   </div>

@@ -1,6 +1,7 @@
 import type { Completion } from "@/models/completion";
 import type { Profile } from "@/models/profile";
 import { readStorage, setStorage } from "@/utils/local-storage";
+import { calculateProgress } from "@/utils/progress";
 import { defineStore } from "pinia";
 
 const keys = {
@@ -29,6 +30,7 @@ export const useCompletionStore = defineStore("completion", {
   getters: {
     loading: ({ status }): boolean =>
       status === "profile-loading" || status === "completion-loading",
+    calculated: ({ completion }) => calculateProgress(completion),
   },
   actions: {
     setStatus(value: Store["status"]) {
