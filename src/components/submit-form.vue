@@ -17,7 +17,7 @@ const errors = {
   fetch: "Unable to fetch profile",
 };
 
-const { setStatus, setProfile, setCompletion } = useCompletionStore();
+const store = useCompletionStore();
 
 const handleSubmit: (event: SubmitEvent) => void = async (event) => {
   const { elements } = event.target as From;
@@ -25,17 +25,17 @@ const handleSubmit: (event: SubmitEvent) => void = async (event) => {
 
   try {
     if (id.length === 0) throw new Error(errors.empty);
-    setStatus("profile-loading");
+    store.setStatus("profile-loading");
 
     const { profile } = await API.getProfile({ id });
     if (!profile) throw new Error(errors.fetch);
-    setProfile(profile);
+    store.setProfile(profile);
 
     const { completion } = await API.getCompletion({ id });
-    setCompletion(completion || [], "completed");
+    store.setCompletion(completion || [], "completed");
   } catch (error) {
     console.error("submit error", error);
-    setStatus("idle");
+    store.setStatus("idle");
   }
 };
 </script>
