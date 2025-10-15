@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatProgress } from "@/utils/number";
 import { watch } from "vue";
 import { useCompletionStore } from "../store/completion";
 
@@ -18,7 +19,7 @@ watch(
       v-else-if="store.calculated.completion.length > 0"
       class="flex flex-col items-center justify-center gap-2">
       <div v-for="item in store.calculated.completion" :key="item.title" class="min-w-2xl">
-        <p class="font-bold">{{ item.title }} | Progress: {{ item.progress }}%</p>
+        <p class="font-bold">{{ item.title }} | Progress: {{ formatProgress(item.progress) }}%</p>
         <pre class="text-sm">{{ JSON.stringify(item.counts) }}</pre>
       </div>
     </div>

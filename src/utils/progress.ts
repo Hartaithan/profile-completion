@@ -25,7 +25,7 @@ export const getDefaultProgress = (): Progress => {
 
 export const getProgress = (value: Pick<Progress, "earned" | "points">) => {
   const { earned, points } = value;
-  return Math.floor((earned / points) * 100);
+  return (earned / points) * 100;
 };
 
 export const calculateProgress = (items: Completion[]): CalculatedProgress => {
