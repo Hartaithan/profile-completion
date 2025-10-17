@@ -7,6 +7,7 @@ import { defineStore } from "pinia";
 
 const keys = {
   profile: "pr-co-profile",
+  initial: "pr-co-initial",
   completion: "pr-co-completion",
 };
 
@@ -16,6 +17,7 @@ interface Store {
   status: Status;
   progress: Progress;
   profile: Profile | null;
+  initial: Completion[];
   completion: Completion[];
 }
 
@@ -24,6 +26,7 @@ const getDefaultState = (): Store => {
     status: "idle",
     progress: getDefaultProgress(),
     profile: readStorage<Store["profile"]>(keys.profile, null),
+    initial: readStorage<Store["initial"]>(keys.initial, []),
     completion: readStorage<Store["completion"]>(keys.completion, []),
   };
 };
@@ -50,6 +53,18 @@ export const useCompletionStore = defineStore("completion", {
       this.completion = value;
       if (status) this.status = status;
       setStorage(keys.completion, value);
+      this.initial = value;
+      setStorage(keys.initial, value);
+    },
+    restoreCompletion() {
+      this.completion = this.initial;
+      setStorage(keys.completion, this.initial);
+    },
+    completeItem(index: number) {
+      const picked = this.completion[index];
+      if (!picked) return;
+      picked.earned_counts = picked.counts;
+      setStorage(keys.completion, this.completion);
     },
   },
 });
