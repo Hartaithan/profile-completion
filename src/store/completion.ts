@@ -1,8 +1,7 @@
 import type { Completion } from "@/models/completion";
 import type { Profile } from "@/models/profile";
-import type { Progress } from "@/models/progress";
 import { readStorage, setStorage } from "@/utils/local-storage";
-import { calculateProgress, getDefaultProgress } from "@/utils/progress";
+import { calculateProgress } from "@/utils/progress";
 import { defineStore } from "pinia";
 
 const keys = {
@@ -13,37 +12,38 @@ const keys = {
 
 type Status = "idle" | "profile-loading" | "completion-loading" | "completed";
 
-interface Store {
+export interface CompletionStore {
   status: Status;
-  progress: Progress;
   profile: Profile | null;
   initial: Completion[];
   completion: Completion[];
 }
 
+type Store = CompletionStore;
+
 const getDefaultState = (): Store => {
   return {
     status: "idle",
-    progress: getDefaultProgress(),
     profile: readStorage<Store["profile"]>(keys.profile, null),
     initial: readStorage<Store["initial"]>(keys.initial, []),
     completion: readStorage<Store["completion"]>(keys.completion, []),
   };
 };
 
+const isLoading: Partial<Record<Status, boolean>> = {
+  "profile-loading": true,
+  "completion-loading": true,
+};
+
 export const useCompletionStore = defineStore("completion", {
   state: getDefaultState,
   getters: {
-    loading: ({ status }): boolean =>
-      status === "profile-loading" || status === "completion-loading",
-    calculated: ({ completion }) => calculateProgress(completion),
+    loading: ({ status }): boolean => isLoading[status] || false,
+    calculated: calculateProgress,
   },
   actions: {
     setStatus(value: Store["status"]) {
       this.status = value;
-    },
-    setProgress(value: Store["progress"]) {
-      this.progress = value;
     },
     setProfile(value: Store["profile"]) {
       this.profile = value;

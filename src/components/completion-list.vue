@@ -1,15 +1,8 @@
 <script setup lang="ts">
 import { formatProgress } from "@/utils/number";
-import { watch } from "vue";
 import { useCompletionStore } from "../store/completion";
 
 const store = useCompletionStore();
-
-watch(
-  () => store.calculated,
-  ({ progress }) => store.setProgress(progress),
-  { immediate: true },
-);
 </script>
 
 <template>

@@ -1,6 +1,7 @@
 import type { Completion } from "@/models/completion";
 import type { CalculatedProgress, Progress } from "@/models/progress";
 import type { TrophyCounts, TrophyType } from "@/models/trophy";
+import type { CompletionStore } from "@/store/completion";
 
 const weights: Record<TrophyType, number> = {
   platinum: 300,
@@ -28,10 +29,10 @@ export const getProgress = (value: Pick<Progress, "earned" | "points">) => {
   return (earned / points) * 100;
 };
 
-export const calculateProgress = (items: Completion[]): CalculatedProgress => {
+export const calculateProgress = (store: CompletionStore): CalculatedProgress => {
   const total: Progress = getDefaultProgress();
   const completion: Completion[] = [];
-  for (const item of items) {
+  for (const item of store.completion) {
     const points = getPoints(item.counts);
     total.points += points;
     const earned = getPoints(item.earned_counts);
