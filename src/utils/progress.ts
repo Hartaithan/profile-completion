@@ -1,4 +1,5 @@
 import type { Completion } from "@/models/completion";
+import type { Sorter } from "@/models/filters";
 import type { CalculatedProgress, Progress } from "@/models/progress";
 import type { TrophyCounts, TrophyType } from "@/models/trophy";
 import type { CompletionStore } from "@/store/completion";
@@ -29,9 +30,23 @@ export const getProgress = (value: Pick<Progress, "earned" | "points">) => {
   return (earned / points) * 100;
 };
 
+export const sortCompletion = (completion: Completion[], sorter: Sorter | null) => {
+  if (!sorter || !sorter.field) return completion;
+  const { field, direction = "asc" } = sorter;
+  return completion.sort((a, b) => {
+    const va = a[field];
+    const vb = b[field];
+    if (typeof va === "number" && typeof vb === "number")
+      return direction === "asc" ? va - vb : vb - va;
+    if (typeof va === "string" && typeof vb === "string")
+      return direction === "asc" ? va.localeCompare(vb) : vb.localeCompare(va);
+    return 0;
+  });
+};
+
 export const calculateProgress = (store: CompletionStore): CalculatedProgress => {
   const total: Progress = getDefaultProgress();
-  const completion: Completion[] = [];
+  let completion: Completion[] = [];
   for (const item of store.completion) {
     const points = getPoints(item.counts);
     total.points += points;
@@ -41,5 +56,6 @@ export const calculateProgress = (store: CompletionStore): CalculatedProgress =>
     completion.push({ ...item, progress });
   }
   total.progress = getProgress(total);
+  completion = sortCompletion(completion, store.sorter);
   return { completion, progress: total };
 };

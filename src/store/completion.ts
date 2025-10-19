@@ -1,4 +1,5 @@
 import type { Completion } from "@/models/completion";
+import type { Sorter } from "@/models/filters";
 import type { Profile } from "@/models/profile";
 import { readStorage, setStorage } from "@/utils/local-storage";
 import { calculateProgress } from "@/utils/progress";
@@ -14,6 +15,7 @@ type Status = "idle" | "profile-loading" | "completion-loading" | "completed";
 
 export interface CompletionStore {
   status: Status;
+  sorter: Sorter | null;
   profile: Profile | null;
   initial: Completion[];
   completion: Completion[];
@@ -24,6 +26,7 @@ type Store = CompletionStore;
 const getDefaultState = (): Store => {
   return {
     status: "idle",
+    sorter: null,
     profile: readStorage<Store["profile"]>(keys.profile, null),
     initial: readStorage<Store["initial"]>(keys.initial, []),
     completion: readStorage<Store["completion"]>(keys.completion, []),
