@@ -48,7 +48,7 @@ export const useCompletionStore = defineStore("completion", {
     setStatus(value: Store["status"]) {
       this.status = value;
     },
-    setSorter(value: Sorter) {
+    setSorter(value: Sorter | null) {
       this.sorter = value;
     },
     setProfile(value: Store["profile"]) {

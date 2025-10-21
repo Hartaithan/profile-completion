@@ -91,5 +91,9 @@
 @layer utilities {
   .container {
     margin-inline: auto;
+    max-width: 95%;
+    @media (width >= 48rem) {
+      max-width: 48rem;
+    }
   }
 }
