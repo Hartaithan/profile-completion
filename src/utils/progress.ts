@@ -59,3 +59,8 @@ export const calculateProgress = (store: CompletionStore): CalculatedProgress =>
   completion = sortCompletion(completion, store.sorter);
   return { completion, progress: total };
 };
+
+export const formatProgress = (value: number | undefined, suffix?: string | null) => {
+  if (value === undefined) return "Not Found";
+  return `${Number(value.toFixed(2))}${suffix}`;
+};
