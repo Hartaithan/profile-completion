@@ -11,11 +11,8 @@ interface Props {
   index: number;
 }
 
-const props = defineProps<Props>();
-const { completion } = props;
-
+const _props = defineProps<Props>();
 const store = useCompletionStore();
-const progress = formatProgress(completion?.progress, "%");
 </script>
 
 <template>
@@ -24,7 +21,7 @@ const progress = formatProgress(completion?.progress, "%");
     <div class="ml-3 flex flex-col justify-center">
       <h1 class="font-bold">{{ completion?.title }}</h1>
       <p class="text-sm">
-        Progress: <span class="font-semibold">{{ progress }}</span>
+        Progress: <span class="font-semibold">{{ formatProgress(completion?.progress, "%") }}</span>
       </p>
     </div>
     <Button class="ml-auto" variant="outline" size="icon" @click="store.completeItem(index)">

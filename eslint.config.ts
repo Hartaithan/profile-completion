@@ -18,6 +18,15 @@ export default defineConfigWithVueTs(
     rules: {
       "no-console": ["error", { allow: ["info", "error"] }],
       "vue/multi-word-component-names": "off",
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
     },
   },
 );
