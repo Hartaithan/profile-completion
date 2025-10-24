@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import { Progress } from "@/ui/progress";
+import { Skeleton } from "@/ui/skeleton";
 import { formatProgress, getProgress } from "@/utils/progress";
 import { useCompletionStore } from "../store/completion";
 
 const store = useCompletionStore();
-const progress = formatProgress(store.calculated.progress.progress, "%");
 </script>
 
 <template>
-  <div v-if="store.loading" class="container mt-6 text-center">...loading</div>
-  <div v-else class="container mt-6 flex flex-col">
-    <span class="text-xl font-bold"> Total Completion: {{ progress }} </span>
+  <div v-if="store.loading" class="container mt-6 text-center">
+    <Skeleton class="h-7 w-full" />
+    <Skeleton class="mt-2 h-9 w-full" />
+  </div>
+  <div v-else-if="store.profile" class="container mt-6 flex flex-col">
+    <span class="text-xl font-bold">
+      Total Completion: {{ formatProgress(store.calculated.progress.progress, "%") }}
+    </span>
     <div class="mt-2">
       <div class="flex justify-between">
         <p>Points</p>
