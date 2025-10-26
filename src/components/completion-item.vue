@@ -4,7 +4,7 @@ import { useCompletionStore } from "@/store/completion";
 import { Button } from "@/ui/button";
 import { formatProgress } from "@/utils/progress";
 import { getTrophiesProgress } from "@/utils/trophies";
-import { CheckCheckIcon } from "lucide-vue-next";
+import { CircleCheckIcon, CircleDashedIcon } from "lucide-vue-next";
 import { computed } from "vue";
 import GameImage from "./game-image.vue";
 
@@ -25,7 +25,7 @@ const trophies = computed(() =>
 </script>
 
 <template>
-  <div class="flex w-full items-center">
+  <div class="flex w-full items-center" :class="{ 'opacity-50 grayscale': trophies?.completed }">
     <GameImage :src="completion?.image_url" :alt="completion?.title" />
     <div class="ml-3 flex flex-col justify-center">
       <h1 class="font-bold">{{ completion?.title }}</h1>
@@ -44,7 +44,8 @@ const trophies = computed(() =>
       </div>
     </div>
     <Button class="ml-auto" variant="outline" size="icon" @click="store.completeItem(index)">
-      <CheckCheckIcon />
+      <CircleCheckIcon class="size-5" v-if="trophies?.completed" />
+      <CircleDashedIcon class="size-5" v-else />
     </Button>
   </div>
 </template>
