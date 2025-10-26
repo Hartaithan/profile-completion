@@ -8,7 +8,7 @@ const store = useCompletionStore();
 </script>
 
 <template>
-  <div v-if="store.loading" class="container mt-6 text-center">
+  <div v-if="store.loading" class="container py-6 text-center">
     <Skeleton class="h-7 w-full" />
     <Skeleton class="mt-2 h-9 w-full" />
   </div>
