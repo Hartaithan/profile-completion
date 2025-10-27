@@ -74,6 +74,11 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
+  --trophy-total: #ffffff;
+  --trophy-platinum: #7a96d1;
+  --trophy-gold: #cd9a46;
+  --trophy-silver: #9b9b9b;
+  --trophy-bronze: #bf6a3a;
 }
 
 @layer base {
@@ -105,6 +110,16 @@
       margin-right: var(--scrollbar-width) !important;
     }
   }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: var(--color-foreground);
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: inset 0 0 20px 20px transparent;
+  }
 }
 
 @layer utilities {
@@ -115,14 +130,66 @@
       max-width: 48rem;
     }
   }
-}
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: var(--color-foreground);
-  transition: background-color 5000s ease-in-out 0s;
-  box-shadow: inset 0 0 20px 20px transparent;
+  .trophy-dot {
+    position: relative;
+    padding-left: 12px;
+  }
+  .trophy-dot::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 100%;
+  }
+  .trophy-dot[data-type="total"]::before {
+    background: var(--trophy-total);
+  }
+  .trophy-dot[data-type="platinum"]::before {
+    background: var(--trophy-platinum);
+  }
+  .trophy-dot[data-type="gold"]::before {
+    background: var(--trophy-gold);
+  }
+  .trophy-dot[data-type="silver"]::before {
+    background: var(--trophy-silver);
+  }
+  .trophy-dot[data-type="bronze"]::before {
+    background: var(--trophy-bronze);
+  }
+
+  .trophy-text-total {
+    color: var(--trophy-total);
+  }
+  .trophy-text-platinum {
+    color: var(--trophy-platinum);
+  }
+  .trophy-text-gold {
+    color: var(--trophy-gold);
+  }
+  .trophy-text-silver {
+    color: var(--trophy-silver);
+  }
+  .trophy-text-bronze {
+    color: var(--trophy-bronze);
+  }
+
+  .trophy-bg-total {
+    background: var(--trophy-total);
+  }
+  .trophy-bg-platinum {
+    background: var(--trophy-platinum);
+  }
+  .trophy-bg-gold {
+    background: var(--trophy-gold);
+  }
+  .trophy-bg-silver {
+    background: var(--trophy-silver);
+  }
+  .trophy-bg-bronze {
+    background: var(--trophy-bronze);
+  }
 }
