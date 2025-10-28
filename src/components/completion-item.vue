@@ -31,9 +31,9 @@ const trophies = computed(() =>
     <div class="ml-3 flex flex-col justify-center">
       <p class="text-md font-bold">
         {{ completion?.title }}
-        <span class="ml-1 align-text-bottom text-xs font-medium">{{
-          completion?.platforms.join(", ")
-        }}</span>
+        <span class="ml-1 align-text-bottom text-xs font-medium">
+          {{ completion?.platforms.join(", ") }}
+        </span>
       </p>
       <div class="mt-0.5 flex gap-x-3 text-sm font-semibold">
         <span>{{ formatProgress(completion?.progress, "%") }}</span>

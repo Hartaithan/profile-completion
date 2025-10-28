@@ -38,6 +38,11 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-trophy-total: #ffffff;
+  --color-trophy-platinum: #7a96d1;
+  --color-trophy-gold: #cd9a46;
+  --color-trophy-silver: #9b9b9b;
+  --color-trophy-bronze: #bf6a3a;
 }
 
 :root {
@@ -132,64 +137,26 @@
   }
 
   .trophy-dot {
-    position: relative;
-    padding-left: 12px;
+    @apply relative pl-3;
   }
   .trophy-dot::before {
     content: "";
-    position: absolute;
-    top: 50%;
-    left: 0px;
-    transform: translateY(-50%);
-    width: 6px;
-    height: 6px;
-    border-radius: 100%;
+    @apply absolute top-1/2 left-0 h-1.5 w-1.5 -translate-y-1/2 rounded-full;
+    background: var(--dot-color);
   }
-  .trophy-dot[data-type="total"]::before {
-    background: var(--trophy-total);
+  .trophy-dot[data-type="total"] {
+    --dot-color: var(--color-trophy-total);
   }
-  .trophy-dot[data-type="platinum"]::before {
-    background: var(--trophy-platinum);
+  .trophy-dot[data-type="platinum"] {
+    --dot-color: var(--color-trophy-platinum);
   }
-  .trophy-dot[data-type="gold"]::before {
-    background: var(--trophy-gold);
+  .trophy-dot[data-type="gold"] {
+    --dot-color: var(--color-trophy-gold);
   }
-  .trophy-dot[data-type="silver"]::before {
-    background: var(--trophy-silver);
+  .trophy-dot[data-type="silver"] {
+    --dot-color: var(--color-trophy-silver);
   }
-  .trophy-dot[data-type="bronze"]::before {
-    background: var(--trophy-bronze);
-  }
-
-  .trophy-text-total {
-    color: var(--trophy-total);
-  }
-  .trophy-text-platinum {
-    color: var(--trophy-platinum);
-  }
-  .trophy-text-gold {
-    color: var(--trophy-gold);
-  }
-  .trophy-text-silver {
-    color: var(--trophy-silver);
-  }
-  .trophy-text-bronze {
-    color: var(--trophy-bronze);
-  }
-
-  .trophy-bg-total {
-    background: var(--trophy-total);
-  }
-  .trophy-bg-platinum {
-    background: var(--trophy-platinum);
-  }
-  .trophy-bg-gold {
-    background: var(--trophy-gold);
-  }
-  .trophy-bg-silver {
-    background: var(--trophy-silver);
-  }
-  .trophy-bg-bronze {
-    background: var(--trophy-bronze);
+  .trophy-dot[data-type="bronze"] {
+    --dot-color: var(--color-trophy-bronze);
   }
 }
