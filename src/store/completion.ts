@@ -4,6 +4,7 @@ import type { Profile } from "@/models/profile";
 import { readStorage, setStorage } from "@/utils/local-storage";
 import { calculateProgress } from "@/utils/progress";
 import { defineStore } from "pinia";
+import { toRaw } from "vue";
 
 const keys = {
   profile: "pr-co-profile",
@@ -63,8 +64,8 @@ export const useCompletionStore = defineStore("completion", {
       setStorage(keys.initial, value);
     },
     restore() {
-      this.completion = this.initial;
-      setStorage(keys.completion, this.initial);
+      this.completion = structuredClone(toRaw(this.initial));
+      setStorage(keys.completion, this.completion);
     },
     completeItem(index: number) {
       const picked = this.completion[index];
