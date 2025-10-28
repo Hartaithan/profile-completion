@@ -41,7 +41,7 @@ const handleSubmit: (event: SubmitEvent) => void = async (event) => {
 </script>
 
 <template>
-  <form class="container" @submit.prevent="handleSubmit">
+  <form class="w-full" @submit.prevent="handleSubmit">
     <InputGroup>
       <InputGroupInput name="id" placeholder="Enter your PSN ID" />
       <InputGroupAddon align="inline-end">

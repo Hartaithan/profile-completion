@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import CompletionList from "./components/completion-list.vue";
-import SubmitForm from "./components/submit-form.vue";
+import Header from "./components/header.vue";
 import TotalProgress from "./components/total-progress.vue";
 </script>
 
 <template>
-  <SubmitForm />
+  <Header />
   <TotalProgress />
   <CompletionList />
 </template>

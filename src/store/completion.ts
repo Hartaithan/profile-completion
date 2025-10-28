@@ -62,7 +62,7 @@ export const useCompletionStore = defineStore("completion", {
       this.initial = value;
       setStorage(keys.initial, value);
     },
-    restoreCompletion() {
+    restore() {
       this.completion = this.initial;
       setStorage(keys.completion, this.initial);
     },
