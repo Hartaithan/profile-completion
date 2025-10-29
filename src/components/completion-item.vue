@@ -29,9 +29,9 @@ const trophies = computed(() =>
   <div class="flex w-full items-center" :class="{ 'opacity-50 grayscale': trophies?.completed }">
     <GameImage :src="completion?.image_url" :alt="completion?.title" />
     <div class="ml-3 flex flex-col justify-center">
-      <p class="text-md font-bold">
+      <p class="text-base font-bold">
         {{ completion?.title }}
-        <span class="ml-1 align-text-bottom text-xs font-medium">
+        <span class="ml-1 align-[0.0625rem] text-xs font-medium">
           {{ completion?.platforms.join(", ") }}
         </span>
       </p>
