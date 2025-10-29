@@ -11,15 +11,19 @@ defineProps<Props>();
 
 <template>
   <span v-if="counts?.platinum" class="trophy-dot" data-type="platinum">
-    {{ `${earned?.platinum}/${counts?.platinum}` }}
+    <template v-if="earned">{{ `${earned?.platinum}/${counts?.platinum}` }}</template>
+    <template v-else>{{ counts?.platinum }}</template>
   </span>
   <span v-if="counts?.gold" class="trophy-dot" data-type="gold">
-    {{ `${earned?.gold}/${counts?.gold}` }}
+    <template v-if="earned">{{ `${earned?.gold}/${counts?.gold}` }}</template>
+    <template v-else>{{ counts?.gold }}</template>
   </span>
   <span v-if="counts?.silver" class="trophy-dot" data-type="silver">
-    {{ `${earned?.silver}/${counts?.silver}` }}
+    <template v-if="earned">{{ `${earned?.silver}/${counts?.silver}` }}</template>
+    <template v-else>{{ counts?.silver }}</template>
   </span>
   <span v-if="counts?.bronze" class="trophy-dot" data-type="bronze">
-    {{ `${earned?.bronze}/${counts?.bronze}` }}
+    <template v-if="earned">{{ `${earned?.bronze}/${counts?.bronze}` }}</template>
+    <template v-else>{{ counts?.bronze }}</template>
   </span>
 </template>
