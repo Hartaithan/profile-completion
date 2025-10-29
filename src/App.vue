@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import CompletionGoal from "./components/completion-goal.vue";
 import CompletionList from "./components/completion-list.vue";
 import Header from "./components/header.vue";
 import TotalProgress from "./components/total-progress.vue";
@@ -7,6 +8,7 @@ import TotalProgress from "./components/total-progress.vue";
 <template>
   <Header />
   <TotalProgress />
+  <CompletionGoal />
   <CompletionList />
 </template>
 

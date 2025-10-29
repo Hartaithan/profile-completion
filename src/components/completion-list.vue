@@ -7,7 +7,7 @@ const store = useCompletionStore();
 </script>
 
 <template>
-  <div class="container w-full pt-0">
+  <div class="container mt-6 w-full">
     <div v-if="store.loading" class="flex w-full flex-col gap-y-3">
       <CompletionSkeleton />
       <CompletionSkeleton />

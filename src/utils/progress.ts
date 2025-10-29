@@ -64,3 +64,20 @@ export const formatProgress = (value: number | undefined, suffix?: string | null
   if (value === undefined) return "Not Found";
   return `${Number(value.toFixed(2))}${suffix}`;
 };
+
+interface TargetParams {
+  progress: Progress;
+  counts: TrophyCounts;
+  target: number;
+}
+
+export const getCompletionGoal = (params: TargetParams) => {
+  const { progress, counts, target } = params;
+  const gamePoints = getPoints(counts);
+  if (progress.progress >= target) return 0;
+  const targetValue = target / 100;
+  const numerator = targetValue * progress.points - progress.earned;
+  const denominator = (1 - targetValue) * gamePoints;
+  if (denominator <= 0) return "?";
+  return Math.ceil(numerator / denominator);
+};
