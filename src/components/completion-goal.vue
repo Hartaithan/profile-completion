@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { TrophyCounts as Counts } from "@/models/trophy";
 import { useCompletionStore } from "@/store/completion";
+import { Skeleton } from "@/ui/skeleton";
 import { getCompletionGoal } from "@/utils/progress";
 import { computed, ref } from "vue";
 import TrophyCounts from "./trophy-counts.vue";
@@ -20,7 +21,24 @@ const goal = computed(() =>
 </script>
 
 <template>
-  <div class="container flex items-center justify-center gap-x-5 text-xl font-medium">
+  <div v-if="store.loading" class="container flex h-14 items-center justify-center gap-x-5">
+    <div class="flex w-[130px] flex-col items-center gap-y-2">
+      <Skeleton class="h-5 w-24" />
+      <Skeleton class="h-5 w-26" />
+    </div>
+    <Skeleton class="h-12 w-20" />
+    <div class="flex flex-col items-end gap-y-2">
+      <Skeleton class="h-5 w-52" />
+      <Skeleton class="h-5 w-56" />
+    </div>
+    <div class="flex flex-col items-start gap-y-2">
+      <Skeleton class="h-5 w-32" />
+      <Skeleton class="h-5 w-44" />
+    </div>
+  </div>
+  <div
+    v-else-if="store.profile"
+    class="container flex items-center justify-center gap-x-5 text-xl font-medium">
     <p class="w-[130px] text-center">You’ll need<br />to complete</p>
     <p class="text-5xl font-bold">{{ goal }}</p>
     <p class="text-end">
