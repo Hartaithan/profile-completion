@@ -2,7 +2,9 @@
 import type { TrophyCounts as Counts } from "@/models/trophy";
 import { useCompletionStore } from "@/store/completion";
 import { Skeleton } from "@/ui/skeleton";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/tooltip";
 import { getCompletionGoal } from "@/utils/progress";
+import { CircleAlertIcon } from "lucide-vue-next";
 import { computed, ref } from "vue";
 import TrophyCounts from "./trophy-counts.vue";
 
@@ -39,8 +41,31 @@ const goal = computed(() =>
   <div
     v-else-if="store.profile"
     class="container flex items-center justify-center gap-x-5 text-xl font-medium">
-    <p class="w-32 text-center">You’ll need<br />to complete</p>
-    <p class="min-w-24 text-center text-5xl font-bold">{{ goal }}</p>
+    <p class="w-32 text-center">You'll need<br />to complete</p>
+    <TooltipProvider>
+      <p v-if="typeof goal === 'number'" class="min-w-24 text-center text-5xl font-bold">
+        {{ goal }}
+      </p>
+      <Tooltip v-else-if="goal === 'already-reached'">
+        <TooltipTrigger class="min-w-24 text-center text-5xl font-bold">0</TooltipTrigger>
+        <TooltipContent class="max-w-48">
+          <p class="text-center">
+            You've already reached this completion goal with your current trophy count
+          </p>
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip v-else-if="goal === 'unreachable'">
+        <TooltipTrigger class="flex min-w-24 items-center justify-center">
+          <CircleAlertIcon class="size-12" />
+        </TooltipTrigger>
+        <TooltipContent class="max-w-56">
+          <p class="text-center">
+            This completion goal can't be reached with your current trophy count. You need to earn
+            more trophies to progress further
+          </p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
     <p class="text-end">
       more games each with<br />
       <span class="mr-1 [&>span:not(:last-child)]:mr-2">

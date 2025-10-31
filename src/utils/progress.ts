@@ -1,5 +1,6 @@
 import type { Completion } from "@/models/completion";
 import type { Sorter } from "@/models/filters";
+import type { CompletionGoal } from "@/models/goal";
 import type { CalculatedProgress, Progress } from "@/models/progress";
 import type { TrophyCounts, TrophyType } from "@/models/trophy";
 import type { CompletionStore } from "@/store/completion";
@@ -65,19 +66,19 @@ export const formatProgress = (value: number | undefined, suffix?: string | null
   return `${Number(value.toFixed(2))}${suffix}`;
 };
 
-interface TargetParams {
+interface GoalParams {
   progress: Progress;
   counts: TrophyCounts;
   target: number;
 }
 
-export const getCompletionGoal = (params: TargetParams) => {
+export const getCompletionGoal = (params: GoalParams): CompletionGoal => {
   const { progress, counts, target } = params;
   const gamePoints = getPoints(counts);
-  if (progress.progress >= target) return 0;
+  if (progress.progress >= target) return "already-reached";
   const targetValue = target / 100;
   const numerator = targetValue * progress.points - progress.earned;
   const denominator = (1 - targetValue) * gamePoints;
-  if (denominator <= 0) return "?";
+  if (denominator <= 0) return "unreachable";
   return Math.ceil(numerator / denominator);
 };
