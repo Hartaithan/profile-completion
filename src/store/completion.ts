@@ -60,12 +60,13 @@ export const useCompletionStore = defineStore("completion", {
       this.completion = value;
       if (status) this.status = status;
       setStorage(keys.completion, value);
-      this.initial = value;
+      this.initial = JSON.parse(JSON.stringify(value));
       setStorage(keys.initial, value);
     },
     restore() {
-      this.completion = structuredClone(toRaw(this.initial));
-      setStorage(keys.completion, this.completion);
+      const value = toRaw(this.initial);
+      this.completion = JSON.parse(JSON.stringify(value));
+      setStorage(keys.completion, value);
     },
     completeItem(index: number) {
       const picked = this.completion[index];
