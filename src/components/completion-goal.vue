@@ -1,29 +1,30 @@
 <script setup lang="ts">
-import type { TrophyCounts as Counts } from "@/models/trophy";
 import { useCompletionStore } from "@/store/completion";
+import { useGoalStore } from "@/store/goal";
+import { Button } from "@/ui/button";
 import { Skeleton } from "@/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/tooltip";
 import { getCompletionGoal } from "@/utils/progress";
-import { CircleAlertIcon } from "lucide-vue-next";
+import { CircleAlertIcon, PencilIcon } from "lucide-vue-next";
 import { computed, ref } from "vue";
+import CompletionGoalForm from "./completion-goal-form.vue";
 import TrophyCounts from "./trophy-counts.vue";
 
-const store = useCompletionStore();
-
-const percent = ref(80);
-const counts = ref<Counts>({ platinum: 1, gold: 9, silver: 15, bronze: 25 });
+const store = useGoalStore();
+const completion = useCompletionStore();
+const form = ref<InstanceType<typeof CompletionGoalForm> | null>(null);
 
 const goal = computed(() =>
   getCompletionGoal({
-    progress: store.calculated.progress,
-    counts: counts.value,
-    target: percent.value,
+    progress: completion.calculated.progress,
+    counts: store.counts,
+    target: store.percent,
   }),
 );
 </script>
 
 <template>
-  <div v-if="store.loading" class="container flex h-14 items-center justify-center gap-x-5">
+  <div v-if="completion.loading" class="container flex h-14 items-center justify-center gap-x-5">
     <div class="flex w-32 flex-col items-center gap-y-2">
       <Skeleton class="h-5 w-24" />
       <Skeleton class="h-5 w-26" />
@@ -39,8 +40,15 @@ const goal = computed(() =>
     </div>
   </div>
   <div
-    v-else-if="store.profile"
-    class="container flex items-center justify-center gap-x-5 text-xl font-medium">
+    v-else-if="completion.profile"
+    class="relative container flex items-center justify-center gap-x-5 text-xl font-medium">
+    <Button
+      class="absolute top-1/2 right-0 -translate-y-1/2 border-none p-0"
+      variant="outline"
+      size="icon"
+      @click="form?.toggleForm">
+      <PencilIcon />
+    </Button>
     <p class="w-32 text-center">You'll need<br />to complete</p>
     <TooltipProvider>
       <p v-if="typeof goal === 'number'" class="min-w-24 text-center text-5xl font-bold">
@@ -69,15 +77,16 @@ const goal = computed(() =>
     <p class="text-end">
       more games each with<br />
       <span class="mr-1 [&>span:not(:last-child)]:mr-2">
-        <TrophyCounts :counts="counts" :earned="undefined" />
+        <TrophyCounts :counts="store.counts" :earned="undefined" />
       </span>
       trophies
     </p>
     <p class="text-start">
       to reach
-      <span class="font-bold">{{ percent }}%</span>
+      <span class="font-bold">{{ store.percent }}%</span>
       <br />
       profile completion
     </p>
+    <CompletionGoalForm ref="form" />
   </div>
 </template>
