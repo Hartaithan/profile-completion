@@ -2,9 +2,10 @@
 import { useCompletionStore } from "@/store/completion";
 import { useGoalStore } from "@/store/goal";
 import { Skeleton } from "@/ui/skeleton";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/tooltip";
+import { TooltipProvider } from "@/ui/tooltip";
+import { TooltipAdaptive } from "@/ui/tooltip-adaptive";
 import { getCompletionGoal } from "@/utils/progress";
-import { CircleAlertIcon } from "lucide-vue-next";
+import { CircleAlertIcon, CircleCheckIcon } from "lucide-vue-next";
 import { computed, ref } from "vue";
 import CompletionGoalForm from "./completion-goal-form.vue";
 import TrophyCounts from "./trophy-counts.vue";
@@ -47,25 +48,33 @@ const goal = computed(() =>
       <p v-if="typeof goal === 'number'" class="min-w-24 text-center text-5xl font-bold">
         {{ goal }}
       </p>
-      <Tooltip v-else-if="goal === 'already-reached'">
-        <TooltipTrigger class="min-w-24 text-center text-5xl font-bold">0</TooltipTrigger>
-        <TooltipContent class="max-w-48">
+      <TooltipAdaptive
+        v-else-if="goal === 'already-reached'"
+        trigger-class="flex min-w-24 items-center justify-center"
+        content-class="max-w-48">
+        <template #trigger>
+          <CircleCheckIcon class="size-12" />
+        </template>
+        <template #content>
           <p class="text-center">
             You've already reached this completion goal with your current trophy count
           </p>
-        </TooltipContent>
-      </Tooltip>
-      <Tooltip v-else-if="goal === 'unreachable'">
-        <TooltipTrigger class="flex min-w-24 items-center justify-center">
+        </template>
+      </TooltipAdaptive>
+      <TooltipAdaptive
+        v-else-if="goal === 'unreachable'"
+        trigger-class="flex min-w-24 items-center justify-center"
+        content-class="max-w-48">
+        <template #trigger>
           <CircleAlertIcon class="size-12" />
-        </TooltipTrigger>
-        <TooltipContent class="max-w-56">
+        </template>
+        <template #content>
           <p class="text-center">
             This completion goal can't be reached with your current trophy count. You need to earn
             more trophies to progress further
           </p>
-        </TooltipContent>
-      </Tooltip>
+        </template>
+      </TooltipAdaptive>
     </TooltipProvider>
     <p class="text-end">
       more games each with<br />
