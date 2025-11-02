@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useCompletionStore } from "@/store/completion";
 import { useGoalStore } from "@/store/goal";
-import { Button } from "@/ui/button";
 import { Skeleton } from "@/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/ui/tooltip";
 import { getCompletionGoal } from "@/utils/progress";
-import { CircleAlertIcon, PencilIcon } from "lucide-vue-next";
+import { CircleAlertIcon } from "lucide-vue-next";
 import { computed, ref } from "vue";
 import CompletionGoalForm from "./completion-goal-form.vue";
 import TrophyCounts from "./trophy-counts.vue";
@@ -42,13 +41,7 @@ const goal = computed(() =>
   <div
     v-else-if="completion.profile"
     class="relative container flex items-center justify-center gap-x-5 text-xl font-medium">
-    <Button
-      class="absolute top-1/2 right-0 -translate-y-1/2 border-none p-0"
-      variant="outline"
-      size="icon"
-      @click="form?.toggleForm">
-      <PencilIcon />
-    </Button>
+    <CompletionGoalForm ref="form" />
     <p class="w-32 text-center">You'll need<br />to complete</p>
     <TooltipProvider>
       <p v-if="typeof goal === 'number'" class="min-w-24 text-center text-5xl font-bold">
@@ -87,6 +80,5 @@ const goal = computed(() =>
       <br />
       profile completion
     </p>
-    <CompletionGoalForm ref="form" />
   </div>
 </template>
