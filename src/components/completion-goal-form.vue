@@ -22,6 +22,8 @@ const toggleForm = () => {
   open.value = !open.value;
 };
 
+store.$subscribe(() => store.persist());
+
 defineExpose({
   openForm,
   closeForm,

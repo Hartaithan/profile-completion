@@ -74,8 +74,8 @@ interface GoalParams {
 
 export const getCompletionGoal = (params: GoalParams): CompletionGoal => {
   const { progress, counts, target } = params;
-  const gamePoints = getPoints(counts);
   if (progress.progress >= target) return "already-reached";
+  const gamePoints = getPoints(counts);
   const targetValue = target / 100;
   const numerator = targetValue * progress.points - progress.earned;
   const denominator = (1 - targetValue) * gamePoints;

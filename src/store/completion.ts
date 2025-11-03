@@ -1,3 +1,4 @@
+import { completionKeys } from "@/constants/storage";
 import type { Completion } from "@/models/completion";
 import type { Sorter } from "@/models/filters";
 import type { Profile } from "@/models/profile";
@@ -6,11 +7,7 @@ import { calculateProgress } from "@/utils/progress";
 import { defineStore } from "pinia";
 import { toRaw } from "vue";
 
-const keys = {
-  profile: "pr-co-profile",
-  initial: "pr-co-initial",
-  completion: "pr-co-completion",
-};
+const keys = completionKeys;
 
 type Status = "idle" | "profile-loading" | "completion-loading" | "completed";
 
