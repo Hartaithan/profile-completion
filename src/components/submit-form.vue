@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { CompletionProgressData } from "@/models/completion";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/ui/input-group";
 import { API } from "@/utils/api";
 import { SendHorizonal } from "lucide-vue-next";
@@ -19,6 +20,12 @@ const errors = {
 
 const store = useCompletionStore();
 
+const onProgress = (data: CompletionProgressData) => {
+  const current = data?.current || 0;
+  const total = data?.total || 0;
+  console.info("progress", current, total);
+};
+
 const handleSubmit: (event: SubmitEvent) => void = async (event) => {
   const { elements } = event.target as From;
   const id = elements?.id.value.trim();
@@ -31,8 +38,11 @@ const handleSubmit: (event: SubmitEvent) => void = async (event) => {
     if (!profile) throw new Error(errors.fetch);
     store.setProfile(profile);
 
-    const { completion } = await API.getCompletion({ id });
-    store.setCompletion(completion || [], "completed");
+    const { list } = await API.getCompletion({
+      id,
+      onProgress,
+    });
+    store.setCompletion(list || [], "completed");
   } catch (error) {
     console.error("submit error", error);
     store.setStatus("idle");

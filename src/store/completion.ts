@@ -1,5 +1,5 @@
 import { completionKeys } from "@/constants/storage";
-import type { Completion } from "@/models/completion";
+import type { Completion, NullableCompletion } from "@/models/completion";
 import type { Sorter } from "@/models/filters";
 import type { Profile } from "@/models/profile";
 import { readStorage, setStorage } from "@/utils/local-storage";
@@ -16,7 +16,7 @@ export interface CompletionStore {
   sorter: Sorter | null;
   profile: Profile | null;
   initial: Completion[];
-  completion: Completion[];
+  completion: NullableCompletion[];
 }
 
 type Store = CompletionStore;
