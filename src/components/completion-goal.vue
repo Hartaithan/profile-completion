@@ -75,14 +75,22 @@ const goal = computed(() =>
           </p>
         </template>
       </TooltipAdaptive>
+      <TooltipAdaptive trigger-class="text-end" content-class="max-w-52">
+        <template #trigger>
+          more games each with<br />
+          <span class="mr-1 [&>span:not(:last-child)]:mr-2">
+            <TrophyCounts :counts="store.counts" :earned="undefined" />
+          </span>
+          trophies
+        </template>
+        <template #content>
+          <p class="text-center">
+            This means that you need to complete <b>{{ goal }}</b> completely new games - with the
+            selected trophy count - that you don't currently have on your profile
+          </p>
+        </template>
+      </TooltipAdaptive>
     </TooltipProvider>
-    <p class="text-end">
-      more games each with<br />
-      <span class="mr-1 [&>span:not(:last-child)]:mr-2">
-        <TrophyCounts :counts="store.counts" :earned="undefined" />
-      </span>
-      trophies
-    </p>
     <p class="text-start">
       to reach
       <span class="font-bold">{{ store.percent }}%</span>
