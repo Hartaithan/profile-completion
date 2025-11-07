@@ -1,25 +1,22 @@
-import type { TrophyCounts } from "@/models/trophy";
+import type { TrophyCounts, TrophyProgress } from "@/models/trophy";
 
 interface TrophiesProgressParams {
   counts?: TrophyCounts;
   earned?: TrophyCounts;
 }
 
-export const getTrophiesProgress = (params: TrophiesProgressParams) => {
+export const getTrophiesProgress = (params: TrophiesProgressParams): TrophyProgress => {
   const { counts, earned } = params;
-  if (!counts) return null;
+  const progress: TrophyProgress = { total: 0, earned: 0, type: null };
+  if (!counts) return progress;
   const entries = Object.entries(counts) as [keyof TrophyCounts, number][];
-
-  const progress = { total: 0, earned: 0, completed: false };
   for (const [key, value] of entries) {
     if (key === "platinum" || key === "total") continue;
     progress.total += value;
     if (!earned) continue;
     progress.earned += earned?.[key] || 0;
   }
-  if (progress.earned > 0) {
-    progress.completed = progress.earned === progress.total;
-  }
-
+  if (earned?.platinum === 1) progress.type = "platinum";
+  if (progress.earned === progress.total) progress.type = "completed";
   return progress;
 };

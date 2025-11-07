@@ -65,10 +65,20 @@ export const useCompletionStore = defineStore("completion", {
       this.completion = JSON.parse(JSON.stringify(value));
       setStorage(keys.completion, value);
     },
-    completeItem(index: number) {
+    completeItem(index: number, target: "platinum" | "complete") {
       const picked = this.completion[index];
       if (!picked) return;
-      picked.earned_counts = picked.counts;
+      switch (target) {
+        case "platinum":
+          if (!picked?.base_counts) break;
+          picked.earned_counts = picked.base_counts;
+          break;
+        case "complete":
+          picked.earned_counts = picked.counts;
+          break;
+        default:
+          break;
+      }
       setStorage(keys.completion, this.completion);
     },
   },

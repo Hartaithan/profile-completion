@@ -20,3 +20,11 @@ export interface Trophy {
   rarity?: TrophyRarity;
   rarity_label?: string;
 }
+
+export type TrophyProgressType = "platinum" | "completed" | null;
+
+export interface TrophyProgress {
+  total: number;
+  earned: number;
+  type: TrophyProgressType;
+}
