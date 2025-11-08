@@ -13,6 +13,7 @@ import { CircleCheckIcon, CircleDashedIcon, TrophyIcon } from "lucide-vue-next";
 interface Props {
   index: number;
   type: TrophyProgressType;
+  hasPlatinum: boolean;
 }
 
 defineProps<Props>();
@@ -31,6 +32,7 @@ const store = useCompletionStore();
     </DropdownMenuTrigger>
     <DropdownMenuContent class="content" align="end">
       <DropdownMenuItem
+        v-if="hasPlatinum"
         @click="store.completeItem(index, 'platinum')"
         :disabled="type === 'platinum'">
         Platinum
