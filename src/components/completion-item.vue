@@ -47,6 +47,7 @@ const trophies = computed(() =>
     <CompletionMenu
       :index="index"
       :type="trophies?.type"
-      :has-platinum="completion?.counts.platinum === 1" />
+      :has-platinum="completion?.counts.platinum === 1"
+      :has-d-l-c="completion?.counts.total !== completion?.base_counts?.total" />
   </div>
 </template>

@@ -14,6 +14,7 @@ interface Props {
   index: number;
   type: TrophyProgressType;
   hasPlatinum: boolean;
+  hasDLC: boolean;
 }
 
 defineProps<Props>();
@@ -38,6 +39,7 @@ const store = useCompletionStore();
         Platinum
       </DropdownMenuItem>
       <DropdownMenuItem
+        v-if="!hasPlatinum || hasDLC"
         @click="store.completeItem(index, 'complete')"
         :disabled="type === 'completed'">
         100% Completion
