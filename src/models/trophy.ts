@@ -1,4 +1,4 @@
-export type TrophyType = "platinum" | "gold" | "silver" | "bronze";
+export type TrophyType = "platinum" | "gold" | "silver" | "bronze" | "total";
 
 export type TrophyRarity = "ultra-rare" | "very-rare" | "rare" | "common";
 

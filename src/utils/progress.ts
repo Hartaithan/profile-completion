@@ -10,12 +10,15 @@ const weights: Record<TrophyType, number> = {
   gold: 90,
   silver: 30,
   bronze: 15,
+  total: 0,
 };
 
-export const getPoints = (counts: TrophyCounts): number => {
+export const getPoints = (counts: TrophyCounts | undefined): number => {
   let points: number = 0;
+  if (counts === undefined) return points;
   const entries = Object.entries(counts);
   for (const [key, value] of entries) {
+    if (key === "total") continue;
     if (key === "platinum") continue;
     points += value * weights[key as TrophyType];
   }
@@ -49,6 +52,7 @@ export const calculateProgress = (store: CompletionStore): CalculatedProgress =>
   const total: Progress = getDefaultProgress();
   let completion: Completion[] = [];
   for (const item of store.completion) {
+    if (!item) continue;
     const points = getPoints(item.counts);
     total.points += points;
     const earned = getPoints(item.earned_counts);
