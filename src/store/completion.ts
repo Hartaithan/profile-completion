@@ -21,15 +21,13 @@ export interface CompletionStore {
 
 type Store = CompletionStore;
 
-const getDefaultState = (): Store => {
-  return {
-    status: "idle",
-    sorter: null,
-    profile: readStorage<Store["profile"]>(keys.profile, null),
-    initial: readStorage<Store["initial"]>(keys.initial, []),
-    completion: readStorage<Store["completion"]>(keys.completion, []),
-  };
-};
+const getDefaultState = (): Store => ({
+  status: "idle",
+  sorter: null,
+  profile: null,
+  initial: [],
+  completion: [],
+});
 
 const isLoading: Partial<Record<Status, boolean>> = {
   "profile-loading": true,
@@ -43,6 +41,23 @@ export const useCompletionStore = defineStore("completion", {
     calculated: calculateProgress,
   },
   actions: {
+    async init() {
+      this.status = "profile-loading";
+      try {
+        const [profile, initial, completion] = await Promise.all([
+          readStorage<Store["profile"]>(keys.profile, null),
+          readStorage<Store["initial"]>(keys.initial, []),
+          readStorage<Store["completion"]>(keys.completion, []),
+        ]);
+        this.profile = profile;
+        this.initial = initial;
+        this.completion = completion;
+        this.status = "completed";
+      } catch (error) {
+        console.error("unable to initialize completion store", error);
+        this.status = "idle";
+      }
+    },
     setStatus(value: Store["status"]) {
       this.status = value;
     },

@@ -16,8 +16,17 @@ const defaultState: Store = {
 };
 
 export const useGoalStore = defineStore("goal", {
-  state: () => readStorage(goalKey, defaultState),
+  state: () => defaultState,
   actions: {
+    async init() {
+      try {
+        const value = await readStorage(goalKey, defaultState);
+        this.percent = value.percent;
+        this.counts = value.counts;
+      } catch (error) {
+        console.error("unable to initialize goal store", error);
+      }
+    },
     persist() {
       setStorage(goalKey, this.$state);
     },
