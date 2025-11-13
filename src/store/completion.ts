@@ -2,7 +2,7 @@ import { completionKeys } from "@/constants/storage";
 import type { NullableCompletion } from "@/models/completion";
 import type { Sorter } from "@/models/filters";
 import type { Profile } from "@/models/profile";
-import { readStorage, setStorage } from "@/utils/local-storage";
+import { readForage, readStorage, setForage, setStorage } from "@/utils/local-storage";
 import { calculateProgress } from "@/utils/progress";
 import { defineStore } from "pinia";
 import { toRaw } from "vue";
@@ -24,7 +24,7 @@ type Store = CompletionStore;
 const getDefaultState = (): Store => ({
   status: "idle",
   sorter: null,
-  profile: null,
+  profile: readStorage<Store["profile"]>(keys.profile, null),
   initial: [],
   completion: [],
 });
@@ -44,12 +44,10 @@ export const useCompletionStore = defineStore("completion", {
     async init() {
       this.status = "profile-loading";
       try {
-        const [profile, initial, completion] = await Promise.all([
-          readStorage<Store["profile"]>(keys.profile, null),
-          readStorage<Store["initial"]>(keys.initial, []),
-          readStorage<Store["completion"]>(keys.completion, []),
+        const [initial, completion] = await Promise.all([
+          readForage<Store["initial"]>(keys.initial, []),
+          readForage<Store["completion"]>(keys.completion, []),
         ]);
-        this.profile = profile;
         this.initial = initial;
         this.completion = completion;
         this.status = "completed";
@@ -71,14 +69,14 @@ export const useCompletionStore = defineStore("completion", {
     setCompletion(value: Store["completion"], status?: Store["status"]) {
       this.completion = value;
       if (status) this.status = status;
-      setStorage(keys.completion, value);
+      setForage(keys.completion, value);
       this.initial = JSON.parse(JSON.stringify(value));
-      setStorage(keys.initial, value);
+      setForage(keys.initial, value);
     },
     restore() {
       const value = toRaw(this.initial);
       this.completion = JSON.parse(JSON.stringify(value));
-      setStorage(keys.completion, value);
+      setForage(keys.completion, value);
     },
     completeItem(index: number, target: "platinum" | "complete") {
       const picked = this.completion[index];
@@ -94,7 +92,7 @@ export const useCompletionStore = defineStore("completion", {
         default:
           break;
       }
-      setStorage(keys.completion, this.completion);
+      setForage(keys.completion, this.completion);
     },
   },
 });
