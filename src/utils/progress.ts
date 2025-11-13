@@ -31,6 +31,7 @@ export const getDefaultProgress = (): Progress => {
 
 export const getProgress = (value: Pick<Progress, "earned" | "points">) => {
   const { earned, points } = value;
+  if (!earned || !points) return 0;
   return (earned / points) * 100;
 };
 
