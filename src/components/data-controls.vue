@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/ui/select";
+import Skeleton from "@/ui/skeleton/Skeleton.vue";
 import type { AcceptableValue } from "reka-ui";
 
 const completion = useCompletionStore();
@@ -22,7 +23,10 @@ const handleSorter = (value: AcceptableValue) => {
 </script>
 
 <template>
-  <div class="container mt-6 flex gap-x-2">
+  <div v-if="completion.loading" class="container mt-6">
+    <Skeleton class="h-9 w-full" />
+  </div>
+  <div v-else class="container mt-6 flex gap-x-2">
     <Select v-on:update:model-value="handleSorter">
       <SelectTrigger class="w-full">
         <SelectValue placeholder="Default sorting" />
