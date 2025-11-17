@@ -4,6 +4,7 @@ import type { TrophyCounts } from "./trophy";
 export type Platform = "PS5" | "PS4" | "PS3" | "PSVITA" | "PSPC";
 
 export interface Completion {
+  id: string;
   title: string;
   description?: string;
   platforms: Platform[];

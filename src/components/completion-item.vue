@@ -24,7 +24,7 @@ const trophies = computed(() =>
 
 <template>
   <div
-    class="flex w-full items-center"
+    class="absolute flex w-full items-center"
     :class="{ 'opacity-50 grayscale': trophies?.type === 'completed' }">
     <GameImage :src="completion?.image_url" :alt="completion?.title" />
     <div class="ml-3 flex flex-col justify-center">

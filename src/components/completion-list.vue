@@ -1,9 +1,29 @@
 <script setup lang="ts">
+import { useWindowVirtualizer } from "@tanstack/vue-virtual";
+import { computed } from "vue";
 import { useCompletionStore } from "../store/completion";
 import CompletionItem from "./completion-item.vue";
 import CompletionSkeleton from "./completion-skeleton.vue";
 
+const sizes = {
+  item: 56,
+  spacing: 12,
+};
+
 const store = useCompletionStore();
+
+const options = computed(() => ({
+  count: store.calculated.completion.length,
+  getScrollElement: () => window,
+  estimateSize: () => sizes.item + sizes.spacing,
+  overscan: 5,
+}));
+
+const rowVirtualizer = useWindowVirtualizer(options);
+
+const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems());
+
+const totalSize = computed(() => rowVirtualizer.value.getTotalSize());
 </script>
 
 <template>
@@ -23,12 +43,18 @@ const store = useCompletionStore();
     </div>
     <div
       v-else-if="store.calculated.completion.length > 0"
-      class="flex flex-col items-center justify-center gap-y-3">
+      class="relative flex w-full flex-col items-center justify-center gap-y-3"
+      :style="{ height: `${totalSize}px` }">
       <CompletionItem
-        v-for="(item, index) in store.calculated.completion"
-        :key="`${item.title}-${index}`"
-        :completion="item"
-        :index="index" />
+        v-for="virtualRow in virtualRows"
+        :key="virtualRow.index"
+        :completion="store.calculated.completion?.[virtualRow.index] || null"
+        :index="virtualRow.index"
+        :style="{
+          top: `${virtualRow.start}px`,
+          height: `${virtualRow.size}px`,
+          'padding-bottom': `${sizes.spacing}px`,
+        }" />
     </div>
     <p v-else class="text-center">nothing found :(</p>
   </div>
