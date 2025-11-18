@@ -9,6 +9,8 @@ import {
   DropdownMenuTrigger,
 } from "@/ui/dropdown-menu";
 import { CircleCheckIcon, CircleDashedIcon, TrophyIcon } from "lucide-vue-next";
+import type { DropdownMenuContentProps } from "node_modules/reka-ui/dist/index.d.cts";
+import { computed } from "vue";
 
 interface Props {
   index: number;
@@ -17,9 +19,16 @@ interface Props {
   hasDLC: boolean;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const store = useCompletionStore();
+
+const position = computed<DropdownMenuContentProps["side"]>(() => {
+  const length = store.completion.length;
+  if (length === props.index + 1) return "top";
+  if (length === props.index + 2) return "top";
+  return "bottom";
+});
 </script>
 
 <template>
@@ -31,7 +40,12 @@ const store = useCompletionStore();
         <CircleDashedIcon class="size-5" v-else />
       </Button>
     </DropdownMenuTrigger>
-    <DropdownMenuContent class="content" align="end">
+    <DropdownMenuContent
+      class="content"
+      align="end"
+      prioritize-position
+      :side="position"
+      :side-offset="position === 'top' ? 12 : undefined">
       <DropdownMenuItem
         v-if="hasPlatinum"
         @click="store.completeItem(index, 'platinum')"
