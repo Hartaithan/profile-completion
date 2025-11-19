@@ -36,9 +36,6 @@ const trophies = computed(() =>
       </p>
       <div class="mt-0.5 flex gap-x-3 text-sm font-semibold">
         <span>{{ formatProgress(completion?.progress, "%") }}</span>
-        <span class="trophy-dot" data-type="total" v-if="trophies">
-          {{ `${trophies.earned}/${trophies.total}` }}
-        </span>
         <div class="flex gap-x-3">
           <TrophyCounts :counts="completion?.counts" :earned="completion?.earned_counts" />
         </div>

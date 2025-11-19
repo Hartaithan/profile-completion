@@ -4,9 +4,10 @@ import type { TrophyCounts } from "@/models/trophy";
 interface Props {
   counts: TrophyCounts | undefined;
   earned: TrophyCounts | undefined;
+  total?: boolean;
 }
 
-defineProps<Props>();
+withDefaults(defineProps<Props>(), { total: true });
 </script>
 
 <template>
@@ -25,5 +26,9 @@ defineProps<Props>();
   <span v-if="counts?.bronze" class="trophy-dot" data-type="bronze">
     <template v-if="earned">{{ `${earned?.bronze}/${counts?.bronze}` }}</template>
     <template v-else>{{ counts?.bronze }}</template>
+  </span>
+  <span v-if="total && counts?.total" class="trophy-dot" data-type="total">
+    <template v-if="earned">{{ `${earned?.total}/${counts?.total}` }}</template>
+    <template v-else>{{ counts?.total }}</template>
   </span>
 </template>
