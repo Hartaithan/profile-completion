@@ -19,6 +19,14 @@ export const setStorage = <T>(key: string, value: T) => {
   }
 };
 
+export const removeStorage = (key: string) => {
+  try {
+    localStorage.removeItem(key);
+  } catch (error) {
+    console.error("unable to remove storage value", key, error);
+  }
+};
+
 export const readForage = async <T>(key: string, defaultValue: T): Promise<T> => {
   try {
     const value = await localforage.getItem<T>(key);
@@ -35,5 +43,13 @@ export const setForage = async <T>(key: string, value: T) => {
     localforage.setItem(key, serialized);
   } catch (error) {
     console.error("unable to set forage value", key, error);
+  }
+};
+
+export const removeForage = (key: string) => {
+  try {
+    localforage.removeItem(key);
+  } catch (error) {
+    console.error("unable to remove forage value", key, error);
   }
 };

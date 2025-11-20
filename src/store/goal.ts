@@ -1,6 +1,6 @@
 import { goalKey } from "@/constants/storage";
 import type { TrophyCounts } from "@/models/trophy";
-import { readStorage, setStorage } from "@/utils/local-storage";
+import { readStorage, removeStorage, setStorage } from "@/utils/local-storage";
 import { defineStore } from "pinia";
 
 export interface GoalStore {
@@ -20,6 +20,11 @@ export const useGoalStore = defineStore("goal", {
   actions: {
     persist() {
       setStorage(goalKey, this.$state);
+    },
+    reset() {
+      this.percent = defaultState.percent;
+      this.counts = defaultState.counts;
+      removeStorage(goalKey);
     },
   },
 });

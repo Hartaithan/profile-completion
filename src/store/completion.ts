@@ -2,7 +2,14 @@ import { completionKeys } from "@/constants/storage";
 import type { NullableCompletion } from "@/models/completion";
 import type { Sorter } from "@/models/filters";
 import type { Profile } from "@/models/profile";
-import { readForage, readStorage, setForage, setStorage } from "@/utils/local-storage";
+import {
+  readForage,
+  readStorage,
+  removeForage,
+  removeStorage,
+  setForage,
+  setStorage,
+} from "@/utils/local-storage";
 import { calculateProgress } from "@/utils/progress";
 import { defineStore } from "pinia";
 import { toRaw } from "vue";
@@ -21,12 +28,17 @@ export interface CompletionStore {
 
 type Store = CompletionStore;
 
-const getDefaultState = (): Store => ({
+const defaultState: Store = {
   status: "idle",
   sorter: null,
-  profile: readStorage<Store["profile"]>(keys.profile, null),
+  profile: null,
   initial: [],
   completion: [],
+};
+
+const getDefaultState = (): Store => ({
+  ...defaultState,
+  profile: readStorage<Store["profile"]>(keys.profile, null),
 });
 
 const isLoading: Partial<Record<Status, boolean>> = {
@@ -93,6 +105,16 @@ export const useCompletionStore = defineStore("completion", {
           break;
       }
       setForage(keys.completion, this.completion);
+    },
+    reset() {
+      this.status = defaultState.status;
+      this.sorter = defaultState.sorter;
+      this.profile = defaultState.profile;
+      removeStorage(keys.profile);
+      this.initial = defaultState.initial;
+      removeForage(keys.initial);
+      this.completion = defaultState.completion;
+      removeForage(keys.completion);
     },
   },
 });
