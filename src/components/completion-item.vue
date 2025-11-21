@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Completion } from "@/models/completion";
+import { getImageURL } from "@/utils/image";
 import { formatProgress } from "@/utils/progress";
 import { getTrophiesProgress } from "@/utils/trophies";
 import { computed } from "vue";
@@ -26,7 +27,10 @@ const trophies = computed(() =>
   <div
     class="absolute flex w-full items-center"
     :class="{ 'opacity-50 grayscale': trophies?.type === 'completed' }">
-    <GameImage :src="completion?.image_url" :alt="completion?.title" />
+    <GameImage
+      :src="getImageURL(completion?.image_url, { h: 56 })"
+      :alt="completion?.title"
+      :platforms="completion?.platforms" />
     <div class="ml-3 flex flex-col justify-center">
       <p class="text-base font-bold">
         {{ completion?.title }}
