@@ -1,15 +1,8 @@
 <script setup lang="ts">
 import type { Completion } from "@/models/completion";
-import type { SortDirection } from "@/models/filters";
+import type { SortDirection, Sorter } from "@/models/filters";
 import { useCompletionStore } from "@/store/completion";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/select";
 import Skeleton from "@/ui/skeleton/Skeleton.vue";
 import type { AcceptableValue } from "reka-ui";
 
@@ -18,7 +11,9 @@ const completion = useCompletionStore();
 const handleSorter = (value: AcceptableValue) => {
   if (typeof value !== "string") return;
   const [field, direction] = value.split(":") as [keyof Completion, SortDirection];
-  completion.setSorter({ field, direction });
+  let next: Sorter | null = { field, direction };
+  if (value === "null") next = null;
+  completion.setSorter(next);
 };
 </script>
 
@@ -32,12 +27,11 @@ const handleSorter = (value: AcceptableValue) => {
         <SelectValue placeholder="Default sorting" />
       </SelectTrigger>
       <SelectContent>
-        <SelectGroup>
-          <SelectItem value="progress:asc"> Progress: Low → High </SelectItem>
-          <SelectItem value="progress:desc"> Progress: High → Low </SelectItem>
-          <SelectItem value="title:asc"> Name: A → Z </SelectItem>
-          <SelectItem value="title:desc"> Name: Z → A </SelectItem>
-        </SelectGroup>
+        <SelectItem value="null">Default sorting</SelectItem>
+        <SelectItem value="progress:asc">Progress: Low → High</SelectItem>
+        <SelectItem value="progress:desc">Progress: High → Low</SelectItem>
+        <SelectItem value="title:asc">Name: A → Z</SelectItem>
+        <SelectItem value="title:desc">Name: Z → A</SelectItem>
       </SelectContent>
     </Select>
   </div>
