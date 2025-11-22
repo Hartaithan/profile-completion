@@ -2,7 +2,8 @@
 import type { CompletionProgressData } from "@/models/completion";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/ui/input-group";
 import { API } from "@/utils/api";
-import { SendHorizonal } from "lucide-vue-next";
+import { SendHorizontal, XIcon } from "lucide-vue-next";
+import { ref } from "vue";
 import { useCompletionStore } from "../store/completion";
 
 interface Elements extends HTMLFormControlsCollection {
@@ -19,6 +20,20 @@ const errors = {
 };
 
 const store = useCompletionStore();
+const hasValue = ref<boolean>(false);
+const form = ref<From | null>(null);
+
+const onInput = (e: Event) => {
+  const target = e.target as HTMLInputElement;
+  hasValue.value = target.value.trim().length > 0;
+};
+
+const clear = () => {
+  hasValue.value = false;
+  if (!form.value) return;
+  const elements = form.value.elements;
+  elements.id.value = "";
+};
 
 const onProgress = (data: CompletionProgressData) => {
   const current = data?.current || 0;
@@ -51,12 +66,15 @@ const handleSubmit: (event: SubmitEvent) => void = async (event) => {
 </script>
 
 <template>
-  <form class="w-full" @submit.prevent="handleSubmit">
+  <form class="w-full" ref="form" @submit.prevent="handleSubmit">
     <InputGroup>
-      <InputGroupInput name="id" placeholder="Enter your PSN ID" />
+      <InputGroupInput name="id" @input="onInput" placeholder="Enter your PSN ID" />
       <InputGroupAddon align="inline-end">
+        <InputGroupButton v-if="hasValue" @click="clear" size="icon-xs" type="button">
+          <XIcon />
+        </InputGroupButton>
         <InputGroupButton size="icon-xs" type="submit">
-          <SendHorizonal />
+          <SendHorizontal />
         </InputGroupButton>
       </InputGroupAddon>
     </InputGroup>
