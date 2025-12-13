@@ -7,7 +7,7 @@ const store = useCompletionStore();
 </script>
 
 <template>
-  <div v-if="!store.profile && store.loading" class="container mt-6 flex w-full items-center gap-4">
+  <div v-if="store.loading" class="container mt-6 flex w-full items-center gap-4">
     <Skeleton class="size-12 rounded-full" />
     <div className="flex flex-col gap-y-2">
       <Skeleton class="h-4 w-32" />
@@ -15,7 +15,7 @@ const store = useCompletionStore();
     </div>
     <Skeleton class="ml-auto h-6 w-80" />
   </div>
-  <div v-if="store.profile" class="container mt-6 flex w-full items-center gap-4">
+  <div v-if="!store.loading && store.profile" class="container mt-6 flex w-full items-center gap-4">
     <img
       class="size-12"
       :src="store.profile?.avatar_url"
