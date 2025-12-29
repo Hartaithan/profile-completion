@@ -90,8 +90,9 @@ export const useCompletionStore = defineStore("completion", {
       this.completion = JSON.parse(JSON.stringify(value));
       setForage(keys.completion, value);
     },
-    completeItem(index: number, target: "platinum" | "complete") {
-      const picked = this.completion[index];
+    completeItem(id: string | undefined, target: "platinum" | "complete") {
+      if (!id) return;
+      const picked = this.completion?.find((i) => i?.id === id);
       if (!picked) return;
       switch (target) {
         case "platinum":

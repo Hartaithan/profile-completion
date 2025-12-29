@@ -13,6 +13,7 @@ import type { DropdownMenuContentProps } from "node_modules/reka-ui/dist/index.d
 import { computed } from "vue";
 
 interface Props {
+  id: string | undefined;
   index: number;
   type: TrophyProgressType;
   hasPlatinum: boolean;
@@ -32,7 +33,7 @@ const position = computed<DropdownMenuContentProps["side"]>(() => {
 </script>
 
 <template>
-  <DropdownMenu>
+  <DropdownMenu v-if="id">
     <DropdownMenuTrigger as-child>
       <Button class="ml-auto" variant="outline" size="icon">
         <CircleCheckIcon class="size-5" v-if="type === 'completed'" />
@@ -48,13 +49,13 @@ const position = computed<DropdownMenuContentProps["side"]>(() => {
       :side-offset="position === 'top' ? 12 : undefined">
       <DropdownMenuItem
         v-if="hasPlatinum"
-        @click="store.completeItem(index, 'platinum')"
+        @click="store.completeItem(id, 'platinum')"
         :disabled="type === 'platinum'">
         Platinum
       </DropdownMenuItem>
       <DropdownMenuItem
         v-if="!hasPlatinum || hasDLC"
-        @click="store.completeItem(index, 'complete')"
+        @click="store.completeItem(id, 'complete')"
         :disabled="type === 'completed'">
         100% Completion
       </DropdownMenuItem>
