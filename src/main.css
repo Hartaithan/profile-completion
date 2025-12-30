@@ -129,6 +129,10 @@
   button {
     cursor: pointer;
   }
+
+  div[data-reka-popper-content-wrapper] > div[data-dismissable-layer] {
+    transform: translateX(var(--scrollbar-width));
+  }
 }
 
 @layer utilities {

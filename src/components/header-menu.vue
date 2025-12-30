@@ -22,7 +22,7 @@ const reset = () => {
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
-      <Button class="ml-auto size-(--button-size)" variant="outline">
+      <Button class="ml-auto size-9" variant="outline">
         <MenuIcon />
       </Button>
     </DropdownMenuTrigger>
@@ -32,14 +32,3 @@ const reset = () => {
     </DropdownMenuContent>
   </DropdownMenu>
 </template>
-
-<style>
-:root {
-  --button-size: calc(var(--spacing) * 9);
-  --content-y-offset: calc(var(--spacing) * 1);
-}
-
-.content {
-  translate: calc(var(--button-size) / 2) var(--content-y-offset);
-}
-</style>
