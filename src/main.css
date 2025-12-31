@@ -92,6 +92,7 @@
   }
 
   html {
+    @apply size-full;
     scrollbar-gutter: stable;
   }
 
@@ -100,7 +101,7 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground min-h-full;
   }
 
   #app {
@@ -138,7 +139,7 @@
 @layer utilities {
   .container {
     margin-inline: auto;
-    max-width: 95%;
+    max-width: 90%;
     @media (width >= 48rem) {
       max-width: 48rem;
     }
