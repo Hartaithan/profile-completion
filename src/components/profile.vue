@@ -15,7 +15,7 @@ const store = useCompletionStore();
       <Skeleton class="h-4 w-32" />
       <Skeleton class="h-3 w-24" />
     </div>
-    <Skeleton class="mx-auto h-6 w-80 sm:mx-0 sm:ml-auto" />
+    <Skeleton class="mx-auto h-5 w-80 sm:mx-0 sm:ml-auto sm:h-6" />
   </div>
   <div
     v-if="!store.loading && store.profile"
@@ -29,8 +29,11 @@ const store = useCompletionStore();
       <p className="text-sm text-gray-300">Level: {{ store.profile?.level ?? "420" }}</p>
     </div>
     <div
-      class="mx-auto flex flex-wrap justify-center gap-3 font-bold sm:mx-0 sm:ml-auto sm:flex-nowrap sm:justify-start">
-      <TrophyCounts :counts="store.profile?.counts" :earned="undefined" />
+      class="mx-auto flex flex-wrap justify-center gap-x-3 gap-y-1 font-bold sm:mx-0 sm:ml-auto sm:flex-nowrap sm:justify-start">
+      <TrophyCounts
+        :counts="store.profile?.counts"
+        class="text-sm sm:text-base"
+        :earned="undefined" />
     </div>
   </div>
 </template>
