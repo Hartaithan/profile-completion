@@ -9,19 +9,19 @@ const store = useCompletionStore();
 
 <template>
   <div v-if="store.loading" class="container py-6 text-center">
-    <Skeleton class="h-7 w-full" />
-    <Skeleton class="mt-2 h-9 w-full" />
+    <Skeleton class="h-5 w-full sm:h-7" />
+    <Skeleton class="mt-2 h-7 w-full sm:h-9" />
   </div>
   <div
     v-else-if="store.profile"
     class="from-background via-background sticky top-0 z-50 container flex flex-col bg-gradient-to-b from-0% via-90% to-transparent to-100% py-6">
-    <span class="text-xl font-bold">
+    <span class="text-sm font-bold sm:text-xl">
       Total Completion: {{ formatProgress(store.calculated.progress.progress, "%") }}
     </span>
     <div class="mt-2">
       <div class="flex justify-between">
-        <p>Points</p>
-        <p class="font-bold">
+        <p class="text-xs sm:text-base">Points</p>
+        <p class="text-xs font-bold sm:text-base">
           {{ `${store.calculated.progress.earned} / ${store.calculated.progress.points}` }}
         </p>
       </div>
