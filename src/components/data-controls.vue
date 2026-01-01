@@ -21,7 +21,9 @@ const handleSorter = (value: AcceptableValue) => {
   <div v-if="completion.loading" class="container mt-6">
     <Skeleton class="h-9 w-full" />
   </div>
-  <div v-if="completion.completion.length" class="container mt-6 flex gap-x-2">
+  <div
+    v-if="!completion.loading && completion.completion.length"
+    class="container mt-6 flex gap-x-2">
     <Select v-on:update:model-value="handleSorter">
       <SelectTrigger class="w-full">
         <SelectValue placeholder="Default sorting" />
