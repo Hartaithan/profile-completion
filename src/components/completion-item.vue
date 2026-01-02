@@ -3,7 +3,7 @@ import type { Completion } from "@/models/completion";
 import { getImageURL } from "@/utils/image";
 import { formatProgress } from "@/utils/progress";
 import { getTrophiesProgress } from "@/utils/trophies";
-import { computed } from "vue";
+import { computed, ref, useAttrs } from "vue";
 import CompletionMenu from "./completion-menu.vue";
 import GameImage from "./game-image.vue";
 import TrophyCounts from "./trophy-counts.vue";
@@ -14,6 +14,9 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+const attrs = useAttrs();
+
+const root = ref<HTMLDivElement>();
 
 const trophies = computed(() =>
   getTrophiesProgress({
@@ -21,12 +24,16 @@ const trophies = computed(() =>
     earned: props.completion?.earned_counts,
   }),
 );
+
+defineExpose({ el: root });
 </script>
 
 <template>
   <div
-    class="absolute flex w-full items-center"
-    :class="{ 'opacity-50 grayscale': trophies?.type === 'completed' }">
+    ref="root"
+    class="flex w-full items-center"
+    :class="{ 'opacity-50 grayscale': trophies?.type === 'completed' }"
+    v-bind="attrs">
     <GameImage
       :src="getImageURL(completion?.image_url, { h: 56 })"
       :alt="completion?.title"
