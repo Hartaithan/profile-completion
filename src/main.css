@@ -91,30 +91,21 @@
     @apply border-border outline-ring/50;
   }
 
+  html,
+  body {
+    @apply min-h-full w-full;
+  }
+
   html {
-    @apply size-full;
     scrollbar-gutter: stable;
   }
 
-  html:has(body[data-scroll-locked]) {
-    scrollbar-gutter: unset;
-  }
-
   body {
-    @apply bg-background text-foreground min-h-full;
+    @apply bg-background text-foreground !pr-0;
   }
 
   #app {
     @apply py-6;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    html {
-      margin-left: var(--scrollbar-width);
-    }
-    html[data-browser="chrome"] > body[data-scroll-locked] {
-      margin-right: var(--scrollbar-width) !important;
-    }
   }
 
   input:-webkit-autofill,
@@ -129,10 +120,6 @@
 
   button {
     cursor: pointer;
-  }
-
-  div[data-reka-popper-content-wrapper] > div[data-dismissable-layer] {
-    transform: translateX(var(--scrollbar-width));
   }
 }
 
