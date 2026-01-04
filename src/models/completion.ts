@@ -25,13 +25,12 @@ export type CompletionData<T extends CompletionEventType> = {
 };
 
 export interface CompletionProgressData extends CompletionData<"progress"> {
+  completion: NullableCompletion[];
   current?: number;
   total?: number;
 }
 
-export interface CompletionCompleteData extends CompletionData<"complete">, CachedResponse {
-  completion?: NullableCompletion[];
-}
+export type CompletionCompleteData = CompletionData<"complete"> & CachedResponse;
 
 export type CompletionErrorData = CompletionData<"error">;
 

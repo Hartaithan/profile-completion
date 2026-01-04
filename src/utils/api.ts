@@ -3,6 +3,7 @@ import type {
   CompletionEventData,
   CompletionResponse,
   FetchCompletionParams,
+  NullableCompletion,
 } from "@/models/completion";
 import type { FetchProfileParams, ProfileResponse } from "@/models/profile";
 import { getInit } from "@/utils/signature";
@@ -44,15 +45,17 @@ const getCompletion = async (params: FetchCompletionParams): Promise<CompletionR
   });
 
   return new Promise((resolve, reject) => {
+    let list: NullableCompletion[] = [];
     source.onmessage = (event) => {
       try {
         const data: CompletionEventData = JSON.parse(event.data);
         switch (data?.type) {
           case "progress":
+            const completion = data?.completion || [];
+            list = list.concat(completion);
             onProgress(data);
             break;
           case "complete": {
-            const list = data?.completion || [];
             const expires = data?.expires;
             resolve({ list, expires });
             source.close();
