@@ -7,7 +7,10 @@ import CompletionSkeleton from "./completion-skeleton.vue";
 
 const sizes = {
   item: 56,
-  spacing: 12,
+  spacing: () => {
+    const sm = window.innerWidth < 640;
+    return sm ? 20 : 12;
+  },
 };
 
 const store = useCompletionStore();
@@ -18,7 +21,7 @@ const parentOffset = ref(0);
 const options = computed(() => ({
   count: store.calculated.completion.length,
   getScrollElement: () => window,
-  estimateSize: () => sizes.item + sizes.spacing,
+  estimateSize: () => sizes.item + sizes.spacing(),
   scrollMargin: parentOffset.value,
   overscan: 5,
 }));
@@ -72,7 +75,7 @@ onMounted(() => {
           :index="row.index"
           :data-index="row.index"
           :ref="measureElement"
-          :style="{ 'padding-bottom': `${sizes.spacing}px` }" />
+          :style="{ 'padding-bottom': `${sizes.spacing()}px` }" />
       </div>
     </div>
     <p v-else class="text-center">nothing found :(</p>
