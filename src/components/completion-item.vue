@@ -31,24 +31,29 @@ defineExpose({ el: root });
 <template>
   <div
     ref="root"
-    class="flex w-full items-center"
+    class="flex w-full flex-wrap items-center"
     :class="{ 'opacity-50 grayscale': trophies?.type === 'completed' }"
     v-bind="attrs">
     <GameImage
+      class="order-1"
       :src="getImageURL(completion?.image_url, { h: 56 })"
       :alt="completion?.title"
       :platforms="completion?.platforms" />
-    <div class="ml-3 flex flex-col justify-center">
-      <p class="text-base font-bold">
+    <div
+      class="order-3 mt-2 ml-0 flex w-full flex-col justify-center sm:order-2 sm:mt-0 sm:ml-3 sm:w-auto">
+      <p class="text-sm font-bold sm:text-base">
         {{ completion?.title }}
         <span class="ml-1 align-[0.0625rem] text-xs font-medium">
           {{ completion?.platforms.join(", ") }}
         </span>
       </p>
-      <div class="mt-0.5 flex gap-x-3 text-sm font-semibold">
+      <div class="mt-0.5 flex flex-wrap gap-x-3 text-sm font-semibold">
         <span>{{ formatProgress(completion?.progress, "%") }}</span>
-        <div class="flex gap-x-3">
-          <TrophyCounts :counts="completion?.counts" :earned="completion?.earned_counts" />
+        <div class="flex flex-wrap gap-x-3">
+          <TrophyCounts
+            class="text-xs sm:text-sm"
+            :counts="completion?.counts"
+            :earned="completion?.earned_counts" />
         </div>
       </div>
     </div>
