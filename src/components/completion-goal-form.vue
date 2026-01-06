@@ -41,8 +41,10 @@ defineExpose({
         <PencilIcon />
       </Button>
     </PopoverTrigger>
-    <PopoverContent align="end" class="container mt-6 flex w-full gap-x-3">
-      <div class="grid flex-[3] items-center gap-y-3">
+    <PopoverContent
+      align="end"
+      class="mt-3 grid w-full max-w-[90vw] grid-cols-2 gap-x-3 gap-y-4 sm:mt-6 sm:max-w-3xl sm:grid-cols-6">
+      <div class="col-span-2 flex flex-col gap-y-3 sm:col-span-2">
         <Label for="goal">Completion goal (%)</Label>
         <Input
           id="goal"
@@ -52,27 +54,21 @@ defineExpose({
           max="100"
           type="number" />
       </div>
-      <div class="flex flex-[7] items-center gap-x-3">
-        <div class="grid items-center gap-y-3">
-          <Label for="platinum" class="trophy-dot" data-type="platinum">Platinum</Label>
-          <Input
-            id="platinum"
-            placeholder="Platinum"
-            v-model="store.counts.platinum"
-            type="number" />
-        </div>
-        <div class="grid items-center gap-y-3">
-          <Label for="gold" class="trophy-dot" data-type="gold">Gold</Label>
-          <Input id="gold" placeholder="Gold" v-model="store.counts.gold" type="number" />
-        </div>
-        <div class="grid items-center gap-y-3">
-          <Label for="silver" class="trophy-dot" data-type="silver">Silver</Label>
-          <Input id="silver" placeholder="Silver" v-model="store.counts.silver" type="number" />
-        </div>
-        <div class="grid items-center gap-y-3">
-          <Label for="bronze" class="trophy-dot" data-type="bronze">Bronze</Label>
-          <Input id="bronze" placeholder="Bronze" v-model="store.counts.bronze" type="number" />
-        </div>
+      <div class="flex flex-col gap-y-3">
+        <Label for="platinum" class="trophy-dot" data-type="platinum">Platinum</Label>
+        <Input id="platinum" placeholder="Platinum" v-model="store.counts.platinum" type="number" />
+      </div>
+      <div class="flex flex-col gap-y-3">
+        <Label for="gold" class="trophy-dot" data-type="gold">Gold</Label>
+        <Input id="gold" placeholder="Gold" v-model="store.counts.gold" type="number" />
+      </div>
+      <div class="flex flex-col gap-y-3">
+        <Label for="silver" class="trophy-dot" data-type="silver">Silver</Label>
+        <Input id="silver" placeholder="Silver" v-model="store.counts.silver" type="number" />
+      </div>
+      <div class="flex flex-col gap-y-3">
+        <Label for="bronze" class="trophy-dot" data-type="bronze">Bronze</Label>
+        <Input id="bronze" placeholder="Bronze" v-model="store.counts.bronze" type="number" />
       </div>
     </PopoverContent>
   </Popover>
