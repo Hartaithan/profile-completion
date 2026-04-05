@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useWindowVirtualizer, Virtualizer, type VirtualItem } from "@tanstack/vue-virtual";
+import { useWindowVirtualizer } from "@tanstack/vue-virtual";
 import { computed, onMounted, ref, type VNodeRef } from "vue";
 import { useCompletionStore } from "../store/completion";
 import CompletionItem from "./completion-item.vue";
@@ -30,12 +30,6 @@ const virtualizer = useWindowVirtualizer(options);
 const rows = computed(() => virtualizer.value.getVirtualItems());
 const total = computed(() => virtualizer.value.getTotalSize());
 
-const calculateTransform = (rows: VirtualItem[], virtualizer: Virtualizer<Window, Element>) => {
-  const position = rows[0]?.start ?? 0;
-  const margin = virtualizer.options.scrollMargin;
-  return `translateY(${position - margin}px)`;
-};
-
 const measureElement: VNodeRef = (element) => {
   if (!element || "el" in element == false) return;
   virtualizer.value.measureElement(element.el as Element);
@@ -65,18 +59,18 @@ onMounted(() => {
       v-else-if="store.calculated.completion.length > 0"
       class="relative w-full"
       :style="{ height: `${total}px` }">
-      <div
+      <CompletionItem
+        v-for="row in rows"
+        :key="row.index"
+        :completion="store.calculated.completion?.[row.index] ?? null"
+        :index="row.index"
+        :data-index="row.index"
+        :ref="measureElement"
         class="absolute top-0 left-0 w-full"
-        :style="{ transform: calculateTransform(rows, virtualizer) }">
-        <CompletionItem
-          v-for="row in rows"
-          :key="row.index"
-          :completion="store.calculated.completion?.[row.index] ?? null"
-          :index="row.index"
-          :data-index="row.index"
-          :ref="measureElement"
-          :style="{ 'padding-bottom': `${sizes.spacing()}px` }" />
-      </div>
+        :style="{
+          transform: `translateY(${row.start - virtualizer.options.scrollMargin}px)`,
+          'padding-bottom': `${sizes.spacing()}px`,
+        }" />
     </div>
     <p v-else class="text-center">nothing found :(</p>
   </div>
