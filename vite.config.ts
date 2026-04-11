@@ -1,3 +1,4 @@
+import tailwindcss from "@tailwindcss/vite";
 import ssl from "@vitejs/plugin-basic-ssl";
 import vue from "@vitejs/plugin-vue";
 import { fileURLToPath, URL } from "node:url";
@@ -6,7 +7,7 @@ import vueDevTools from "vite-plugin-vue-devtools";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue(), vueDevTools(), ssl()],
+  plugins: [vue(), vueDevTools(), tailwindcss(), ssl()],
   server: {
     host: "local.hartaithan.com",
     port: 3000,
