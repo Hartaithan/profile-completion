@@ -39,6 +39,11 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-trophy-total: var(--trophy-total);
+  --color-trophy-platinum: var(--trophy-platinum);
+  --color-trophy-gold: var(--trophy-gold);
+  --color-trophy-silver: var(--trophy-silver);
+  --color-trophy-bronze: var(--trophy-bronze);
 }
 
 :root {
@@ -74,13 +79,80 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --trophy-total: #ffffff;
+  --trophy-platinum: #7a96d1;
+  --trophy-gold: #cd9a46;
+  --trophy-silver: #9b9b9b;
+  --trophy-bronze: #bf6a3a;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
+  html,
   body {
-    @apply bg-background text-foreground;
+    @apply min-h-full w-full;
+  }
+
+  html {
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    @apply bg-background text-foreground pr-0!;
+  }
+
+  #app {
+    @apply py-6;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: var(--color-foreground);
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: inset 0 0 20px 20px transparent;
+  }
+
+  button {
+    cursor: pointer;
+  }
+}
+
+@layer utilities {
+  .container {
+    margin-inline: auto;
+    max-width: 90%;
+    @media (width >= 48rem) {
+      max-width: 48rem;
+    }
+  }
+
+  .trophy-dot {
+    @apply relative pl-3;
+  }
+  .trophy-dot::before {
+    content: "";
+    @apply absolute top-1/2 left-0 h-1.5 w-1.5 -translate-y-1/2 rounded-full;
+    background: var(--dot-color);
+  }
+  .trophy-dot[data-type="total"] {
+    --dot-color: var(--color-trophy-total);
+  }
+  .trophy-dot[data-type="platinum"] {
+    --dot-color: var(--color-trophy-platinum);
+  }
+  .trophy-dot[data-type="gold"] {
+    --dot-color: var(--color-trophy-gold);
+  }
+  .trophy-dot[data-type="silver"] {
+    --dot-color: var(--color-trophy-silver);
+  }
+  .trophy-dot[data-type="bronze"] {
+    --dot-color: var(--color-trophy-bronze);
   }
 }

@@ -18,9 +18,12 @@
     "format": "prettier . --write"
   },
   "dependencies": {
+    "@tanstack/vue-virtual": "^3.13.23",
     "@vueuse/core": "^14.2.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "eventsource": "^4.1.0",
+    "localforage": "^1.10.0",
     "lucide-vue-next": "^1.0.0",
     "pinia": "^3.0.4",
     "reka-ui": "^2.9.5",
