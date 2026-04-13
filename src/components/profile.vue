@@ -30,28 +30,6 @@ const store = useCompletionStore();
       <div className="flex gap-4">
         <ProfileStatItem label="Level" :value="store.profile?.level" />
         <ProfileStatItem label="Tier" :value="store.profile?.tier" />
-        <div class="w-px self-stretch bg-white/50" />
-        <ProfileStatItem
-          label="Platinum"
-          labelClass="text-trophy-platinum"
-          :value="store.profile?.counts.platinum" />
-        <ProfileStatItem
-          label="Gold"
-          labelClass="text-trophy-gold"
-          :value="store.profile?.counts.gold" />
-        <ProfileStatItem
-          label="Silver"
-          labelClass="text-trophy-silver"
-          :value="store.profile?.counts.silver" />
-        <ProfileStatItem
-          label="Bronze"
-          labelClass="text-trophy-bronze"
-          :value="store.profile?.counts.bronze" />
-        <ProfileStatItem
-          v-if="store.profile?.counts?.total"
-          label="Total"
-          labelClass="text-trophy-total"
-          :value="store.profile?.counts.total" />
       </div>
     </div>
   </div>
