@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useCompletionStore } from "@/store/completion";
 import { Skeleton } from "@/ui/skeleton";
-import TrophyCounts from "./trophy-counts.vue";
+import ProfileStatItem from "./profile-stat-item.vue";
 
 const store = useCompletionStore();
 </script>
@@ -10,30 +10,49 @@ const store = useCompletionStore();
   <div
     v-if="store.loading"
     class="container mt-6 flex w-full flex-wrap items-center gap-4 md:flex-nowrap">
-    <Skeleton class="aspect-square size-12 min-w-12 rounded-full" />
+    <Skeleton class="aspect-square size-24 min-w-24 rounded-lg" />
     <div className="flex flex-col gap-y-2">
-      <Skeleton class="h-4 w-32" />
-      <Skeleton class="h-3 w-24" />
+      <Skeleton class="h-9 w-64" />
+      <Skeleton class="h-9 w-32" />
     </div>
-    <Skeleton class="mx-auto h-5 w-80 sm:mx-0 sm:ml-auto sm:h-6" />
   </div>
-  <div
-    v-if="!store.loading && store.profile"
-    class="container mt-6 flex w-full flex-wrap items-center gap-4 md:flex-nowrap">
-    <img
-      class="aspect-square size-12 min-w-12"
-      :src="store.profile?.avatar_url"
-      :alt="`${store.profile?.name}'s avatar`" />
-    <div className="flex flex-col leading-[normal]">
-      <h1 className="font-bold">{{ store.profile?.name ?? "Trophy Hunter" }}</h1>
-      <p className="text-sm text-gray-300">Level: {{ store.profile?.level ?? "420" }}</p>
+  <div v-if="!store.loading && store.profile" className="container mt-6 flex items-center gap-6">
+    <div className="w-24 h-24 rounded-lg bg-card border border-border/50 p-1 overflow-hidden">
+      <img
+        className="w-full h-full object-cover rounded-lg"
+        :src="store.profile?.avatar_url"
+        :alt="`${store.profile?.name}'s avatar`" />
     </div>
-    <div
-      class="mx-auto flex flex-wrap justify-center gap-x-3 gap-y-1 font-bold sm:mx-0 sm:ml-auto sm:flex-nowrap sm:justify-start">
-      <TrophyCounts
-        :counts="store.profile?.counts"
-        class="text-sm sm:text-base"
-        :earned="undefined" />
+    <div className="flex flex-col">
+      <h1 className="text-4xl font-black text-foreground uppercase leading-none mb-2">
+        {{ store.profile?.name ?? "Trophy Hunter" }}
+      </h1>
+      <div className="flex gap-4">
+        <ProfileStatItem label="Level" :value="store.profile?.level" />
+        <ProfileStatItem label="Tier" :value="store.profile?.tier" />
+        <div class="w-px self-stretch bg-white/50" />
+        <ProfileStatItem
+          label="Platinum"
+          labelClass="text-trophy-platinum"
+          :value="store.profile?.counts.platinum" />
+        <ProfileStatItem
+          label="Gold"
+          labelClass="text-trophy-gold"
+          :value="store.profile?.counts.gold" />
+        <ProfileStatItem
+          label="Silver"
+          labelClass="text-trophy-silver"
+          :value="store.profile?.counts.silver" />
+        <ProfileStatItem
+          label="Bronze"
+          labelClass="text-trophy-bronze"
+          :value="store.profile?.counts.bronze" />
+        <ProfileStatItem
+          v-if="store.profile?.counts?.total"
+          label="Total"
+          labelClass="text-trophy-total"
+          :value="store.profile?.counts.total" />
+      </div>
     </div>
   </div>
 </template>
