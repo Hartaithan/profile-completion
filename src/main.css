@@ -45,6 +45,10 @@
   --color-trophy-gold: var(--trophy-gold);
   --color-trophy-silver: var(--trophy-silver);
   --color-trophy-bronze: var(--trophy-bronze);
+  --text-xxs: 0.625rem;
+  --text-xxs--line-height: calc(0.875 / 0.625);
+  --text-xxxs: 0.5rem;
+  --text-xxxs--line-height: calc(0.75 / 0.5);
 }
 
 :root {
