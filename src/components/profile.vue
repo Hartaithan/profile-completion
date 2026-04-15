@@ -11,23 +11,23 @@ const store = useCompletionStore();
     v-if="store.loading"
     class="container mt-6 flex w-full flex-wrap items-center gap-4 md:flex-nowrap">
     <Skeleton class="aspect-square size-24 min-w-24 rounded-lg" />
-    <div className="flex flex-col gap-y-2">
+    <div class="flex flex-col gap-y-2">
       <Skeleton class="h-9 w-64" />
       <Skeleton class="h-9 w-32" />
     </div>
   </div>
-  <div v-if="!store.loading && store.profile" className="container mt-6 flex items-center gap-6">
-    <div className="w-24 h-24 rounded-lg bg-card border border-border/50 p-1 overflow-hidden">
+  <div v-if="!store.loading && store.profile" class="container mt-6 flex items-center gap-6">
+    <div class="bg-card border-border/50 h-24 w-24 overflow-hidden rounded-lg border p-1">
       <img
-        className="w-full h-full object-cover rounded-lg"
+        class="h-full w-full rounded-lg object-cover"
         :src="store.profile?.avatar_url"
         :alt="`${store.profile?.name}'s avatar`" />
     </div>
-    <div className="flex flex-col">
-      <h1 className="text-4xl font-black text-foreground uppercase leading-none mb-2">
+    <div class="flex flex-col">
+      <h1 class="text-foreground mb-2 text-3xl leading-none font-black uppercase">
         {{ store.profile?.name ?? "Trophy Hunter" }}
       </h1>
-      <div className="flex gap-4">
+      <div class="flex gap-4">
         <ProfileStatItem label="Level" :value="store.profile?.level" />
         <ProfileStatItem label="Tier" :value="store.profile?.tier" />
       </div>

@@ -13,7 +13,7 @@ defineProps<Props>();
 
 <template>
   <div class="flex flex-col">
-    <span :class="cn('text-muted-foreground text-xs font-bold uppercase', labelClass)">
+    <span :class="cn('text-muted-foreground text-xxs font-bold uppercase', labelClass)">
       {{ label }}
     </span>
     <span :class="cn('text-sm font-semibold', valueClass)">
