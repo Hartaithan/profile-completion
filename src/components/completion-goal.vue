@@ -2,13 +2,10 @@
 import { useCompletionStore } from "@/store/completion";
 import { useGoalStore } from "@/store/goal";
 import { Skeleton } from "@/ui/skeleton";
-import { TooltipProvider } from "@/ui/tooltip";
-import { TooltipAdaptive } from "@/ui/tooltip-adaptive";
 import { getCompletionGoal } from "@/utils/progress";
-import { CircleAlertIcon, CircleCheckIcon } from "lucide-vue-next";
+import { TargetIcon } from "lucide-vue-next";
 import { computed, ref } from "vue";
 import CompletionGoalForm from "./completion-goal-form.vue";
-import TrophyCounts from "./trophy-counts.vue";
 
 const store = useGoalStore();
 const completion = useCompletionStore();
@@ -24,24 +21,35 @@ const goal = computed(() =>
 </script>
 
 <template>
-  <div
-    v-if="completion.loading"
-    class="container flex h-auto flex-wrap items-center justify-center gap-x-5 gap-y-2 md:h-14">
-    <div class="flex w-32 flex-col items-center gap-y-2">
-      <Skeleton class="h-4 w-24 sm:h-5" />
-      <Skeleton class="h-4 w-26 sm:h-5" />
-    </div>
-    <Skeleton class="h-10 w-24 sm:h-12" />
-    <div class="flex flex-col flex-wrap items-center gap-y-2 sm:items-end">
-      <Skeleton class="h-4 w-44 sm:h-5 sm:w-52" />
-      <Skeleton class="h-4 w-48 sm:h-5 sm:w-56" />
-    </div>
-    <div class="flex flex-col flex-wrap items-center gap-y-2 sm:items-start">
-      <Skeleton class="h-4 w-28 sm:h-5 sm:w-32" />
-      <Skeleton class="h-4 w-32 sm:h-5 sm:w-44" />
-    </div>
+  <div v-if="completion.loading" class="container">
+    <Skeleton class="h-44 w-full rounded-lg" />
   </div>
   <div
+    v-else-if="completion.profile"
+    class="bg-card border-primary/40 relative container mb-12 flex w-full flex-col items-center justify-between gap-6 overflow-hidden rounded-lg border-2 p-7 md:flex-row md:items-center">
+    <TargetIcon
+      class="text-primary pointer-events-none absolute top-2 right-2 size-28 opacity-10" />
+    <div class="flex flex-col">
+      <span class="text-xxs text-primary font-bold tracking-widest uppercase">
+        Completion Goal
+      </span>
+      <p class="text-muted-foreground mt-2 text-sm font-bold tracking-tight uppercase">
+        Remaining games to achieve {{ store.percent }}% completion
+      </p>
+      <div class="mt-1 flex items-baseline gap-3">
+        <span class="text-foreground text-6xl leading-none font-black tracking-tighter">{{
+          goal
+        }}</span>
+        <span class="text-primary text-xl font-bold tracking-widest uppercase">games</span>
+      </div>
+      <p class="text-xxs text-muted-foreground mt-2 font-bold tracking-wide uppercase">
+        Each game must have {{ store.counts.platinum }} Platinum, {{ store.counts.gold }} Gold,
+        {{ store.counts.silver }} Silver, {{ store.counts.bronze }} Bronze trophies
+      </p>
+    </div>
+    <CompletionGoalForm ref="form" />
+  </div>
+  <!-- <div
     v-else-if="completion.profile"
     class="relative container flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm font-medium sm:gap-y-0 sm:text-xl">
     <CompletionGoalForm ref="form" />
@@ -101,5 +109,5 @@ const goal = computed(() =>
       <br />
       profile completion
     </p>
-  </div>
+  </div> -->
 </template>

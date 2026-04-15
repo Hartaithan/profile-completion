@@ -4,7 +4,6 @@ import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { Label } from "@/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/ui/popover";
-import { PencilIcon } from "lucide-vue-next";
 import { ref } from "vue";
 
 const open = ref(false);
@@ -35,10 +34,8 @@ defineExpose({
   <Popover>
     <PopoverTrigger as-child>
       <Button
-        class="absolute top-1/2 right-0 -translate-y-1/2 border-none p-0"
-        variant="outline"
-        size="icon">
-        <PencilIcon />
+        class="bg-primary text-primary-foreground hover:bg-foreground hover:text-background w-full rounded-lg px-8 py-3 text-xs font-black tracking-[0.2em] uppercase shadow-lg transition-all active:scale-95 md:w-auto">
+        Edit Target
       </Button>
     </PopoverTrigger>
     <PopoverContent
