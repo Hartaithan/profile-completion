@@ -22,9 +22,9 @@ const store = useCompletionStore();
             Total Completion: {{ formatProgress(store.calculated.progress.progress, "%") }}
           </h2>
         </div>
-        <span class="text-primary font-mono text-sm uppercase"
-          >{{ store.calculated.progress.points }} points</span
-        >
+        <span class="text-primary font-mono text-sm uppercase">
+          {{ store.calculated.progress.points }} points
+        </span>
       </div>
       <Progress class="mt-4" :model-value="getProgress(store.calculated.progress)" />
       <div class="mt-4 flex items-center gap-2">

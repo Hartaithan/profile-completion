@@ -30,16 +30,14 @@ const goal = computed(() =>
     <TargetIcon
       class="text-primary pointer-events-none absolute top-2 right-2 size-28 opacity-10" />
     <div class="flex flex-col">
-      <span class="text-xxs text-primary font-bold tracking-widest uppercase">
-        Completion Goal
-      </span>
+      <span class="text-xxs text-primary font-bold tracking-widest uppercase">Completion Goal</span>
       <p class="text-muted-foreground mt-2 text-sm font-bold tracking-tight uppercase">
         Remaining games to achieve {{ store.percent }}% completion
       </p>
       <div class="mt-1 flex items-baseline gap-3">
-        <span class="text-foreground text-6xl leading-none font-black tracking-tighter">{{
-          goal
-        }}</span>
+        <span class="text-foreground text-6xl leading-none font-black tracking-tighter">
+          {{ goal }}
+        </span>
         <span class="text-primary text-xl font-bold tracking-widest uppercase">games</span>
       </div>
       <p class="text-xxs text-muted-foreground mt-2 font-bold tracking-wide uppercase">

@@ -16,18 +16,18 @@ const attrs = useAttrs();
 <template>
   <div
     :class="[
-      'relative flex aspect-[20/11] h-14 w-auto flex-shrink-0 justify-center overflow-hidden rounded-md',
+      'relative flex aspect-20/11 h-14 w-auto shrink-0 justify-center overflow-hidden rounded-md',
       props.class,
     ]">
     <img
-      class="relative z-[3] h-full w-auto drop-shadow-md"
+      class="relative z-3 h-full w-auto drop-shadow-md"
       v-bind="attrs"
       :src="props.src"
       :alt="props.alt" />
-    <div class="absolute z-[2] size-full bg-black/30" />
+    <div class="absolute z-2 size-full bg-black/30" />
     <img
       v-if="platforms?.includes('PS5')"
-      class="absolute z-[1] w-full object-cover blur"
+      class="absolute z-1 w-full object-cover blur"
       v-bind="attrs"
       :src="props.src"
       :alt="`${props.alt} background`" />
