@@ -2,8 +2,10 @@
 import { useCompletionStore } from "@/store/completion";
 import { useGoalStore } from "@/store/goal";
 import { Skeleton } from "@/ui/skeleton";
+import { TooltipAdaptive } from "@/ui/tooltip-adaptive";
+import TooltipProvider from "@/ui/tooltip/TooltipProvider.vue";
 import { getCompletionGoal } from "@/utils/progress";
-import { TargetIcon } from "lucide-vue-next";
+import { CircleAlertIcon, CircleCheckIcon, TargetIcon } from "lucide-vue-next";
 import { computed, ref } from "vue";
 import CompletionGoalForm from "./completion-goal-form.vue";
 
@@ -34,11 +36,48 @@ const goal = computed(() =>
       <p class="text-muted-foreground mt-2 text-sm font-bold tracking-tight uppercase">
         Remaining games to achieve {{ store.percent }}% completion
       </p>
-      <div class="mt-1 flex items-baseline gap-3">
-        <span class="text-foreground text-6xl leading-none font-black tracking-tighter">
-          {{ goal }}
-        </span>
-        <span class="text-primary text-xl font-bold tracking-widest uppercase">games</span>
+      <div class="flex min-h-16 items-end gap-3">
+        <TooltipProvider>
+          <template v-if="typeof goal === 'number'">
+            <span class="text-foreground text-6xl leading-none font-black tracking-tighter">
+              {{ goal }}
+            </span>
+            <span class="text-primary text-xl font-bold tracking-widest uppercase">games</span>
+          </template>
+          <TooltipAdaptive
+            v-else-if="goal === 'already-reached'"
+            trigger-class="flex min-w-24 gap-2 items-end"
+            content-class="max-w-48">
+            <template #trigger>
+              <CircleCheckIcon class="size-14" />
+              <span class="text-primary text-xl font-bold tracking-widest uppercase">
+                already reached
+              </span>
+            </template>
+            <template #content>
+              <p class="text-center">
+                You’ve already achieved this completion goal with your current number of trophies
+              </p>
+            </template>
+          </TooltipAdaptive>
+          <TooltipAdaptive
+            v-else-if="goal === 'unreachable'"
+            trigger-class="flex min-w-24 gap-2 items-end"
+            content-class="max-w-48">
+            <template #trigger>
+              <CircleAlertIcon class="size-14" />
+              <span class="text-primary text-xl font-bold tracking-widest uppercase">
+                unreachable
+              </span>
+            </template>
+            <template #content>
+              <p class="text-center">
+                This completion goal isn't attainable with your current trophy count, you'll need to
+                earn more trophies to move forward
+              </p>
+            </template>
+          </TooltipAdaptive>
+        </TooltipProvider>
       </div>
       <p class="text-xxs text-muted-foreground mt-2 font-bold tracking-wide uppercase">
         Each game must have {{ store.counts.platinum }} Platinum, {{ store.counts.gold }} Gold,
