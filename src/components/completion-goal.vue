@@ -6,12 +6,11 @@ import { TooltipAdaptive } from "@/ui/tooltip-adaptive";
 import TooltipProvider from "@/ui/tooltip/TooltipProvider.vue";
 import { getCompletionGoal } from "@/utils/progress";
 import { CircleAlertIcon, CircleCheckIcon, TargetIcon } from "lucide-vue-next";
-import { computed, ref } from "vue";
-import CompletionGoalForm from "./completion-goal-form.vue";
+import { computed } from "vue";
+import CompletionGoalModal from "./completion-goal-modal.vue";
 
 const store = useGoalStore();
 const completion = useCompletionStore();
-const form = ref<InstanceType<typeof CompletionGoalForm> | null>(null);
 
 const goal = computed(() =>
   getCompletionGoal({
@@ -84,6 +83,6 @@ const goal = computed(() =>
         {{ store.counts.silver }} Silver, {{ store.counts.bronze }} Bronze trophies
       </p>
     </div>
-    <CompletionGoalForm ref="form" />
+    <CompletionGoalModal />
   </div>
 </template>
