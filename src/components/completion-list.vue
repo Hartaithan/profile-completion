@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { Skeleton } from "@/ui/skeleton";
 import { useWindowVirtualizer } from "@tanstack/vue-virtual";
 import { computed, onMounted, ref, type VNodeRef } from "vue";
 import { useCompletionStore } from "../store/completion";
 import CompletionItem from "./completion-item.vue";
-import CompletionSkeleton from "./completion-skeleton.vue";
 
 const sizes = {
   item: 56,
@@ -43,11 +43,11 @@ onMounted(() => {
 <template>
   <div class="container mt-6 w-full" ref="parent">
     <div v-if="store.loading" class="flex w-full flex-col gap-y-3">
-      <CompletionSkeleton />
-      <CompletionSkeleton />
-      <CompletionSkeleton />
-      <CompletionSkeleton />
-      <CompletionSkeleton />
+      <Skeleton class="h-20" />
+      <Skeleton class="h-20" />
+      <Skeleton class="h-20" />
+      <Skeleton class="h-20" />
+      <Skeleton class="h-20" />
     </div>
     <div v-else-if="!store.profile" class="text-center">
       <p>Enter your PSN ID to start tracking your profile completion!</p>
@@ -66,7 +66,6 @@ onMounted(() => {
         :index="row.index"
         :data-index="row.index"
         :ref="measureElement"
-        class="absolute top-0 left-0 w-full"
         :style="{
           transform: `translateY(${row.start - virtualizer.options.scrollMargin}px)`,
           'padding-bottom': `${sizes.spacing()}px`,

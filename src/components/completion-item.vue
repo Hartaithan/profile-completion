@@ -29,39 +29,41 @@ defineExpose({ el: root });
 </script>
 
 <template>
-  <div
-    ref="root"
-    class="flex w-full flex-wrap items-center"
-    :class="{ 'opacity-50 grayscale': trophies?.type === 'completed' }"
-    v-bind="attrs">
-    <GameImage
-      class="order-1"
-      :src="getImageURL(completion?.image_url, { h: 56 })"
-      :alt="completion?.title"
-      :platforms="completion?.platforms" />
+  <div ref="root" class="absolute top-0 left-0 w-full" v-bind="attrs">
     <div
-      class="order-3 mt-2 ml-0 flex w-full flex-col justify-center sm:order-2 sm:mt-0 sm:ml-3 sm:w-auto">
-      <p class="text-sm font-bold sm:text-base">
-        {{ completion?.title }}
-        <span class="ml-1 align-[0.0625rem] text-xs font-medium">
-          {{ completion?.platforms.join(", ") }}
-        </span>
-      </p>
-      <div class="mt-0.5 flex flex-wrap gap-x-3 text-sm font-semibold">
-        <span>{{ formatProgress(completion?.progress, "%") }}</span>
-        <div class="flex flex-wrap gap-x-3">
+      class="bg-card border-border/50 group flex cursor-pointer items-center gap-4 rounded-lg border p-3 transition-all"
+      :class="{ 'opacity-50 grayscale': trophies?.type === 'completed' }">
+      <GameImage
+        :src="getImageURL(completion?.image_url, { h: 56 })"
+        :alt="completion?.title"
+        :platforms="completion?.platforms" />
+      <div class="min-w-0 grow">
+        <div class="flex items-center gap-x-2">
+          <h4 class="text-foreground truncate text-sm font-black tracking-tight uppercase">
+            {{ completion?.title }}
+          </h4>
+          <span class="text-muted-foreground text-xxs font-bold">
+            {{ completion?.platforms.join(", ") }}
+          </span>
+        </div>
+        <div class="mt-1 flex flex-wrap gap-x-3">
           <TrophyCounts
-            class="text-xs sm:text-sm"
+            class="text-xs font-bold"
             :counts="completion?.counts"
             :earned="completion?.earned_counts" />
         </div>
       </div>
+      <div class="flex items-center gap-x-3">
+        <span class="text-primary font-mono text-base font-bold">
+          {{ formatProgress(completion?.progress, "%") }}
+        </span>
+        <CompletionMenu
+          :id="completion?.id"
+          :index="index"
+          :type="trophies?.type"
+          :has-platinum="completion?.counts.platinum === 1"
+          :has-d-l-c="completion?.counts.total !== completion?.base_counts?.total" />
+      </div>
     </div>
-    <CompletionMenu
-      :id="completion?.id"
-      :index="index"
-      :type="trophies?.type"
-      :has-platinum="completion?.counts.platinum === 1"
-      :has-d-l-c="completion?.counts.total !== completion?.base_counts?.total" />
   </div>
 </template>
