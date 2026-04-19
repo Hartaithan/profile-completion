@@ -79,7 +79,7 @@ store.$subscribe(() => store.persist());
               </div>
               <Input
                 type="number"
-                :model-value="store.counts[trophy.key]"
+                v-model.number="store.counts[trophy.key]"
                 class="text-foreground h-auto w-full border-none bg-transparent p-0 text-2xl font-black focus-visible:ring-0 focus-visible:ring-offset-0" />
             </div>
           </div>
