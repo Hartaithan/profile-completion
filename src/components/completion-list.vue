@@ -3,6 +3,7 @@ import { Skeleton } from "@/ui/skeleton";
 import { useWindowVirtualizer } from "@tanstack/vue-virtual";
 import { computed, onMounted, ref, type VNodeRef } from "vue";
 import { useCompletionStore } from "../store/completion";
+import CompletionEmptyState from "./completion-empty-state.vue";
 import CompletionItem from "./completion-item.vue";
 
 const sizes = {
@@ -49,12 +50,7 @@ onMounted(() => {
       <Skeleton class="h-20" />
       <Skeleton class="h-20" />
     </div>
-    <div v-if="!store.loading && !store.profile" class="text-center">
-      <p>Enter your PSN ID to start tracking your profile completion!</p>
-      <p class="font-bold">
-        Just make sure your PSN profile is set to public so your trophy data can be accessed!
-      </p>
-    </div>
+    <CompletionEmptyState v-if="!store.loading && !store.profile" />
     <div
       v-if="!store.loading && store.calculated.completion.length > 0"
       class="relative w-full"
