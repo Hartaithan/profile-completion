@@ -26,7 +26,7 @@ const goal = computed(() =>
     <Skeleton class="h-44 w-full rounded-lg" />
   </div>
   <div
-    v-else-if="completion.profile"
+    v-if="!completion.loading && completion.profile"
     class="bg-card border-primary/40 relative container mb-12 flex w-full flex-col items-center justify-between gap-6 overflow-hidden rounded-lg border-2 p-7 md:flex-row md:items-center">
     <TargetIcon
       class="text-primary pointer-events-none absolute top-2 right-2 size-28 opacity-10" />

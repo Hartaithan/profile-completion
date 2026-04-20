@@ -16,7 +16,7 @@ import { toRaw } from "vue";
 
 const keys = completionKeys;
 
-type Status = "idle" | "profile-loading" | "completion-loading" | "completed";
+type Status = "idle" | "profile-loading" | "completion-loading";
 
 export interface CompletionStore {
   status: Status;
@@ -54,7 +54,7 @@ export const useCompletionStore = defineStore("completion", {
   },
   actions: {
     async init() {
-      this.status = "profile-loading";
+      this.status = "completion-loading";
       try {
         const [initial, completion] = await Promise.all([
           readForage<Store["initial"]>(keys.initial, []),
@@ -62,9 +62,9 @@ export const useCompletionStore = defineStore("completion", {
         ]);
         this.initial = initial;
         this.completion = completion;
-        this.status = "completed";
       } catch (error) {
         console.error("unable to initialize completion store", error);
+      } finally {
         this.status = "idle";
       }
     },

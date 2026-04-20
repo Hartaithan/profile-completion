@@ -8,7 +8,7 @@ const store = useCompletionStore();
 
 <template>
   <div
-    v-if="store.loading"
+    v-if="store.status === 'profile-loading'"
     class="container mt-6 flex w-full flex-wrap items-center gap-4 md:flex-nowrap">
     <Skeleton class="aspect-square size-24 min-w-24 rounded-lg" />
     <div class="flex flex-col gap-y-2">
@@ -16,7 +16,9 @@ const store = useCompletionStore();
       <Skeleton class="h-9 w-32" />
     </div>
   </div>
-  <div v-if="!store.loading && store.profile" class="container mt-6 flex items-center gap-6">
+  <div
+    v-if="store.status !== 'profile-loading' && store.profile"
+    class="container mt-6 flex items-center gap-6">
     <div class="bg-card border-border/50 h-24 w-24 overflow-hidden rounded-lg border p-1">
       <img
         class="h-full w-full rounded-lg object-cover"

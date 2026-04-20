@@ -8,14 +8,16 @@ const store = useCompletionStore();
 </script>
 
 <template>
-  <div v-if="store.loading" class="container mt-6 grid grid-cols-5 gap-2">
+  <div v-if="store.status === 'profile-loading'" class="container mt-6 grid grid-cols-5 gap-2">
     <Skeleton class="h-24" />
     <Skeleton class="h-24" />
     <Skeleton class="h-24" />
     <Skeleton class="h-24" />
     <Skeleton class="h-24" />
   </div>
-  <div v-if="!store.loading && store.profile" class="container mt-6 grid grid-cols-5 gap-2">
+  <div
+    v-if="store.status !== 'profile-loading' && store.profile"
+    class="container mt-6 grid grid-cols-5 gap-2">
     <ProfileTrophyStatItem
       label="Platinum"
       valueClass="text-trophy-platinum"

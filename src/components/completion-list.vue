@@ -49,14 +49,14 @@ onMounted(() => {
       <Skeleton class="h-20" />
       <Skeleton class="h-20" />
     </div>
-    <div v-else-if="!store.profile" class="text-center">
+    <div v-if="!store.loading && !store.profile" class="text-center">
       <p>Enter your PSN ID to start tracking your profile completion!</p>
       <p class="font-bold">
         Just make sure your PSN profile is set to public so your trophy data can be accessed!
       </p>
     </div>
     <div
-      v-else-if="store.calculated.completion.length > 0"
+      v-if="!store.loading && store.calculated.completion.length > 0"
       class="relative w-full"
       :style="{ height: `${total}px` }">
       <CompletionItem
@@ -71,6 +71,10 @@ onMounted(() => {
           'padding-bottom': `${sizes.spacing()}px`,
         }" />
     </div>
-    <p v-else class="text-center">nothing found :(</p>
+    <p
+      v-if="!store.loading && store.profile && store.calculated.completion.length === 0"
+      class="text-center">
+      nothing found :(
+    </p>
   </div>
 </template>

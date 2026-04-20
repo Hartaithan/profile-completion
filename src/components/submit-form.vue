@@ -53,11 +53,9 @@ const handleSubmit: (event: SubmitEvent) => void = async (event) => {
     if (!profile) throw new Error(errors.fetch);
     store.setProfile(profile);
 
-    const { list } = await API.getCompletion({
-      id,
-      onProgress,
-    });
-    store.setCompletion(list || [], "completed");
+    store.setStatus("completion-loading");
+    const { list } = await API.getCompletion({ id, onProgress });
+    store.setCompletion(list || [], "idle");
   } catch (error) {
     console.error("submit error", error);
     store.setStatus("idle");
