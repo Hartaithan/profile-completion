@@ -1,6 +1,6 @@
 import { completionKeys } from "@/constants/storage";
 import type { NullableCompletion } from "@/models/completion";
-import type { Sorter } from "@/models/filters";
+import type { Filters, Sorter } from "@/models/filters";
 import type { Profile } from "@/models/profile";
 import {
   readForage,
@@ -21,6 +21,7 @@ type Status = "idle" | "profile-loading" | "completion-loading";
 export interface CompletionStore {
   status: Status;
   sorter: Sorter | null;
+  filters: Filters;
   profile: Profile | null;
   initial: NullableCompletion[];
   completion: NullableCompletion[];
@@ -31,6 +32,7 @@ type Store = CompletionStore;
 const defaultState: Store = {
   status: "idle",
   sorter: null,
+  filters: {},
   profile: null,
   initial: [],
   completion: [],
@@ -74,6 +76,9 @@ export const useCompletionStore = defineStore("completion", {
     setSorter(value: Sorter | null) {
       this.sorter = value;
     },
+    setFilters(value: Filters) {
+      this.filters = value;
+    },
     setProfile(value: Store["profile"]) {
       this.profile = value;
       setStorage(keys.profile, value);
@@ -110,6 +115,7 @@ export const useCompletionStore = defineStore("completion", {
     reset() {
       this.status = defaultState.status;
       this.sorter = defaultState.sorter;
+      this.filters = defaultState.filters;
       this.profile = defaultState.profile;
       removeStorage(keys.profile);
       this.initial = defaultState.initial;
