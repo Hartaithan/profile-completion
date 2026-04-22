@@ -76,6 +76,10 @@ export const useCompletionStore = defineStore("completion", {
     setSorter(value: Sorter | null) {
       this.sorter = value;
     },
+    setFilter<K extends keyof Filters>(key: K, value: Filters[K] | null) {
+      if (value === null) delete this.filters[key];
+      else this.filters[key] = value;
+    },
     setFilters(value: Filters) {
       this.filters = value;
     },

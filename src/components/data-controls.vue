@@ -1,26 +1,19 @@
 <script setup lang="ts">
-import type { Completion } from "@/models/completion";
-import type { PlatformFilter, SortDirection, Sorter } from "@/models/filters";
+import type { PlatformFilter } from "@/models/filters";
 import { useCompletionStore } from "@/store/completion";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/select";
 import Skeleton from "@/ui/skeleton/Skeleton.vue";
+import { getSorter } from "@/utils/sorter";
 import type { AcceptableValue } from "reka-ui";
 
 const completion = useCompletionStore();
 
 const handleSorter = (value: AcceptableValue) => {
-  if (typeof value !== "string") return;
-  const [field, direction] = value.split(":") as [keyof Completion, SortDirection];
-  let next: Sorter | null = { field, direction };
-  if (value === "null") next = null;
-  completion.setSorter(next);
+  completion.setSorter(getSorter(value));
 };
 
 const handlePlatforms = (value: AcceptableValue) => {
-  if (typeof value !== "string") return;
-  let next: PlatformFilter[] = [value as PlatformFilter];
-  if (value === "null") next = [];
-  completion.setFilters({ ...completion.filters, platforms: next });
+  completion.setFilter("platforms", value ? [value as PlatformFilter] : null);
 };
 </script>
 
@@ -36,7 +29,7 @@ const handlePlatforms = (value: AcceptableValue) => {
         <SelectValue placeholder="Default sorting" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="null">Default sorting</SelectItem>
+        <SelectItem :value="null">Default sorting</SelectItem>
         <SelectItem value="progress:asc">Progress: Low → High</SelectItem>
         <SelectItem value="progress:desc">Progress: High → Low</SelectItem>
         <SelectItem value="title:asc">Name: A → Z</SelectItem>
@@ -48,7 +41,7 @@ const handlePlatforms = (value: AcceptableValue) => {
         <SelectValue placeholder="All statuses" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="null">All</SelectItem>
+        <SelectItem :value="null">All statuses</SelectItem>
         <SelectItem value="100">100%</SelectItem>
         <SelectItem value="not-100">Not 100%</SelectItem>
         <SelectItem value="not-100-or-platinum">Not 100% or Platinum</SelectItem>
@@ -61,7 +54,7 @@ const handlePlatforms = (value: AcceptableValue) => {
         <SelectValue placeholder="All platforms" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="null">All</SelectItem>
+        <SelectItem :value="null">All platforms</SelectItem>
         <SelectItem value="PS5">PS5</SelectItem>
         <SelectItem value="PS4">PS4</SelectItem>
         <SelectItem value="PS3">PS3</SelectItem>
