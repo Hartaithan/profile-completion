@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { PlatformFilter } from "@/models/filters";
+import { platformOptions } from "@/constants/options";
 import { useCompletionStore } from "@/store/completion";
+import MultiSelect from "@/ui/multi-select/MultiSelect.vue";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/select";
 import Skeleton from "@/ui/skeleton/Skeleton.vue";
 import { getSorter } from "@/utils/sorter";
@@ -10,10 +11,6 @@ const completion = useCompletionStore();
 
 const handleSorter = (value: AcceptableValue) => {
   completion.setSorter(getSorter(value));
-};
-
-const handlePlatforms = (value: AcceptableValue) => {
-  completion.setFilter("platforms", value ? [value as PlatformFilter] : null);
 };
 </script>
 
@@ -49,18 +46,9 @@ const handlePlatforms = (value: AcceptableValue) => {
         <SelectItem value="platinum-not-100">Platinum but not 100%</SelectItem>
       </SelectContent>
     </Select>
-    <Select v-on:update:model-value="handlePlatforms">
-      <SelectTrigger class="w-full">
-        <SelectValue placeholder="All platforms" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem :value="null">All platforms</SelectItem>
-        <SelectItem value="PS5">PS5</SelectItem>
-        <SelectItem value="PS4">PS4</SelectItem>
-        <SelectItem value="PS3">PS3</SelectItem>
-        <SelectItem value="PSVITA">PS Vita</SelectItem>
-        <SelectItem value="PSPC">PC</SelectItem>
-      </SelectContent>
-    </Select>
+    <MultiSelect
+      v-model="completion.filters.platforms"
+      :options="platformOptions"
+      placeholder="Select platforms..." />
   </div>
 </template>
