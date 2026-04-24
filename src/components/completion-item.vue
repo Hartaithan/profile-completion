@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { platformShortLabels } from "@/constants/platform";
 import type { Completion } from "@/models/completion";
 import { getImageURL } from "@/utils/image";
 import { formatProgress } from "@/utils/progress";
@@ -42,8 +43,10 @@ defineExpose({ el: root });
           <h4 class="text-foreground truncate text-sm font-black tracking-tight uppercase">
             {{ completion?.title }}
           </h4>
-          <span class="text-muted-foreground text-xxs font-bold">
-            {{ completion?.platforms.join(", ") }}
+          <span
+            v-if="completion?.platforms?.length"
+            class="text-muted-foreground text-xs font-bold uppercase">
+            {{ completion.platforms.map((p) => platformShortLabels[p]).join(", ") }}
           </span>
         </div>
         <div class="mt-1 flex flex-wrap gap-x-3">

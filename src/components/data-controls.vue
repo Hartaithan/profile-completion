@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { platformOptions } from "@/constants/options";
+import { platformOptions } from "@/constants/platform";
 import { useCompletionStore } from "@/store/completion";
 import MultiSelect from "@/ui/multi-select/MultiSelect.vue";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/select";
