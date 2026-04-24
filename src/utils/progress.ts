@@ -74,7 +74,7 @@ export const filterCompletion = (items: Completion[], filters: Filters | undefin
           if (is100) return false;
           break;
         case "not-100-or-platinum":
-          if (is100 && !hasPlatinum) return false;
+          if (is100 || hasPlatinum) return false;
           break;
         case "platinum":
           if (!hasPlatinum) return false;
