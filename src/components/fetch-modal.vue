@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { FetchStatus } from "@/models/app";
 import { useCompletionStore } from "@/store/completion";
 import { Button } from "@/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogOverlay, DialogTitle } from "@/ui/dialog";
@@ -9,8 +10,9 @@ import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import FetchStep from "./fetch-step.vue";
 
-const orders: Record<string, number> = {
+const orders: Record<FetchStatus, number> = {
   idle: 0,
+  initializing: 0,
   "profile-loading": 1,
   "completion-loading": 2,
   completed: 3,
@@ -26,7 +28,7 @@ const handleContinue = () => setStatus("idle");
 </script>
 
 <template>
-  <Dialog :open="status !== 'idle'">
+  <Dialog :open="status !== 'idle' && status !== 'initializing'">
     <DialogOverlay class="bg-popover/80 fixed inset-0 backdrop-blur" />
     <DialogContent class="bg-popover/50 gap-0 rounded p-4 sm:max-w-xl" :show-close-button="false">
       <DialogTitle class="sr-only">Sync Modal</DialogTitle>

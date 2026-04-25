@@ -1,4 +1,5 @@
 import { completionKeys } from "@/constants/storage";
+import type { FetchStatus } from "@/models/app";
 import type { NullableCompletion } from "@/models/completion";
 import type { Filters, Sorter } from "@/models/filters";
 import type { Profile } from "@/models/profile";
@@ -16,15 +17,13 @@ import { toRaw } from "vue";
 
 const keys = completionKeys;
 
-type Status = "idle" | "profile-loading" | "completion-loading" | "completed";
-
 interface Progress {
   current: number;
   total: number;
 }
 
 export interface CompletionStore {
-  status: Status;
+  status: FetchStatus;
   progress: Progress;
   sorter: Sorter | null;
   filters: Filters;
@@ -36,7 +35,7 @@ export interface CompletionStore {
 type Store = CompletionStore;
 
 const defaultState: Store = {
-  status: "idle",
+  status: "initializing",
   progress: { current: 0, total: 0 },
   sorter: null,
   filters: {},
@@ -50,7 +49,8 @@ const getDefaultState = (): Store => ({
   profile: readStorage<Store["profile"]>(keys.profile, null),
 });
 
-const isLoading: Partial<Record<Status, boolean>> = {
+const isLoading: Partial<Record<FetchStatus, boolean>> = {
+  initializing: true,
   "profile-loading": true,
   "completion-loading": true,
 };
@@ -63,7 +63,7 @@ export const useCompletionStore = defineStore("completion", {
   },
   actions: {
     async init() {
-      this.status = "completion-loading";
+      this.status = "initializing";
       try {
         const [initial, completion] = await Promise.all([
           readForage<Store["initial"]>(keys.initial, []),
