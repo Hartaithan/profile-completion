@@ -16,10 +16,16 @@ import { toRaw } from "vue";
 
 const keys = completionKeys;
 
-type Status = "idle" | "profile-loading" | "completion-loading";
+type Status = "idle" | "profile-loading" | "completion-loading" | "completed";
+
+interface Progress {
+  current: number;
+  total: number;
+}
 
 export interface CompletionStore {
   status: Status;
+  progress: Progress;
   sorter: Sorter | null;
   filters: Filters;
   profile: Profile | null;
@@ -31,6 +37,7 @@ type Store = CompletionStore;
 
 const defaultState: Store = {
   status: "idle",
+  progress: { current: 0, total: 0 },
   sorter: null,
   filters: {},
   profile: null,
@@ -72,6 +79,9 @@ export const useCompletionStore = defineStore("completion", {
     },
     setStatus(value: Store["status"]) {
       this.status = value;
+    },
+    setProgress(value: Progress) {
+      this.progress = value;
     },
     setSorter(value: Sorter | null) {
       this.sorter = value;

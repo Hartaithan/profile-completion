@@ -38,7 +38,7 @@ const clear = () => {
 const onProgress = (data: CompletionProgressData) => {
   const current = data?.current || 0;
   const total = data?.total || 0;
-  console.info("progress", current, total);
+  store.setProgress({ current, total });
 };
 
 const handleSubmit: (event: SubmitEvent) => void = async (event) => {
@@ -55,7 +55,7 @@ const handleSubmit: (event: SubmitEvent) => void = async (event) => {
 
     store.setStatus("completion-loading");
     const { list } = await API.getCompletion({ id, onProgress });
-    store.setCompletion(list || [], "idle");
+    store.setCompletion(list || [], "completed");
   } catch (error) {
     console.error("submit error", error);
     store.setStatus("idle");
