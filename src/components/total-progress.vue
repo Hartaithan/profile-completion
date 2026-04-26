@@ -8,12 +8,12 @@ const store = useCompletionStore();
 </script>
 
 <template>
-  <div v-if="store.loading" class="container py-6">
+  <div v-if="store.loading" class="container mt-6">
     <Skeleton class="h-40 w-full" />
   </div>
   <div
     v-if="!store.loading && store.calculated.completion.length > 0"
-    class="sticky top-0 z-50 container py-6">
+    class="sticky top-6 z-50 container mt-6">
     <div class="bg-card border-border/50 flex h-40 flex-col justify-center rounded-lg border p-6">
       <div class="flex items-end justify-between">
         <div class="flex flex-col">
