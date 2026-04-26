@@ -29,14 +29,14 @@ const handleContinue = () => setStatus("idle");
 
 <template>
   <Dialog :open="status !== 'idle' && status !== 'initializing'">
-    <DialogOverlay class="bg-popover/80 fixed inset-0 backdrop-blur" />
-    <DialogContent class="bg-popover/50 gap-0 rounded p-4 sm:max-w-xl" :show-close-button="false">
+    <DialogOverlay class="bg-popover/5 fixed inset-0 backdrop-blur" />
+    <DialogContent class="bg-popover/80 gap-0 rounded p-4 sm:max-w-xl" :show-close-button="false">
       <DialogTitle class="sr-only">Sync Modal</DialogTitle>
       <DialogDescription class="sr-only">Sync Modal Description</DialogDescription>
       <div class="flex items-center justify-between">
         <div class="flex flex-col uppercase">
-          <h2 class="text-primary text-xl font-black tracking-tighter">Loading Your Data</h2>
-          <p class="text-muted-foreground font-mono">Preparing profile and game library</p>
+          <h2 class="text-primary text-2xl font-black tracking-tighter">Loading Your Data...</h2>
+          <p class="text-muted-foreground text-xxs font-mono">Preparing profile and game library</p>
         </div>
         <div
           class="border-primary/80 bg-primary/10 flex size-12 items-center justify-center rounded border">
@@ -88,8 +88,8 @@ const handleContinue = () => setStatus("idle");
         </div>
         <Button
           :class="[
-            'absolute top-1/2 right-1/2 w-32 translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity duration-300',
-            status === 'completed' ? 'opacity-100' : 'opacity-0',
+            'absolute top-1/2 right-1/2 w-32 translate-x-1/2 -translate-y-1/2 rounded text-xs font-bold uppercase opacity-0 transition-opacity duration-300',
+            status === 'completed' ? 'opacity-100' : 'opacity-100',
           ]"
           size="sm"
           @click="handleContinue">
