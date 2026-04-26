@@ -1,10 +1,10 @@
-import "./main.css";
+import "@/main.css";
 
+import App from "@/App.vue";
+import { useCompletionStore } from "@/store/completion";
+import { initDeviceDetection } from "@/utils/device";
 import { createPinia } from "pinia";
 import { createApp } from "vue";
-import App from "./App.vue";
-import { useCompletionStore } from "./store/completion";
-import { initDeviceDetection } from "./utils/device";
 
 initDeviceDetection();
 

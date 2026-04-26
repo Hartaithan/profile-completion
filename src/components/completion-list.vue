@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import CompletionEmptyState from "@/components/completion-empty-state.vue";
+import CompletionItem from "@/components/completion-item.vue";
+import { useCompletionStore } from "@/store/completion";
 import { Skeleton } from "@/ui/skeleton";
 import { useWindowVirtualizer } from "@tanstack/vue-virtual";
 import { computed, onMounted, ref, type VNodeRef } from "vue";
-import { useCompletionStore } from "../store/completion";
-import CompletionEmptyState from "./completion-empty-state.vue";
-import CompletionItem from "./completion-item.vue";
 
 const sizes = {
   item: 56,

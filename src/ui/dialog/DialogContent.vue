@@ -2,12 +2,12 @@
 import type { DialogContentEmits, DialogContentProps } from "reka-ui";
 
 import { Button } from "@/ui/button";
+import DialogOverlay from "@/ui/dialog/DialogOverlay.vue";
 import { cn } from "@/utils/styles";
 import { reactiveOmit } from "@vueuse/core";
 import { XIcon } from "lucide-vue-next";
 import { DialogClose, DialogContent, DialogPortal, useForwardPropsEmits } from "reka-ui";
 import type { HTMLAttributes } from "vue";
-import DialogOverlay from "./DialogOverlay.vue";
 
 defineOptions({
   inheritAttrs: false,

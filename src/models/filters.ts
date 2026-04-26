@@ -1,4 +1,4 @@
-import type { Completion, Platform } from "./completion";
+import type { Completion, Platform } from "@/models/completion";
 
 export type SortDirection = "asc" | "desc";
 

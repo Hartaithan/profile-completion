@@ -1,5 +1,5 @@
-import type { CachedResponse } from "./app";
-import type { TrophyCounts } from "./trophy";
+import type { CachedResponse } from "@/models/app";
+import type { TrophyCounts } from "@/models/trophy";
 
 export type Platform = "PS5" | "PS4" | "PS3" | "PSVITA" | "PSPC";
 

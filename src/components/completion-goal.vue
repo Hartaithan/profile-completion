@@ -1,13 +1,12 @@
 <script setup lang="ts">
+import CompletionGoalModal from "@/components/completion-goal-modal.vue";
 import { useCompletionStore } from "@/store/completion";
 import { useGoalStore } from "@/store/goal";
 import { Skeleton } from "@/ui/skeleton";
-import { TooltipAdaptive } from "@/ui/tooltip-adaptive";
-import TooltipProvider from "@/ui/tooltip/TooltipProvider.vue";
+import { TooltipAdaptive, TooltipProvider } from "@/ui/tooltip";
 import { getCompletionGoal } from "@/utils/progress";
 import { CircleAlertIcon, CircleCheckIcon, TargetIcon } from "lucide-vue-next";
 import { computed } from "vue";
-import CompletionGoalModal from "./completion-goal-modal.vue";
 
 const store = useGoalStore();
 const completion = useCompletionStore();

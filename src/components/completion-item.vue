@@ -1,13 +1,13 @@
 <script setup lang="ts">
+import CompletionMenu from "@/components/completion-menu.vue";
+import GameImage from "@/components/game-image.vue";
+import TrophyCounts from "@/components/trophy-counts.vue";
 import { platformShortLabels } from "@/constants/platform";
 import type { Completion } from "@/models/completion";
 import { getImageURL } from "@/utils/image";
 import { formatProgress } from "@/utils/progress";
 import { getTrophiesProgress } from "@/utils/trophies";
 import { computed, ref, useAttrs } from "vue";
-import CompletionMenu from "./completion-menu.vue";
-import GameImage from "./game-image.vue";
-import TrophyCounts from "./trophy-counts.vue";
 
 interface Props {
   completion: Completion | null;

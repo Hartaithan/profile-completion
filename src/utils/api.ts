@@ -6,9 +6,9 @@ import type {
   NullableCompletion,
 } from "@/models/completion";
 import type { FetchProfileParams, ProfileResponse } from "@/models/profile";
+import { readError } from "@/utils/error";
 import { getInit } from "@/utils/signature";
 import { EventSource } from "eventsource";
-import { readError } from "./error";
 
 const statuses: Record<number, string> = {
   401: "Unauthorized",

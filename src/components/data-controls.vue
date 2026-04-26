@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { platformOptions } from "@/constants/platform";
 import { useCompletionStore } from "@/store/completion";
-import MultiSelect from "@/ui/multi-select/MultiSelect.vue";
+import { MultiSelect } from "@/ui/multi-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/select";
-import Skeleton from "@/ui/skeleton/Skeleton.vue";
+import { Skeleton } from "@/ui/skeleton";
 import { getSorter } from "@/utils/sorter";
 import type { AcceptableValue } from "reka-ui";
 

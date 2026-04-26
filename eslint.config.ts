@@ -32,6 +32,14 @@ export default defineConfigWithVueTs(
           caughtErrorsIgnorePattern: "^_",
         },
       ],
+      "no-restricted-imports": [
+        "error",
+        { patterns: [{ regex: "^\\.", message: "Use @ alias instead of relative import" }] },
+      ],
     },
+  },
+  {
+    files: ["src/ui/**"],
+    rules: { "no-restricted-imports": "off" },
   },
 );

@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useCompletionStore } from "@/store/completion";
 import { Progress } from "@/ui/progress";
 import { Skeleton } from "@/ui/skeleton";
 import { formatProgress, getProgress } from "@/utils/progress";
-import { useCompletionStore } from "../store/completion";
 
 const store = useCompletionStore();
 </script>

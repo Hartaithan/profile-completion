@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import FetchStep from "@/components/fetch-step.vue";
 import type { FetchStatus } from "@/models/app";
 import { useCompletionStore } from "@/store/completion";
 import { Button } from "@/ui/button";
@@ -8,7 +9,6 @@ import { getProgressResult } from "@/utils/fetch-progress";
 import { Check, Gamepad2, RefreshCw, User } from "lucide-vue-next";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
-import FetchStep from "./fetch-step.vue";
 
 const orders: Record<FetchStatus, number> = {
   idle: 0,

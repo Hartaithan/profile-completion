@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import ProfileStatItem from "@/components/profile-stat-item.vue";
 import { useCompletionStore } from "@/store/completion";
 import { Skeleton } from "@/ui/skeleton";
-import ProfileStatItem from "./profile-stat-item.vue";
 
 const store = useCompletionStore();
 </script>

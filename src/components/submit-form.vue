@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { CompletionProgressData } from "@/models/completion";
+import { useCompletionStore } from "@/store/completion";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/ui/input-group";
 import { API } from "@/utils/api";
 import { SendHorizontal, XIcon } from "lucide-vue-next";
 import { ref } from "vue";
-import { useCompletionStore } from "../store/completion";
 
 interface Elements extends HTMLFormControlsCollection {
   id: { value: string };

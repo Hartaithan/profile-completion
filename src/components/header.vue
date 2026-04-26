@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import HeaderMenu from "./header-menu.vue";
-import SubmitForm from "./submit-form.vue";
+import HeaderMenu from "@/components/header-menu.vue";
+import SubmitForm from "@/components/submit-form.vue";
 </script>
 
 <template>

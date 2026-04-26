@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import ProfileTrophyStatItem from "@/components/profile-trophy-stat-item.vue";
 import { useCompletionStore } from "@/store/completion";
 import { Skeleton } from "@/ui/skeleton";
 import { AwardIcon, BarChart3Icon, TrophyIcon } from "lucide-vue-next";
-import ProfileTrophyStatItem from "./profile-trophy-stat-item.vue";
 
 const store = useCompletionStore();
 </script>

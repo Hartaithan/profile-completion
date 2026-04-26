@@ -1,4 +1,4 @@
-import type { Completion } from "./completion";
+import type { Completion } from "@/models/completion";
 
 export interface Progress {
   points: number;
