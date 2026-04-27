@@ -56,7 +56,7 @@ defineExpose({ el: root });
             :earned="completion?.earned_counts" />
         </div>
       </div>
-      <div class="flex items-center gap-x-3">
+      <div class="flex items-center gap-x-4">
         <span class="text-primary font-mono text-base font-bold">
           {{ formatProgress(completion?.progress, "%") }}
         </span>
