@@ -6,6 +6,7 @@ import FetchModal from "@/components/fetch-modal.vue";
 import Header from "@/components/header.vue";
 import ProfileTrophyCounts from "@/components/profile-trophy-counts.vue";
 import Profile from "@/components/profile.vue";
+import ScrollToTop from "@/components/scroll-to-top.vue";
 import TotalProgress from "@/components/total-progress.vue";
 </script>
 
@@ -18,6 +19,7 @@ import TotalProgress from "@/components/total-progress.vue";
   <DataControls />
   <CompletionList />
   <FetchModal />
+  <ScrollToTop />
 </template>
 
 <style scoped></style>
