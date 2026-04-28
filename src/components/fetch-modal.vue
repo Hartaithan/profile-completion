@@ -6,7 +6,7 @@ import { Button } from "@/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogOverlay, DialogTitle } from "@/ui/dialog";
 import { Progress } from "@/ui/progress";
 import { getProgressResult } from "@/utils/fetch-progress";
-import { Check, Gamepad2, RefreshCw, User } from "lucide-vue-next";
+import { Check, CheckCheck, Gamepad2, RefreshCw, User } from "lucide-vue-next";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 
@@ -35,12 +35,21 @@ const handleContinue = () => setStatus("idle");
       <DialogDescription class="sr-only">Sync Modal Description</DialogDescription>
       <div class="flex items-center justify-between">
         <div class="flex flex-col uppercase">
-          <h2 class="text-primary text-2xl font-black tracking-tighter">Loading Your Data...</h2>
-          <p class="text-muted-foreground text-xxs font-mono">Preparing profile and game library</p>
+          <h2 class="text-primary text-2xl font-black tracking-tighter">
+            {{ status === "completed" ? "Your Data is Ready" : "Loading Your Data..." }}
+          </h2>
+          <p class="text-muted-foreground text-xxs font-mono">
+            {{
+              status === "completed"
+                ? "Profile and game library successfully loaded"
+                : "Preparing profile and game library"
+            }}
+          </p>
         </div>
         <div
           class="border-primary/80 bg-primary/10 flex size-12 items-center justify-center rounded border">
-          <RefreshCw class="text-primary animate-spin-slow size-5" />
+          <CheckCheck v-if="status === 'completed'" class="text-primary size-6" />
+          <RefreshCw v-else class="text-primary animate-spin-slow size-5" />
         </div>
       </div>
       <div class="bg-border my-5 h-px w-full" />
@@ -89,7 +98,7 @@ const handleContinue = () => setStatus("idle");
         <Button
           :class="[
             'absolute top-1/2 right-1/2 w-32 translate-x-1/2 -translate-y-1/2 rounded text-xs font-bold uppercase opacity-0 transition-opacity duration-300',
-            status === 'completed' ? 'opacity-100' : 'opacity-100',
+            status === 'completed' ? 'opacity-100' : 'opacity-0',
           ]"
           size="sm"
           @click="handleContinue">
