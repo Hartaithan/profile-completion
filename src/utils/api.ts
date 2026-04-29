@@ -40,66 +40,74 @@ const getCompletion = async (params: FetchCompletionParams): Promise<CompletionR
   url.pathname += "/completion";
 
   const init = await getInit({ method: "GET", url });
+
+  if (signal?.aborted) return Promise.reject(signal.reason);
+
   const source = new EventSource(url, {
-    fetch: (input, ini) => fetch(input, { ...ini, ...init }),
+    fetch: (input, ini) => fetch(input, { ...ini, ...init, signal }),
   });
 
   return new Promise((resolve, reject) => {
     let list: NullableCompletion[] = [];
+
+    const cleanup = () => {
+      source.close();
+      signal?.removeEventListener("abort", abortHandler);
+    };
+
+    const abortHandler = (event: Event) => {
+      cleanup();
+      const reason = (event.target as AbortSignal)?.reason || "Aborted";
+      reject(reason);
+    };
+
+    if (signal) {
+      signal.addEventListener("abort", abortHandler);
+    }
+
     source.onmessage = (event) => {
       try {
         const data: CompletionEventData = JSON.parse(event.data);
         switch (data?.type) {
-          case "progress":
-            const completion = data?.completion || [];
+          case "progress": {
+            const completion = data?.completion ?? [];
             list = list.concat(completion);
             onProgress(data);
             break;
+          }
           case "complete": {
-            const expires = data?.expires;
-            resolve({ list, expires });
-            source.close();
+            cleanup();
+            resolve({ list, expires: data?.expires });
             break;
           }
           default:
             console.info("unable to recognize event type", data);
-            source.close();
+            cleanup();
             break;
         }
       } catch (error) {
         console.error("error parsing SSE data", error);
-        source.close();
-        const message = readError(error);
-        reject(message);
+        cleanup();
+        reject(readError(error));
       }
     };
 
     source.onerror = (e) => {
+      if (signal?.aborted) return;
       try {
         const event = e as MessageEvent;
         const data: CompletionErrorData = JSON.parse(event?.data);
         const message = data?.message ?? "Unknown SSE error";
         console.error("known SSE error", message, event);
-        source.close();
+        cleanup();
         reject(message);
       } catch (error) {
         console.error("unknown SSE error", e, error);
-        source.close();
+        cleanup();
         const message = readError(error);
         reject(message);
       }
     };
-
-    if (signal) {
-      const abortHandler = (event: Event) => {
-        source.close();
-        let message = "Unknown abort signal error";
-        if (event.target instanceof AbortSignal) message = event.target.reason;
-        signal.removeEventListener("abort", abortHandler);
-        reject(message);
-      };
-      signal.addEventListener("abort", abortHandler);
-    }
   });
 };
 
