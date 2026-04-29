@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import FetchStep from "@/components/fetch-step.vue";
+import type { AbortHandler } from "@/hooks/use-abort-controller";
 import type { FetchStatus } from "@/models/app";
 import { useCompletionStore } from "@/store/completion";
 import { Button } from "@/ui/button";
@@ -9,6 +10,12 @@ import { getProgressResult } from "@/utils/fetch-progress";
 import { Check, CheckCheck, Gamepad2, RefreshCw, User } from "lucide-vue-next";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
+
+interface Props {
+  abort: AbortHandler;
+}
+
+const props = defineProps<Props>();
 
 const orders: Record<FetchStatus, number> = {
   idle: 0,
@@ -25,6 +32,7 @@ const { setStatus } = store;
 const result = computed(() => getProgressResult(progress.value.current, progress.value.total));
 
 const handleContinue = () => setStatus("idle");
+const handleCancel = () => props.abort("data-loading");
 </script>
 
 <template>
@@ -95,15 +103,24 @@ const handleContinue = () => setStatus("idle");
           <span class="text-muted-foreground/40 text-xxs uppercase">SYSTEM_STATUS</span>
           <span class="text-primary/40 text-xxs font-medium">STABLE // 12.4ms</span>
         </div>
-        <Button
-          :class="[
-            'absolute top-1/2 right-1/2 w-32 translate-x-1/2 -translate-y-1/2 rounded text-xs font-bold uppercase opacity-0 transition-opacity duration-300',
-            status === 'completed' ? 'opacity-100' : 'opacity-0',
-          ]"
-          size="sm"
-          @click="handleContinue">
-          Continue
-        </Button>
+        <Transition name="fade" mode="out-in">
+          <Button
+            v-if="status === 'completed'"
+            key="continue"
+            class="absolute top-1/2 right-1/2 w-32 translate-x-1/2 -translate-y-1/2 rounded text-xs font-bold uppercase"
+            size="sm"
+            @click="handleContinue">
+            Continue
+          </Button>
+          <Button
+            v-else
+            key="cancel"
+            class="absolute top-1/2 right-1/2 w-32 translate-x-1/2 -translate-y-1/2 rounded text-xs font-bold uppercase"
+            size="sm"
+            @click="handleCancel">
+            Cancel
+          </Button>
+        </Transition>
         <div class="bg-muted relative h-4 w-32 overflow-hidden rounded-sm">
           <div class="absolute inset-0 flex items-end gap-px px-1">
             <div class="bg-primary/20 h-[40%] w-full" />
@@ -120,3 +137,15 @@ const handleContinue = () => setStatus("idle");
     </DialogContent>
   </Dialog>
 </template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

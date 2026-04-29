@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import FetchModal from "@/components/fetch-modal.vue";
+import { useAbortController } from "@/hooks/use-abort-controller";
 import type { CompletionProgressData } from "@/models/completion";
 import { useCompletionStore } from "@/store/completion";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/ui/input-group";
@@ -14,14 +16,16 @@ interface From extends HTMLFormElement {
   elements: Elements;
 }
 
-const errors = {
+const messages = {
   empty: "Enter your PSN ID. This field cannot be empty",
+  cancel: "Data download was canceled by the user",
   fetch: "Unable to fetch profile",
 };
 
 const store = useCompletionStore();
 const hasValue = ref<boolean>(false);
 const form = ref<From | null>(null);
+const { abort, getSignal } = useAbortController({ message: messages.cancel });
 
 const onInput = (e: Event) => {
   const target = e.target as HTMLInputElement;
@@ -46,15 +50,15 @@ const handleSubmit: (event: SubmitEvent) => void = async (event) => {
   const id = elements?.id.value.trim();
 
   try {
-    if (id.length === 0) throw new Error(errors.empty);
+    if (id.length === 0) throw new Error(messages.empty);
     store.setStatus("profile-loading");
 
-    const { profile } = await API.getProfile({ id });
-    if (!profile) throw new Error(errors.fetch);
+    const { profile } = await API.getProfile({ id, signal: getSignal() });
+    if (!profile) throw new Error(messages.fetch);
     store.setProfile(profile);
 
     store.setStatus("completion-loading");
-    const { list } = await API.getCompletion({ id, onProgress });
+    const { list } = await API.getCompletion({ id, onProgress, signal: getSignal() });
     store.setCompletion(list || [], "completed");
   } catch (error) {
     console.error("submit error", error);
@@ -77,4 +81,5 @@ const handleSubmit: (event: SubmitEvent) => void = async (event) => {
       </InputGroupAddon>
     </InputGroup>
   </form>
+  <FetchModal :abort="abort" />
 </template>
