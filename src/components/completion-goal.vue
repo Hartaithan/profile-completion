@@ -26,7 +26,7 @@ const goal = computed(() =>
   </div>
   <div
     v-if="!completion.loading && completion.profile"
-    class="bg-card border-primary/40 relative container mt-6 flex w-full flex-col items-center justify-between gap-6 overflow-hidden rounded-lg border-2 p-7 md:flex-row md:items-center">
+    class="bg-card border-primary/40 relative container mt-6 flex w-full flex-col items-center justify-between gap-6 overflow-hidden rounded-lg border-2 p-6 md:flex-row md:items-center">
     <TargetIcon
       class="text-primary pointer-events-none absolute top-2 right-2 size-28 opacity-10" />
     <div class="flex flex-col">
@@ -48,7 +48,7 @@ const goal = computed(() =>
             content-class="max-w-48">
             <template #trigger>
               <CircleCheckIcon class="size-14" />
-              <span class="text-primary text-xl font-bold tracking-widest uppercase">
+              <span class="text-primary text-2xl font-bold tracking-wide uppercase">
                 already reached
               </span>
             </template>
@@ -64,7 +64,7 @@ const goal = computed(() =>
             content-class="max-w-48">
             <template #trigger>
               <CircleAlertIcon class="size-14" />
-              <span class="text-primary text-xl font-bold tracking-widest uppercase">
+              <span class="text-primary text-2xl font-bold tracking-wide uppercase">
                 unreachable
               </span>
             </template>

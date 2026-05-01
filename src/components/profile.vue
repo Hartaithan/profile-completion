@@ -32,6 +32,12 @@ const store = useCompletionStore();
       <div class="flex gap-4">
         <ProfileStatItem label="Level" :value="store.profile?.level" />
         <ProfileStatItem label="Tier" :value="store.profile?.tier" />
+        <ProfileStatItem label="Games" :value="store.calculated.completion.length" />
+        <ProfileStatItem label="Earned" :value="store.calculated.progress.earned" />
+        <ProfileStatItem
+          label="Unearned"
+          :value="store.calculated.progress.points - store.calculated.progress.earned" />
+        <ProfileStatItem label="Total Points" :value="store.calculated.progress.points" />
       </div>
     </div>
   </div>

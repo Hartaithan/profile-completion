@@ -9,12 +9,12 @@ const store = useCompletionStore();
 
 <template>
   <div v-if="store.loading" class="container mt-6">
-    <Skeleton class="h-40 w-full" />
+    <Skeleton class="h-28 w-full" />
   </div>
   <div
     v-if="!store.loading && store.calculated.completion.length > 0"
     class="sticky top-6 z-50 container mt-6">
-    <div class="bg-card border-border/50 flex h-40 flex-col justify-center rounded-lg border p-6">
+    <div class="bg-card border-border/50 flex h-28 flex-col justify-center rounded-lg border p-5">
       <div class="flex items-end justify-between">
         <div class="flex flex-col">
           <span class="text-xxs text-muted-foreground font-bold tracking-widest uppercase">
@@ -28,13 +28,7 @@ const store = useCompletionStore();
           {{ store.calculated.progress.points }} points
         </span>
       </div>
-      <Progress class="mt-4" :model-value="getProgress(store.calculated.progress)" />
-      <div class="mt-4 flex items-center gap-2">
-        <span class="bg-primary/50 h-4 w-1" />
-        <span class="text-xxs text-muted-foreground font-bold tracking-widest uppercase">
-          Games Tracked: {{ store.calculated.completion.length }}
-        </span>
-      </div>
+      <Progress class="mt-3" :model-value="getProgress(store.calculated.progress)" />
     </div>
   </div>
 </template>
