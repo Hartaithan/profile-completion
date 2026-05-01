@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatNumber } from "@/utils/number";
 import { cn } from "@/utils/styles";
 import type { Component } from "vue";
 
@@ -27,7 +28,7 @@ defineProps<Props>();
             valueClass,
           )
         ">
-        {{ value ?? "-" }}
+        {{ value ? formatNumber(value) : "-" }}
       </span>
       <span :class="cn('text-muted-foreground text-xs font-bold uppercase', labelClass)">
         {{ label }}

@@ -2,6 +2,7 @@
 import { useCompletionStore } from "@/store/completion";
 import { Progress } from "@/ui/progress";
 import { Skeleton } from "@/ui/skeleton";
+import { formatNumber } from "@/utils/number";
 import { formatProgress, getProgress } from "@/utils/progress";
 
 const store = useCompletionStore();
@@ -25,7 +26,7 @@ const store = useCompletionStore();
           </h2>
         </div>
         <span class="text-primary font-mono text-sm uppercase">
-          {{ store.calculated.progress.points }} points
+          {{ formatNumber(store.calculated.progress.points) }} points
         </span>
       </div>
       <Progress class="mt-3" :model-value="getProgress(store.calculated.progress)" />
