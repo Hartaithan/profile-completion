@@ -7,6 +7,7 @@ import ProfileTrophyCounts from "@/components/profile-trophy-counts.vue";
 import Profile from "@/components/profile.vue";
 import ScrollToTop from "@/components/scroll-to-top.vue";
 import TotalProgress from "@/components/total-progress.vue";
+import { Toaster } from "@/ui/sonner";
 </script>
 
 <template>
@@ -18,6 +19,7 @@ import TotalProgress from "@/components/total-progress.vue";
   <DataControls />
   <CompletionList />
   <ScrollToTop />
+  <Teleport to="html">
+    <Toaster theme="dark" position="top-right" richColors closeButton />
+  </Teleport>
 </template>
-
-<style scoped></style>

@@ -5,8 +5,11 @@ import type { CompletionProgressData } from "@/models/completion";
 import { useCompletionStore } from "@/store/completion";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/ui/input-group";
 import { API } from "@/utils/api";
+import { readError } from "@/utils/error";
+import { showExpiresToast } from "@/utils/toast";
 import { SendHorizontal, XIcon } from "lucide-vue-next";
 import { ref } from "vue";
+import { toast } from "vue-sonner";
 
 interface Elements extends HTMLFormControlsCollection {
   id: { value: string };
@@ -48,20 +51,30 @@ const onProgress = (data: CompletionProgressData) => {
 const handleSubmit: (event: SubmitEvent) => void = async (event) => {
   const { elements } = event.target as From;
   const id = elements?.id.value.trim();
+  let expires: string | undefined;
 
   try {
     if (id.length === 0) throw new Error(messages.empty);
     store.setStatus("profile-loading");
 
-    const { profile } = await API.getProfile({ id, signal: getSignal() });
+    const { profile, expires: profileExpires } = await API.getProfile({ id, signal: getSignal() });
     if (!profile) throw new Error(messages.fetch);
     store.setProfile(profile);
+    expires = profileExpires;
 
     store.setStatus("completion-loading");
-    const { list } = await API.getCompletion({ id, onProgress, signal: getSignal() });
+    const { list, expires: completionExpires } = await API.getCompletion({
+      id,
+      onProgress,
+      signal: getSignal(),
+    });
+    expires = completionExpires;
     store.setCompletion(list || [], "completed");
+    showExpiresToast(expires);
   } catch (error) {
-    console.error("submit error", error);
+    const message = readError(error);
+    toast.error(message);
+    console.info("error", message, error);
     store.setStatus("idle");
   }
 };

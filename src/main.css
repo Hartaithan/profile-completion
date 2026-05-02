@@ -129,6 +129,11 @@
   button {
     cursor: pointer;
   }
+
+  li[data-sonner-toast][data-styled="true"] button[data-close-button="true"] {
+    left: calc(100% - var(--toast-icon-margin-end)) !important;
+    right: 0 !important;
+  }
 }
 
 @layer utilities {

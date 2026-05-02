@@ -1,4 +1,5 @@
 import "@/main.css";
+import "vue-sonner/style.css";
 
 import App from "@/App.vue";
 import { useCompletionStore } from "@/store/completion";
