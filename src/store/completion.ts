@@ -146,7 +146,7 @@ export const useCompletionStore = defineStore("completion", {
       setForage(keys.completion, this.completion);
     },
     reset() {
-      this.status = defaultState.status;
+      this.status = "idle";
       this.progress = defaultState.progress;
       this.sorter = defaultState.sorter;
       this.filters = defaultState.filters;
