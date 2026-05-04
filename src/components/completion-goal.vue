@@ -4,7 +4,7 @@ import { useCompletionStore } from "@/store/completion";
 import { useGoalStore } from "@/store/goal";
 import { Skeleton } from "@/ui/skeleton";
 import { TooltipAdaptive, TooltipProvider } from "@/ui/tooltip";
-import { getCompletionGoal } from "@/utils/progress";
+import { getCompletionGoal } from "@/utils/completion";
 import { CircleAlertIcon, CircleCheckIcon, TargetIcon } from "lucide-vue-next";
 import { computed } from "vue";
 
@@ -13,7 +13,7 @@ const completion = useCompletionStore();
 
 const goal = computed(() =>
   getCompletionGoal({
-    progress: completion.calculated.progress,
+    progress: completion.calculated,
     counts: store.counts,
     target: store.percent,
   }),

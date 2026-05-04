@@ -63,13 +63,18 @@ const handleSubmit: (event: SubmitEvent) => void = async (event) => {
     expires = profileExpires;
 
     store.setStatus("completion-loading");
-    const { list, expires: completionExpires } = await API.getCompletion({
+    const {
+      list,
+      progress,
+      expires: completionExpires,
+    } = await API.getCompletion({
       id,
       onProgress,
       signal: getSignal(),
     });
     expires = completionExpires;
     store.setCompletion(list || [], "completed");
+    store.setCalculated(progress);
     showExpiresToast(expires);
   } catch (error) {
     const message = readError(error);

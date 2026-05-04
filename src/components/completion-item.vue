@@ -4,9 +4,9 @@ import GameImage from "@/components/game-image.vue";
 import TrophyCounts from "@/components/trophy-counts.vue";
 import { platformShortLabels } from "@/constants/platform";
 import type { Completion } from "@/models/completion";
+import { getCompletionStatus } from "@/utils/completion";
 import { getImageURL } from "@/utils/image";
 import { formatProgress } from "@/utils/progress";
-import { getTrophiesProgress } from "@/utils/trophies";
 import { computed, ref, useAttrs } from "vue";
 
 interface Props {
@@ -19,8 +19,9 @@ const attrs = useAttrs();
 
 const root = ref<HTMLDivElement>();
 
-const trophies = computed(() =>
-  getTrophiesProgress({
+const status = computed(() =>
+  getCompletionStatus({
+    points: props.completion?.points,
     counts: props.completion?.counts,
     earned: props.completion?.earned_counts,
   }),
@@ -33,7 +34,7 @@ defineExpose({ el: root });
   <div ref="root" class="absolute top-0 left-0 w-full" v-bind="attrs">
     <div
       class="bg-card border-border/50 group flex cursor-pointer items-center gap-4 rounded-lg border p-3 transition-all"
-      :class="{ 'opacity-50 grayscale': trophies?.type === 'completed' }">
+      :class="{ 'opacity-50 grayscale': status?.type === 'completed' }">
       <GameImage
         :src="getImageURL(completion?.image_url, { h: 56 })"
         :alt="completion?.title"
@@ -58,14 +59,14 @@ defineExpose({ el: root });
       </div>
       <div class="flex items-center gap-x-4">
         <span class="text-primary font-mono text-base font-bold">
-          {{ formatProgress(completion?.progress, "%") }}
+          {{ formatProgress(completion?.progress?.value, "%") }}
         </span>
         <CompletionMenu
           :id="completion?.id"
           :index="index"
-          :type="trophies?.type"
-          :has-platinum="completion?.counts.platinum === 1"
-          :has-d-l-c="completion?.counts.total !== completion?.base_counts?.total" />
+          :type="status?.type"
+          :has-platinum="status?.hasPlatinum"
+          :has-d-l-c="status?.hasDLC" />
       </div>
     </div>
   </div>

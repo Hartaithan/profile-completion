@@ -1,7 +1,23 @@
 import type { CachedResponse } from "@/models/app";
-import type { TrophyCounts } from "@/models/trophy";
+import type { Trophy, TrophyCounts } from "@/models/trophy";
 
 export type Platform = "PS5" | "PS4" | "PS3" | "PSVITA" | "PSPC";
+
+export interface CompletionPoints {
+  base: number;
+  total: number;
+}
+
+export interface CompletionProgress {
+  earned: number;
+  total: number;
+  value: number;
+}
+
+export interface CompletionGroups {
+  id: string;
+  trophies: Trophy[];
+}
 
 export interface Completion {
   id: string;
@@ -12,7 +28,9 @@ export interface Completion {
   counts: TrophyCounts;
   base_counts?: TrophyCounts;
   earned_counts: TrophyCounts;
-  progress: number;
+  progress: CompletionProgress | null;
+  points: CompletionPoints | null;
+  groups: CompletionGroups[];
 }
 
 export type NullableCompletion = Completion | null;
@@ -30,7 +48,9 @@ export interface CompletionProgressData extends CompletionData<"progress"> {
   total?: number;
 }
 
-export type CompletionCompleteData = CompletionData<"complete"> & CachedResponse;
+export interface CompletionCompleteData extends CompletionData<"complete">, CachedResponse {
+  progress: CompletionProgress;
+}
 
 export type CompletionErrorData = CompletionData<"error">;
 
@@ -42,6 +62,7 @@ export type CompletionEventData =
 export type CompletionResponseData = CompletionCompleteData;
 
 export interface CompletionResponse extends CachedResponse {
+  progress: CompletionProgress;
   list: NullableCompletion[];
 }
 

@@ -77,7 +77,7 @@ const getCompletion = async (params: FetchCompletionParams): Promise<CompletionR
           }
           case "complete": {
             cleanup();
-            resolve({ list, expires: data?.expires });
+            resolve({ list, progress: data?.progress, expires: data?.expires });
             break;
           }
           default:

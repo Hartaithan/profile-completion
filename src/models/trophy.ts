@@ -11,6 +11,8 @@ export interface TrophyCounts {
 }
 
 export interface Trophy {
+  id: number;
+  group?: string;
   type: TrophyType;
   title?: string;
   description?: string;
@@ -23,9 +25,3 @@ export interface Trophy {
 }
 
 export type TrophyProgressType = "platinum" | "completed" | null;
-
-export interface TrophyProgress {
-  total: number;
-  earned: number;
-  type: TrophyProgressType;
-}
