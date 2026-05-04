@@ -43,6 +43,21 @@ const goal = computed(() =>
             <span class="text-primary text-xl font-bold tracking-widest uppercase">games</span>
           </template>
           <TooltipAdaptive
+            v-else-if="goal === 'error'"
+            trigger-class="flex min-w-24 gap-2 items-end"
+            content-class="max-w-48">
+            <template #trigger>
+              <CircleAlertIcon class="size-14" />
+              <span class="text-primary text-2xl font-bold tracking-wide uppercase">error</span>
+            </template>
+            <template #content>
+              <p class="text-center">
+                Something went wrong while calculating the completion goal. Please try retrieving
+                your data again
+              </p>
+            </template>
+          </TooltipAdaptive>
+          <TooltipAdaptive
             v-else-if="goal === 'already-reached'"
             trigger-class="flex min-w-24 gap-2 items-end"
             content-class="max-w-48">
