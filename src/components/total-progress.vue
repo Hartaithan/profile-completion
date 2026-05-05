@@ -24,7 +24,7 @@ const store = useCompletionStore();
           </h2>
         </div>
         <span class="text-primary font-mono text-sm uppercase">
-          {{ formatNumber(store.calculated.total) }} points
+          {{ formatNumber(store.calculated.earned) }} points
         </span>
       </div>
       <Progress class="mt-3" :model-value="store.calculated.value" />

@@ -147,16 +147,16 @@ export const useCompletionStore = defineStore("completion", {
       if (!id) return;
       if (!this.calculated) return;
       const picked = this.completion?.find((i) => i?.id === id);
-      if (!picked?.points || !picked?.progress) return;
+      if (!picked?.points || !picked?.progress || !picked?.base_counts) return;
       let delta = 0;
       switch (target) {
         case "platinum":
-          if (picked?.base_counts) picked.earned_counts = picked.base_counts;
+          picked.earned_counts = structuredClone(toRaw(picked.base_counts));
           delta = picked.points.base - picked.progress.earned;
           picked.progress.earned = picked.points.base;
           break;
         case "complete":
-          picked.earned_counts = picked.counts;
+          picked.earned_counts = structuredClone(toRaw(picked.counts));
           delta = picked.points.total - picked.progress.earned;
           picked.progress.earned = picked.points.total;
           break;
@@ -166,6 +166,7 @@ export const useCompletionStore = defineStore("completion", {
       picked.progress.value = getProgress(picked.progress.earned, picked.progress.total);
       this.calculated.earned += delta;
       this.calculated.value = getProgress(this.calculated.earned, this.calculated.total);
+      setStorage(keys.calculated, this.calculated);
       setForage(keys.completion, this.completion);
       this.updateView();
     },
