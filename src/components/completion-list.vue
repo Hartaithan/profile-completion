@@ -20,7 +20,7 @@ const parent = ref<HTMLElement | null>(null);
 const parentOffset = ref(0);
 
 const options = computed(() => ({
-  count: store.completion?.length ?? 0,
+  count: store.view?.length ?? 0,
   getScrollElement: () => window,
   estimateSize: () => sizes.item + sizes.spacing(),
   scrollMargin: parentOffset.value,
@@ -52,13 +52,13 @@ onMounted(() => {
     </div>
     <CompletionEmptyState v-if="!store.loading && !store.profile" />
     <div
-      v-if="!store.loading && store.completion.length > 0"
+      v-if="!store.loading && store.view.length > 0"
       class="relative w-full"
       :style="{ height: `${total}px` }">
       <CompletionItem
         v-for="row in rows"
         :key="row.index"
-        :completion="store.completion?.[row.index] ?? null"
+        :completion="store.view?.[row.index] ?? null"
         :index="row.index"
         :data-index="row.index"
         :ref="measureElement"
@@ -67,7 +67,7 @@ onMounted(() => {
           'padding-bottom': `${sizes.spacing()}px`,
         }" />
     </div>
-    <p v-if="!store.loading && store.profile && store.completion.length === 0" class="text-center">
+    <p v-if="!store.loading && store.profile && store.view.length === 0" class="text-center">
       nothing found :(
     </p>
   </div>

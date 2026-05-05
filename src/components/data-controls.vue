@@ -4,14 +4,13 @@ import { useCompletionStore } from "@/store/completion";
 import { MultiSelect } from "@/ui/multi-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/select";
 import { Skeleton } from "@/ui/skeleton";
-import { getSorter } from "@/utils/sorter";
-import type { AcceptableValue } from "reka-ui";
+import { makeFilter, makeSorter } from "@/utils/data-transform";
 
 const completion = useCompletionStore();
 
-const handleSorter = (value: AcceptableValue) => {
-  completion.setSorter(getSorter(value));
-};
+const sorter = makeSorter(completion, "sorter", completion.setSorter);
+const filterCompletion = makeFilter(completion.filters, "completion", completion.setFilter);
+const filterPlatforms = makeFilter(completion.filters, "platforms", completion.setFilter);
 </script>
 
 <template>
@@ -21,19 +20,21 @@ const handleSorter = (value: AcceptableValue) => {
   <div
     v-if="!completion.loading && completion.completion.length > 0"
     class="container mt-6 grid grid-cols-3 gap-2">
-    <Select v-on:update:model-value="handleSorter">
+    <Select v-model="sorter">
       <SelectTrigger class="w-full">
         <SelectValue placeholder="Default sorting" />
       </SelectTrigger>
       <SelectContent>
         <SelectItem :value="null">Default sorting</SelectItem>
-        <SelectItem value="progress:asc">Progress: Low → High</SelectItem>
-        <SelectItem value="progress:desc">Progress: High → Low</SelectItem>
+        <SelectItem value="progress.value:asc">Progress: Low → High</SelectItem>
+        <SelectItem value="progress.value:desc">Progress: High → Low</SelectItem>
         <SelectItem value="title:asc">Name: A → Z</SelectItem>
         <SelectItem value="title:desc">Name: Z → A</SelectItem>
+        <SelectItem value="counts.total:asc">Total Trophies: Low → High</SelectItem>
+        <SelectItem value="counts.total:desc">Total Trophies: High → Low</SelectItem>
       </SelectContent>
     </Select>
-    <Select v-model="completion.filters.completion">
+    <Select v-model="filterCompletion">
       <SelectTrigger class="w-full">
         <SelectValue placeholder="All statuses" />
       </SelectTrigger>
@@ -47,7 +48,7 @@ const handleSorter = (value: AcceptableValue) => {
       </SelectContent>
     </Select>
     <MultiSelect
-      v-model="completion.filters.platforms"
+      v-model="filterPlatforms"
       :options="platformOptions"
       placeholder="Select platforms..." />
   </div>
