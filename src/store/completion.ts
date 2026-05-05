@@ -19,6 +19,7 @@ import {
   setStorage,
 } from "@/utils/local-storage";
 import { getProgress } from "@/utils/progress";
+import { clone, cloneAndPersist, persist } from "@/utils/store";
 import { defineStore } from "pinia";
 import { toRaw } from "vue";
 
@@ -91,7 +92,7 @@ export const useCompletionStore = defineStore("completion", {
         ]);
         this.initialCompletion = initial;
         this.completion = completion;
-        this.view = structuredClone(completion);
+        this.view = clone(completion);
       } catch (error) {
         console.error("unable to initialize completion store", error);
       } finally {
@@ -130,40 +131,25 @@ export const useCompletionStore = defineStore("completion", {
       setStorage(keys.profile, value);
     },
     setCalculated(value: Store["calculated"]) {
-      this.calculated = value;
-      setStorage(keys.calculated, value);
-      this.initialCalculated = structuredClone(value);
-      setStorage(keys.initialCalculated, value);
+      this.calculated = persist(keys.calculated, value);
+      this.initialCalculated = cloneAndPersist(keys.initialCalculated, value);
     },
     setCompletion(value: Store["completion"], status?: Store["status"]) {
       if (status) this.status = status;
-      this.completion = value;
-      setForage(keys.completion, value);
-      this.initialCompletion = structuredClone(value);
-      setForage(keys.initialCompletion, value);
+      this.completion = persist(keys.completion, value, "forage");
+      this.initialCompletion = cloneAndPersist(keys.initialCompletion, value, "forage");
       this.updateView();
     },
     completeItem(id: string | undefined, target: "platinum" | "complete") {
-      if (!id) return;
-      if (!this.calculated) return;
-      const picked = this.completion?.find((i) => i?.id === id);
-      if (!picked?.points || !picked?.progress || !picked?.base_counts) return;
-      let delta = 0;
-      switch (target) {
-        case "platinum":
-          picked.earned_counts = structuredClone(toRaw(picked.base_counts));
-          delta = picked.points.base - picked.progress.earned;
-          picked.progress.earned = picked.points.base;
-          break;
-        case "complete":
-          picked.earned_counts = structuredClone(toRaw(picked.counts));
-          delta = picked.points.total - picked.progress.earned;
-          picked.progress.earned = picked.points.total;
-          break;
-        default:
-          break;
-      }
-      picked.progress.value = getProgress(picked.progress.earned, picked.progress.total);
+      if (!id || !this.calculated) return;
+      const item = this.completion?.find((i) => i?.id === id);
+      if (!item?.points || !item?.progress || !item?.base_counts) return;
+      const isPlatinum = target === "platinum";
+      const earned = isPlatinum ? item.points.base : item.points.total;
+      const delta = earned - item.progress.earned;
+      item.earned_counts = clone(isPlatinum ? item.base_counts : item.counts);
+      item.progress.earned = earned;
+      item.progress.value = getProgress(earned, item.progress.total);
       this.calculated.earned += delta;
       this.calculated.value = getProgress(this.calculated.earned, this.calculated.total);
       setStorage(keys.calculated, this.calculated);
@@ -171,30 +157,17 @@ export const useCompletionStore = defineStore("completion", {
       this.updateView();
     },
     restore() {
-      const calculated = toRaw(this.initialCalculated);
-      this.calculated = structuredClone(calculated);
-      setStorage(keys.calculated, calculated);
-      const completion = toRaw(this.initialCompletion);
-      this.completion = structuredClone(completion);
-      setForage(keys.completion, completion);
+      this.calculated = cloneAndPersist(keys.calculated, this.initialCalculated);
+      this.completion = cloneAndPersist(keys.completion, this.initialCompletion, "forage");
       this.updateView();
     },
     reset() {
-      this.status = "idle";
-      this.progress = defaultState.progress;
-      this.sorter = defaultState.sorter;
-      this.filters = defaultState.filters;
-      this.profile = defaultState.profile;
+      Object.assign(this, { ...defaultState, status: "idle" });
       removeStorage(keys.profile);
-      this.calculated = defaultState.calculated;
       removeStorage(keys.calculated);
-      this.initialCalculated = defaultState.initialCalculated;
       removeStorage(keys.initialCalculated);
-      this.initialCompletion = defaultState.initialCompletion;
       removeForage(keys.initialCompletion);
-      this.completion = defaultState.completion;
       removeForage(keys.completion);
-      this.view = defaultState.view;
     },
   },
 });
