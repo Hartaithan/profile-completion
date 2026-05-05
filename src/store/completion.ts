@@ -42,9 +42,7 @@ export interface CompletionStore {
   sorter: Sorter | null;
   filters: Filters;
   profile: Profile | null;
-  initialCalculated: CompletionProgress | null;
   calculated: CompletionProgress | null;
-  initialCompletion: NullableCompletion[];
   completion: NullableCompletion[];
   view: NullableCompletion[];
 }
@@ -57,9 +55,7 @@ const defaultState: Store = {
   sorter: null,
   filters: {},
   profile: null,
-  initialCalculated: null,
   calculated: null,
-  initialCompletion: [],
   completion: [],
   view: [],
 };
@@ -68,7 +64,6 @@ const getDefaultState = (): Store => ({
   ...defaultState,
   profile: readStorage<Store["profile"]>(keys.profile, null),
   calculated: readStorage<Store["calculated"]>(keys.calculated, null),
-  initialCalculated: readStorage<Store["initialCalculated"]>(keys.initialCalculated, null),
 });
 
 const isLoading: Partial<Record<FetchStatus, boolean>> = {
@@ -86,11 +81,7 @@ export const useCompletionStore = defineStore("completion", {
     async init() {
       this.status = "initializing";
       try {
-        const [initial, completion] = await Promise.all([
-          readForage<Store["initialCompletion"]>(keys.initialCompletion, []),
-          readForage<Store["completion"]>(keys.completion, []),
-        ]);
-        this.initialCompletion = initial;
+        const completion = await readForage<Store["completion"]>(keys.completion, []);
         this.completion = completion;
         this.view = clone(completion);
       } catch (error) {
@@ -132,12 +123,12 @@ export const useCompletionStore = defineStore("completion", {
     },
     setCalculated(value: Store["calculated"]) {
       this.calculated = persist(keys.calculated, value);
-      this.initialCalculated = cloneAndPersist(keys.initialCalculated, value);
+      persist(keys.initialCalculated, value);
     },
     setCompletion(value: Store["completion"], status?: Store["status"]) {
       if (status) this.status = status;
       this.completion = persist(keys.completion, value, "forage");
-      this.initialCompletion = cloneAndPersist(keys.initialCompletion, value, "forage");
+      persist(keys.initialCompletion, value, "forage");
       this.updateView();
     },
     completeItem(id: string | undefined, target: "platinum" | "complete") {
@@ -156,9 +147,11 @@ export const useCompletionStore = defineStore("completion", {
       setForage(keys.completion, this.completion);
       this.updateView();
     },
-    restore() {
-      this.calculated = cloneAndPersist(keys.calculated, this.initialCalculated);
-      this.completion = cloneAndPersist(keys.completion, this.initialCompletion, "forage");
+    async restore() {
+      const completion = await readForage(keys.initialCompletion, defaultState.completion);
+      this.completion = cloneAndPersist(keys.completion, completion, "forage");
+      const calculated = readStorage(keys.initialCalculated, defaultState.calculated);
+      this.calculated = cloneAndPersist(keys.calculated, calculated);
       this.updateView();
     },
     reset() {
