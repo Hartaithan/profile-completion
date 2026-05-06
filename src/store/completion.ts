@@ -10,6 +10,7 @@ import type { CompletionProgress, NullableCompletion } from "@/models/completion
 import type { Filters, Sorter } from "@/models/filters";
 import type { Profile } from "@/models/profile";
 import { filterCompletion, sortCompletion } from "@/utils/data-transform";
+import { InitialCompletion } from "@/utils/initial-completion";
 import {
   readForage,
   readStorage,
@@ -135,6 +136,7 @@ export const useCompletionStore = defineStore("completion", {
       if (status) this.status = status;
       this.completion = persist(keys.completion, value, "forage");
       persist(keys.initialCompletion, value, "forage");
+      InitialCompletion.invalidate();
       this.updateView();
     },
     completeItem(id: string | undefined, target: "platinum" | "complete") {
@@ -152,7 +154,7 @@ export const useCompletionStore = defineStore("completion", {
       this.updateView();
     },
     async restore() {
-      const completion = await readForage(keys.initialCompletion, defaultState.completion);
+      const completion = await InitialCompletion.get();
       this.completion = cloneAndPersist(keys.completion, completion, "forage");
       const calculated = readStorage(keys.initialCalculated, defaultState.calculated);
       this.calculated = cloneAndPersist(keys.calculated, calculated);
@@ -163,7 +165,7 @@ export const useCompletionStore = defineStore("completion", {
       const index = this.completion.findIndex((i) => i?.id === id);
       const item = this.completion?.[index];
       if (!item?.progress) return;
-      const completion = await readForage(keys.initialCompletion, defaultState.completion);
+      const completion = await InitialCompletion.get();
       if (!completion) return;
       const initial = completion[index];
       if (!initial?.progress) return;
@@ -180,6 +182,7 @@ export const useCompletionStore = defineStore("completion", {
       removeStorage(keys.initialCalculated);
       removeForage(keys.initialCompletion);
       removeForage(keys.completion);
+      InitialCompletion.invalidate();
     },
   },
 });
