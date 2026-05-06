@@ -10,8 +10,23 @@ export interface TrophyCounts {
   total?: number;
 }
 
+export const TROPHY_KIND = {
+  GROUP: "group",
+  TROPHY: "trophy",
+} as const;
+
+export type TrophyKind = (typeof TROPHY_KIND)[keyof typeof TROPHY_KIND];
+
+export interface TrophyGroup {
+  id: string;
+  kind: typeof TROPHY_KIND.GROUP;
+}
+
+export type TrophyItem = Trophy | TrophyGroup;
+
 export interface Trophy {
   id: number;
+  kind: typeof TROPHY_KIND.TROPHY;
   group?: string;
   type: TrophyType;
   title?: string;
