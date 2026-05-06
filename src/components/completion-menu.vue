@@ -59,6 +59,7 @@ const position = computed<DropdownMenuContentProps["side"]>(() => {
         :disabled="type === 'completed'">
         100% Completion
       </DropdownMenuItem>
+      <DropdownMenuItem @click="store.restoreItem(id)">Reset to default</DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
 </template>

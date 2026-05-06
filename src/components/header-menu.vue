@@ -27,7 +27,7 @@ const reset = () => {
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent class="content" align="end">
-      <DropdownMenuItem @click="store.restore">Restore initial data</DropdownMenuItem>
+      <DropdownMenuItem @click="store.restore">Reset to default</DropdownMenuItem>
       <DropdownMenuItem @click="reset">Reset all data</DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>

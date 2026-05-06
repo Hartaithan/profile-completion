@@ -125,6 +125,12 @@ export const useCompletionStore = defineStore("completion", {
       this.calculated = persist(keys.calculated, value);
       persist(keys.initialCalculated, value);
     },
+    recalculatePoints(delta: number) {
+      if (!this.calculated) return;
+      this.calculated.earned += delta;
+      this.calculated.value = getProgress(this.calculated.earned, this.calculated.total);
+      setStorage(keys.calculated, this.calculated);
+    },
     setCompletion(value: Store["completion"], status?: Store["status"]) {
       if (status) this.status = status;
       this.completion = persist(keys.completion, value, "forage");
@@ -141,9 +147,7 @@ export const useCompletionStore = defineStore("completion", {
       item.earned_counts = clone(isPlatinum ? item.base_counts : item.counts);
       item.progress.earned = earned;
       item.progress.value = getProgress(earned, item.progress.total);
-      this.calculated.earned += delta;
-      this.calculated.value = getProgress(this.calculated.earned, this.calculated.total);
-      setStorage(keys.calculated, this.calculated);
+      this.recalculatePoints(delta);
       setForage(keys.completion, this.completion);
       this.updateView();
     },
@@ -152,6 +156,21 @@ export const useCompletionStore = defineStore("completion", {
       this.completion = cloneAndPersist(keys.completion, completion, "forage");
       const calculated = readStorage(keys.initialCalculated, defaultState.calculated);
       this.calculated = cloneAndPersist(keys.calculated, calculated);
+      this.updateView();
+    },
+    async restoreItem(id: string | undefined) {
+      if (!id || !this.calculated) return;
+      const index = this.completion.findIndex((i) => i?.id === id);
+      const item = this.completion?.[index];
+      if (!item?.progress) return;
+      const completion = await readForage(keys.initialCompletion, defaultState.completion);
+      if (!completion) return;
+      const initial = completion[index];
+      if (!initial?.progress) return;
+      const delta = initial.progress.earned - item.progress.earned;
+      this.completion[index] = clone(initial);
+      this.recalculatePoints(delta);
+      setForage(keys.completion, this.completion);
       this.updateView();
     },
     reset() {
