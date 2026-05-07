@@ -168,4 +168,9 @@
   .trophy-dot[data-type="bronze"] {
     --dot-color: var(--color-trophy-bronze);
   }
+
+  .scrollbar-thin {
+    scrollbar-color: var(--color-ring) var(--color-background);
+    scrollbar-width: thin;
+  }
 }

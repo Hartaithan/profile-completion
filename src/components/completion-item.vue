@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import CompletionMenu from "@/components/completion-menu.vue";
 import GameImage from "@/components/game-image.vue";
+import TrophiesModal from "@/components/trophies-modal.vue";
 import TrophyCounts from "@/components/trophy-counts.vue";
 import { platformShortLabels } from "@/constants/platform";
 import type { Completion } from "@/models/completion";
@@ -57,7 +58,7 @@ defineExpose({ el: root });
             :earned="completion?.earned_counts" />
         </div>
       </div>
-      <div class="flex items-center gap-x-4">
+      <div class="flex items-center">
         <span class="text-primary font-mono text-base font-bold">
           {{ formatProgress(completion?.progress?.value, "%") }}
         </span>
@@ -67,6 +68,10 @@ defineExpose({ el: root });
           :type="status?.type"
           :has-platinum="status?.hasPlatinum"
           :has-d-l-c="status?.hasDLC" />
+        <TrophiesModal
+          :id="completion?.id"
+          :title="completion?.title"
+          :trophies="completion?.trophies" />
       </div>
     </div>
   </div>
