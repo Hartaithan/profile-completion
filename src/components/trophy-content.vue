@@ -15,7 +15,7 @@ defineProps<Props>();
   <Label
     v-if="trophy"
     :for="`trophy-${trophy.id}`"
-    class="flex cursor-pointer items-center gap-3 rounded-lg border border-transparent pr-2 pb-3 has-aria-checked:opacity-50">
+    class="flex cursor-pointer items-center gap-3 rounded-lg pt-3 has-aria-checked:opacity-50">
     <Checkbox
       :id="`trophy-${trophy.id}`"
       class="data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground" />
