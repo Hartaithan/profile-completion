@@ -2,6 +2,7 @@
 import { useGoalStore } from "@/store/goal";
 import { Button } from "@/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/ui/dialog";
+import DialogDescription from "@/ui/dialog/DialogDescription.vue";
 import { Input } from "@/ui/input";
 import { Slider } from "@/ui/slider";
 import { TrophyIcon } from "lucide-vue-next";
@@ -32,6 +33,7 @@ store.$subscribe(() => store.persist());
         <DialogTitle class="text-foreground text-2xl font-black tracking-tighter uppercase">
           Completion Goal
         </DialogTitle>
+        <DialogDescription class="sr-only">Completion Goal Modal</DialogDescription>
       </DialogHeader>
       <div class="space-y-6">
         <div class="space-y-4">

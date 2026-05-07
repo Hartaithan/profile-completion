@@ -3,6 +3,7 @@ import TrophyList from "@/components/trophy-list.vue";
 import type { TrophyItem } from "@/models/trophy";
 import { Button } from "@/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/ui/dialog";
+import DialogDescription from "@/ui/dialog/DialogDescription.vue";
 import { SquarePenIcon } from "lucide-vue-next";
 
 interface Props {
@@ -27,6 +28,7 @@ defineProps<Props>();
         <DialogTitle class="text-foreground text-2xl font-black tracking-tighter uppercase">
           {{ title }} Trophies
         </DialogTitle>
+        <DialogDescription class="sr-only">{{ title }} Trophies Modal</DialogDescription>
       </DialogHeader>
       <TrophyList :id="id" :trophies="trophies" />
     </DialogContent>
