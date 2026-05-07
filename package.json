@@ -15,6 +15,7 @@
     "lint": "run-s lint:*",
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
+    "check": "npm run type-check && npm run lint",
     "format": "prettier . --write"
   },
   "dependencies": {
