@@ -113,7 +113,7 @@
   }
 
   #app {
-    @apply py-6;
+    @apply py-4 sm:py-6;
   }
 
   input:-webkit-autofill,

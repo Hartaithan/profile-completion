@@ -18,18 +18,19 @@ const store = useCompletionStore();
   </div>
   <div
     v-if="store.status !== 'profile-loading' && store.profile"
-    class="container mt-6 flex items-center gap-6">
-    <div class="bg-card border-border/50 h-24 w-24 overflow-hidden rounded-lg border p-1">
+    class="container mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
+    <div
+      class="bg-card border-border/50 h-20 w-20 shrink-0 overflow-hidden rounded-lg border p-1 sm:h-24 sm:w-24">
       <img
         class="h-full w-full rounded-lg object-cover"
         :src="store.profile?.avatar_url"
         :alt="`${store.profile?.name}'s avatar`" />
     </div>
-    <div class="flex flex-col">
-      <h1 class="text-foreground mb-2 text-3xl leading-none font-black uppercase">
+    <div class="flex w-full flex-col">
+      <h1 class="text-foreground mb-2 text-2xl leading-none font-black uppercase sm:text-3xl">
         {{ store.profile?.name ?? "Trophy Hunter" }}
       </h1>
-      <div class="flex gap-4">
+      <div class="flex flex-wrap gap-x-4 gap-y-1">
         <ProfileStatItem label="Level" :value="store.profile?.level" />
         <ProfileStatItem label="Tier" :value="store.profile?.tier" />
         <ProfileStatItem label="Games" :value="store.completion?.length" />
