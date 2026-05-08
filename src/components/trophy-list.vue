@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TrophyContent from "@/components/trophy-content.vue";
-import { useStickyIndexes } from "@/composables/use-sticky-headers";
+import { useStickyIndexes } from "@/hooks/use-sticky-headers";
 import type { Trophy, TrophyItem } from "@/models/trophy";
 import { useVirtualizer } from "@tanstack/vue-virtual";
 import { computed, onMounted, onUpdated, ref, shallowRef } from "vue";

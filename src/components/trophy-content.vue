@@ -56,15 +56,16 @@ const handleClick = () => {
         :class="{ 'opacity-60': !trophy.earned }">
         {{ trophy.description }}
       </p>
-      <div class="mt-0.5 flex items-center gap-4">
-        <div v-if="trophy.earned && trophy.earned_at" class="text-muted-foreground text-xxs">
-          {{ new Date(trophy.earned_at).toLocaleString() }}
-        </div>
+      <div class="text-xxs mt-0.5 flex items-center gap-3">
+        <span v-if="trophy.earned" class="text-muted-foreground">
+          {{ new Date(trophy?.earned_at ?? "").toLocaleString() }}
+        </span>
+        <span v-else class="text-muted-foreground uppercase">Unearned</span>
         <div v-if="trophy.rarity_label" class="flex items-center gap-1.5">
-          <span class="text-xxs font-medium tracking-wide uppercase">
+          <span class="font-medium tracking-wide uppercase">
             {{ trophy.rarity_label }}
           </span>
-          <span v-if="trophy.earned_rate !== undefined" class="text-muted-foreground text-xxs">
+          <span v-if="trophy.earned_rate !== undefined" class="text-muted-foreground">
             {{ trophy.earned_rate.toFixed(1) }}%
           </span>
         </div>
