@@ -23,34 +23,37 @@ store.$subscribe(() => store.persist());
   <Dialog>
     <DialogTrigger as-child>
       <Button
-        class="bg-primary text-primary-foreground hover:bg-foreground hover:text-background w-full rounded-lg px-8 py-3 text-xs font-black tracking-[0.2em] uppercase shadow-lg transition-all active:scale-95 md:w-auto">
+        class="bg-primary text-primary-foreground hover:bg-foreground hover:text-background h-8 w-full rounded-lg px-6 py-2.5 text-xs font-black tracking-widest uppercase shadow-lg transition-all active:scale-95 sm:h-9 sm:px-8 sm:py-3 md:w-auto">
         Edit Target
       </Button>
     </DialogTrigger>
     <DialogContent class="rounded-lg sm:max-w-xl">
       <DialogHeader
         class="border-border/30 flex-row items-center justify-between space-y-0 border-b">
-        <DialogTitle class="text-foreground text-2xl font-black tracking-tighter uppercase">
+        <DialogTitle
+          class="text-foreground text-xl font-black tracking-tighter uppercase sm:text-2xl">
           Completion Goal
         </DialogTitle>
         <DialogDescription class="sr-only">Completion Goal Modal</DialogDescription>
       </DialogHeader>
-      <div class="space-y-6">
-        <div class="space-y-4">
-          <div class="flex items-end justify-between">
+      <div class="space-y-4 sm:space-y-6">
+        <div class="space-y-3 sm:space-y-4">
+          <div
+            class="flex flex-col items-start gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-0">
             <label
               for="percent"
-              class="text-muted-foreground text-sm font-bold tracking-widest uppercase">
+              class="text-muted-foreground text-xs font-bold tracking-widest uppercase sm:text-sm">
               Completion Target
             </label>
-            <div class="text-primary text-4xl font-black tracking-tighter">
+            <div
+              class="text-primary flex items-baseline self-end text-3xl font-black tracking-tighter sm:self-auto sm:text-4xl">
               <Input
                 id="percent"
                 type="number"
                 v-model.number="store.percent"
                 @input="store.percent = Math.min(100, Math.max(0, store.percent))"
-                class="text-primary h-auto w-20 appearance-none border-none bg-transparent p-0 text-right text-4xl font-black tracking-tighter outline-none focus-visible:ring-0 focus-visible:ring-offset-0 md:text-4xl [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" />
-              <span class="text-muted-foreground ml-1 text-lg">%</span>
+                class="text-primary h-auto w-16 appearance-none border-none bg-transparent p-0 text-right text-3xl font-black tracking-tighter outline-none focus-visible:ring-0 focus-visible:ring-offset-0 sm:w-20 sm:text-4xl md:text-4xl [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" />
+              <span class="text-muted-foreground ml-1 text-base sm:text-lg">%</span>
             </div>
           </div>
           <Slider
@@ -64,17 +67,18 @@ store.$subscribe(() => store.persist());
             <span>MAX_VAL: 100</span>
           </div>
         </div>
-        <div class="space-y-4">
-          <span class="text-muted-foreground block text-sm font-bold tracking-widest uppercase">
+        <div class="space-y-3 sm:space-y-4">
+          <span
+            class="text-muted-foreground block text-xs font-bold tracking-widest uppercase sm:text-sm">
             Required Trophy Allocation
           </span>
-          <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <div class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
             <div
               v-for="trophy in config"
               :key="trophy.key"
-              class="bg-background border-border/40 hover:border-primary rounded border-b-2 p-3 transition-colors">
-              <div class="mb-2 flex items-center gap-2">
-                <TrophyIcon :class="['size-4 min-w-4', trophy.color]" />
+              class="bg-background border-border/40 hover:border-primary rounded border-b-2 p-2.5 transition-colors sm:p-3">
+              <div class="mb-2 flex items-center gap-1.5 sm:gap-2">
+                <TrophyIcon :class="['size-3.5 min-w-3.5 sm:size-4 sm:min-w-4', trophy.color]" />
                 <span :class="['text-xxs font-black tracking-widest uppercase', trophy.color]">
                   {{ trophy.key }}
                 </span>
@@ -82,7 +86,7 @@ store.$subscribe(() => store.persist());
               <Input
                 type="number"
                 v-model.number="store.counts[trophy.key]"
-                class="text-foreground h-auto w-full border-none bg-transparent p-0 text-2xl font-black focus-visible:ring-0 focus-visible:ring-offset-0" />
+                class="text-foreground h-auto w-full border-none bg-transparent p-0 text-xl font-black focus-visible:ring-0 focus-visible:ring-offset-0 sm:text-2xl" />
             </div>
           </div>
         </div>

@@ -19,7 +19,7 @@ const filterPlatforms = makeFilter(completion.filters, "platforms", completion.s
   </div>
   <div
     v-if="!completion.loading && completion.completion.length > 0"
-    class="container mt-6 grid grid-cols-3 gap-2">
+    class="container mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
     <Select v-model="sorter">
       <SelectTrigger class="w-full">
         <SelectValue placeholder="Default sorting" />
@@ -48,6 +48,7 @@ const filterPlatforms = makeFilter(completion.filters, "platforms", completion.s
       </SelectContent>
     </Select>
     <MultiSelect
+      class="col-span-1 sm:col-span-2 md:col-span-1"
       v-model="filterPlatforms"
       :options="platformOptions"
       placeholder="Select platforms..." />
