@@ -1,14 +1,21 @@
 <script setup lang="ts">
 import type { Trophy } from "@/models/trophy";
+import { useCompletionStore } from "@/store/completion";
 import { Checkbox } from "@/ui/checkbox";
 import { Label } from "@/ui/label";
 import { TrophyIcon } from "lucide-vue-next";
 
 interface Props {
+  item: string | undefined;
   trophy: Trophy | undefined;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+const store = useCompletionStore();
+
+const handleClick = () => {
+  store.completeTrophy(props.item, props.trophy?.id);
+};
 </script>
 
 <template>
@@ -18,7 +25,9 @@ defineProps<Props>();
     class="flex cursor-pointer items-center gap-3 rounded-lg pt-3 has-aria-checked:opacity-50">
     <Checkbox
       :id="`trophy-${trophy.id}`"
-      class="data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground" />
+      :model-value="trophy.earned"
+      class="data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+      @update:model-value="handleClick" />
     <div class="bg-card/50 flex h-16 w-16 shrink-0 items-center justify-center rounded-lg">
       <img
         v-if="trophy?.image_url"

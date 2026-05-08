@@ -19,7 +19,7 @@ import {
   setForage,
   setStorage,
 } from "@/utils/local-storage";
-import { getProgress } from "@/utils/progress";
+import { getPoint, getProgress } from "@/utils/progress";
 import { clone, cloneAndPersist, persist } from "@/utils/store";
 import { defineStore } from "pinia";
 import { toRaw } from "vue";
@@ -149,6 +149,26 @@ export const useCompletionStore = defineStore("completion", {
       item.earned_counts = clone(isPlatinum ? item.base_counts : item.counts);
       item.progress.earned = earned;
       item.progress.value = getProgress(earned, item.progress.total);
+      this.recalculatePoints(delta);
+      setForage(keys.completion, this.completion);
+      this.updateView();
+    },
+    completeTrophy(id: string | undefined, trophyId: number | undefined) {
+      if (!id || trophyId === undefined || !this.calculated) return;
+      const item = this.completion?.find((i) => i?.id === id);
+      if (!item?.trophies || !item?.progress || !item?.earned_counts) return;
+      const trophy = item.trophies.find((t) => t.kind === "trophy" && t.id === trophyId);
+      if (!trophy || trophy.kind !== "trophy") return;
+      const earned = trophy.earned;
+      const modifier = earned ? -1 : 1;
+      const points = getPoint(trophy.type);
+      const delta = points * modifier;
+      trophy.earned = !trophy.earned;
+      trophy.earned_at = trophy.earned ? new Date().toISOString() : undefined;
+      item.earned_counts[trophy.type] += modifier;
+      if (item.earned_counts.total !== undefined) item.earned_counts.total += modifier;
+      item.progress.earned += delta;
+      item.progress.value = getProgress(item.progress.earned, item.progress.total);
       this.recalculatePoints(delta);
       setForage(keys.completion, this.completion);
       this.updateView();

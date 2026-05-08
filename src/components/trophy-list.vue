@@ -74,7 +74,7 @@ onUpdated(measureAll);
             <h3 v-else>DLC {{ Number(trophies?.[row.index]?.id ?? 0) }}</h3>
           </div>
         </template>
-        <TrophyContent v-else :trophy="getTrophy(trophies?.[row.index])" />
+        <TrophyContent v-else :item="id" :trophy="getTrophy(trophies?.[row.index])" />
       </div>
     </div>
   </div>
