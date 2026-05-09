@@ -10,7 +10,7 @@ const store = useCompletionStore();
 
 <template>
   <div v-if="store.loading" class="container mt-4 sm:mt-6">
-    <Skeleton class="h-24 w-full sm:h-28" />
+    <Skeleton class="h-28 w-full" />
   </div>
   <div v-if="!store.loading && store.calculated" class="sticky top-6 z-50 container mt-4 sm:mt-6">
     <div

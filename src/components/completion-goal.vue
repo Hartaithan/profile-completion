@@ -22,7 +22,7 @@ const goal = computed(() =>
 
 <template>
   <div v-if="completion.loading" class="container mt-4 sm:mt-6">
-    <Skeleton class="h-56 w-full rounded-lg sm:h-44" />
+    <Skeleton class="h-44 w-full rounded-lg" />
   </div>
   <div
     v-if="!completion.loading && completion.profile"

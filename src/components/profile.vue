@@ -10,17 +10,17 @@ const store = useCompletionStore();
   <div
     v-if="store.status === 'profile-loading'"
     class="container mt-6 flex w-full flex-wrap items-center gap-4 md:flex-nowrap">
-    <Skeleton class="aspect-square size-24 min-w-24 rounded-lg" />
+    <Skeleton class="aspect-square size-20 min-w-20 rounded-lg sm:size-24 sm:min-w-24" />
     <div class="flex flex-col gap-y-2">
-      <Skeleton class="h-9 w-64" />
-      <Skeleton class="h-9 w-32" />
+      <Skeleton class="h-6 w-64 sm:h-9" />
+      <Skeleton class="h-6 w-32 sm:h-9" />
     </div>
   </div>
   <div
     v-if="store.status !== 'profile-loading' && store.profile"
     class="container mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
     <div
-      class="bg-card border-border/50 h-20 w-20 shrink-0 overflow-hidden rounded-lg border p-1 sm:h-24 sm:w-24">
+      class="bg-card border-border/50 size-20 shrink-0 overflow-hidden rounded-lg border p-1 sm:size-24">
       <img
         class="h-full w-full rounded-lg object-cover"
         :src="store.profile?.avatar_url"

@@ -14,8 +14,13 @@ const filterPlatforms = makeFilter(completion.filters, "platforms", completion.s
 </script>
 
 <template>
-  <div v-if="completion.loading" class="container mt-4 sm:mt-6">
-    <Skeleton class="h-9 w-full" />
+  <div
+    v-if="completion.loading"
+    class="container mt-4 grid grid-cols-1 gap-2 sm:mt-6 sm:grid-cols-2 md:grid-cols-3">
+    <Skeleton class="col-span-3 hidden h-9 w-full sm:block" />
+    <Skeleton class="block h-8 w-full sm:hidden" />
+    <Skeleton class="block h-8 w-full sm:hidden" />
+    <Skeleton class="block h-8 w-full sm:hidden" />
   </div>
   <div
     v-if="!completion.loading && completion.completion.length > 0"

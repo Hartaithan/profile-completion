@@ -11,11 +11,11 @@ const store = useCompletionStore();
   <div
     v-if="store.status === 'profile-loading'"
     class="container mt-4 grid grid-cols-2 gap-2 sm:mt-6 sm:grid-cols-3 md:grid-cols-5">
-    <Skeleton class="h-20" />
-    <Skeleton class="h-20" />
-    <Skeleton class="h-20" />
-    <Skeleton class="h-20" />
-    <Skeleton class="h-20" />
+    <Skeleton class="h-10 sm:h-20" />
+    <Skeleton class="h-10 sm:h-20" />
+    <Skeleton class="h-10 sm:h-20" />
+    <Skeleton class="h-10 sm:h-20" />
+    <Skeleton class="col-span-2 h-10 sm:h-20 md:col-span-1" />
   </div>
   <div
     v-if="store.status !== 'profile-loading' && store.profile"
