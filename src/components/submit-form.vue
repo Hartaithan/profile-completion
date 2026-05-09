@@ -88,7 +88,11 @@ const handleSubmit: (event: SubmitEvent) => void = async (event) => {
 <template>
   <form class="w-full" ref="form" @submit.prevent="handleSubmit">
     <InputGroup>
-      <InputGroupInput name="id" @input="onInput" placeholder="Enter your PSN ID" />
+      <InputGroupInput
+        name="id"
+        @input="onInput"
+        class="text-sm sm:text-base"
+        placeholder="Enter your PSN ID" />
       <InputGroupAddon align="inline-end">
         <InputGroupButton v-if="hasValue" @click="clear" size="icon-xs" type="button">
           <XIcon />

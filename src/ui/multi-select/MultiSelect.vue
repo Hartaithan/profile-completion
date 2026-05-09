@@ -29,6 +29,7 @@ interface Props {
   options: Option[];
   placeholder?: string;
   class?: string;
+  anchorClass?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -78,6 +79,7 @@ const handleUpdate = (value: unknown) => {
         cn(
           'border-input bg-input/30 hover:bg-input/50 focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px]',
           'flex min-h-9 w-full items-center justify-between gap-2 rounded-md border px-3 py-1.5 text-sm shadow-xs transition-[color,box-shadow] outline-none',
+          anchorClass,
         )
       ">
       <TagsInputRoot

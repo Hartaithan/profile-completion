@@ -21,12 +21,12 @@ const goal = computed(() =>
 </script>
 
 <template>
-  <div v-if="completion.loading" class="container mt-6">
+  <div v-if="completion.loading" class="container mt-4 sm:mt-6">
     <Skeleton class="h-56 w-full rounded-lg sm:h-44" />
   </div>
   <div
     v-if="!completion.loading && completion.profile"
-    class="bg-card border-primary/40 relative container mt-6 flex w-full flex-col items-start justify-between gap-3 overflow-hidden rounded-lg border-2 p-4 sm:gap-6 sm:p-6 md:flex-row md:items-center">
+    class="bg-card border-primary/40 relative container mt-4 flex w-full flex-col items-start justify-between gap-3 overflow-hidden rounded-lg border-2 p-4 sm:mt-6 sm:gap-6 sm:p-6 md:flex-row md:items-center">
     <TargetIcon
       class="text-primary pointer-events-none absolute top-2 right-2 size-20 opacity-10 sm:size-28" />
     <div class="flex w-full flex-col md:w-auto">

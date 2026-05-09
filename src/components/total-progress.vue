@@ -9,10 +9,10 @@ const store = useCompletionStore();
 </script>
 
 <template>
-  <div v-if="store.loading" class="container mt-6">
+  <div v-if="store.loading" class="container mt-4 sm:mt-6">
     <Skeleton class="h-24 w-full sm:h-28" />
   </div>
-  <div v-if="!store.loading && store.calculated" class="sticky top-6 z-50 container mt-6">
+  <div v-if="!store.loading && store.calculated" class="sticky top-6 z-50 container mt-4 sm:mt-6">
     <div
       class="bg-card border-border/50 flex h-auto flex-col justify-center rounded-lg border p-4 sm:h-28 sm:p-5">
       <div

@@ -20,21 +20,21 @@ defineProps<Props>();
   <div
     :class="
       cn(
-        'bg-card border-border/50 flex h-16 items-center justify-center rounded-lg border px-2 sm:h-20',
+        'bg-card border-border/50 flex h-auto items-center justify-center rounded-lg border p-1 sm:h-18 lg:h-20',
         containerClass,
       )
     ">
     <component
       :is="icon"
       v-if="icon"
-      :class="cn('text-foreground/90 size-6 shrink-0 sm:size-8', iconClass)" />
-    <div class="ml-2 flex flex-col sm:ml-3">
+      :class="cn('text-foreground/90 size-5 shrink-0 sm:size-8', iconClass)" />
+    <div class="ml-2 flex items-center gap-x-3 sm:ml-3 sm:flex-col sm:items-start">
       <span
         :class="
           cn(
-            'text-xl font-black sm:text-2xl',
-            value && value > 999 && 'text-lg sm:text-xl',
-            value && value > 99999 && 'text-sm sm:text-base',
+            'text-lg font-black sm:text-2xl',
+            value && value > 999 && 'text-base sm:text-xl',
+            value && value > 99999 && 'text-xs sm:text-base',
             valueClass,
           )
         ">

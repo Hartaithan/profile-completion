@@ -39,7 +39,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container mt-6 w-full" ref="parent">
+  <div class="container mt-4 w-full sm:mt-6" ref="parent">
     <div v-if="store.loading" class="flex w-full flex-col gap-y-3">
       <Skeleton class="h-48 rounded-lg sm:h-20" />
       <Skeleton class="h-48 rounded-lg sm:h-20" />

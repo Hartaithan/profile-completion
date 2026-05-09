@@ -14,14 +14,14 @@ const filterPlatforms = makeFilter(completion.filters, "platforms", completion.s
 </script>
 
 <template>
-  <div v-if="completion.loading" class="container mt-6">
+  <div v-if="completion.loading" class="container mt-4 sm:mt-6">
     <Skeleton class="h-9 w-full" />
   </div>
   <div
     v-if="!completion.loading && completion.completion.length > 0"
-    class="container mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
+    class="container mt-4 grid grid-cols-1 gap-2 sm:mt-6 sm:grid-cols-2 md:grid-cols-3">
     <Select v-model="sorter">
-      <SelectTrigger class="w-full">
+      <SelectTrigger class="w-full data-[size=default]:h-8 sm:data-[size=default]:h-9">
         <SelectValue placeholder="Default sorting" />
       </SelectTrigger>
       <SelectContent>
@@ -35,7 +35,7 @@ const filterPlatforms = makeFilter(completion.filters, "platforms", completion.s
       </SelectContent>
     </Select>
     <Select v-model="filterCompletion">
-      <SelectTrigger class="w-full">
+      <SelectTrigger class="w-full data-[size=default]:h-8 sm:data-[size=default]:h-9">
         <SelectValue placeholder="All statuses" />
       </SelectTrigger>
       <SelectContent>
@@ -49,6 +49,7 @@ const filterPlatforms = makeFilter(completion.filters, "platforms", completion.s
     </Select>
     <MultiSelect
       class="col-span-1 sm:col-span-2 md:col-span-1"
+      anchor-class="min-h-8 py-0 sm:min-h-9 sm:py-1.5"
       v-model="filterPlatforms"
       :options="platformOptions"
       placeholder="Select platforms..." />
