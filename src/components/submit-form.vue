@@ -92,7 +92,9 @@ const handleSubmit: (event: SubmitEvent) => void = async (event) => {
         name="id"
         @input="onInput"
         class="text-sm sm:text-base"
-        placeholder="Enter your PSN ID" />
+        placeholder="Enter your PSN ID"
+        spellcheck="false"
+        autocorrect="off" />
       <InputGroupAddon align="inline-end">
         <InputGroupButton v-if="hasValue" @click="clear" size="icon-xs" type="button">
           <XIcon />
