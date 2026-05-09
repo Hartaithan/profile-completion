@@ -8,10 +8,7 @@ import { computed, onMounted, ref, type VNodeRef } from "vue";
 
 const sizes = {
   item: 56,
-  spacing: () => {
-    const sm = window.innerWidth < 640;
-    return sm ? 20 : 12;
-  },
+  spacing: 12,
 };
 
 const store = useCompletionStore();
@@ -22,7 +19,7 @@ const parentOffset = ref(0);
 const options = computed(() => ({
   count: store.view?.length ?? 0,
   getScrollElement: () => window,
-  estimateSize: () => sizes.item + sizes.spacing(),
+  estimateSize: () => sizes.item + sizes.spacing,
   scrollMargin: parentOffset.value,
   overscan: 5,
 }));
@@ -44,11 +41,11 @@ onMounted(() => {
 <template>
   <div class="container mt-6 w-full" ref="parent">
     <div v-if="store.loading" class="flex w-full flex-col gap-y-3">
-      <Skeleton class="h-20" />
-      <Skeleton class="h-20" />
-      <Skeleton class="h-20" />
-      <Skeleton class="h-20" />
-      <Skeleton class="h-20" />
+      <Skeleton class="h-48 rounded-lg sm:h-20" />
+      <Skeleton class="h-48 rounded-lg sm:h-20" />
+      <Skeleton class="h-48 rounded-lg sm:h-20" />
+      <Skeleton class="h-48 rounded-lg sm:h-20" />
+      <Skeleton class="h-48 rounded-lg sm:h-20" />
     </div>
     <CompletionEmptyState v-if="!store.loading && !store.profile" />
     <div
@@ -64,10 +61,12 @@ onMounted(() => {
         :ref="measureElement"
         :style="{
           transform: `translateY(${row.start - virtualizer.options.scrollMargin}px)`,
-          'padding-bottom': `${sizes.spacing()}px`,
+          'padding-bottom': `${sizes.spacing}px`,
         }" />
     </div>
-    <p v-if="!store.loading && store.profile && store.view.length === 0" class="text-center">
+    <p
+      v-if="!store.loading && store.profile && store.view.length === 0"
+      class="text-center text-sm sm:text-base">
       nothing found :(
     </p>
   </div>

@@ -18,7 +18,7 @@ defineProps<Props>();
 <template>
   <Dialog>
     <DialogTrigger as-child>
-      <Button class="bg-card/90 ml-2 size-9 rounded" variant="outline" size="icon">
+      <Button class="bg-card/90 size-9 rounded" variant="outline" size="icon">
         <SquarePenIcon class="size-5" />
       </Button>
     </DialogTrigger>

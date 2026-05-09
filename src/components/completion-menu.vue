@@ -35,7 +35,7 @@ const position = computed<DropdownMenuContentProps["side"]>(() => {
 <template>
   <DropdownMenu v-if="id">
     <DropdownMenuTrigger as-child>
-      <Button class="bg-card/90 ml-4 size-9 rounded" variant="outline" size="icon">
+      <Button class="bg-card/90 size-9 rounded" variant="outline" size="icon">
         <CircleCheckIcon class="size-5" v-if="type === 'completed'" />
         <TrophyIcon class="text-trophy-platinum size-5" v-else-if="type === 'platinum'" />
         <CircleDashedIcon class="size-5" v-else />

@@ -16,7 +16,7 @@ const attrs = useAttrs();
 <template>
   <div
     :class="[
-      'relative flex aspect-20/11 h-14 w-auto shrink-0 justify-center overflow-hidden rounded-md',
+      'relative flex aspect-20/11 w-auto shrink-0 justify-center overflow-hidden rounded-md',
       props.class,
     ]">
     <img
