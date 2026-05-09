@@ -38,13 +38,15 @@ const handleCancel = () => props.abort("data-loading");
 <template>
   <Dialog :open="status !== 'idle' && status !== 'initializing'">
     <DialogOverlay class="bg-popover/5 fixed inset-0 backdrop-blur" />
-    <DialogContent class="bg-popover/80 gap-0 rounded p-4 sm:max-w-xl" :show-close-button="false">
+    <DialogContent
+      class="bg-popover/80 gap-0 rounded p-3 sm:max-w-xl sm:p-4"
+      :show-close-button="false">
       <DialogTitle class="sr-only">Sync Modal</DialogTitle>
       <DialogDescription class="sr-only">Sync Modal Description</DialogDescription>
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between gap-3">
         <div class="flex flex-col uppercase">
-          <h2 class="text-primary text-2xl font-black tracking-tighter">
-            {{ status === "completed" ? "Your Data is Ready" : "Loading Your Data..." }}
+          <h2 class="text-primary text-xl font-black tracking-tighter sm:text-2xl">
+            {{ status === "completed" ? "Your Data is Ready" : "Loading Your\u00A0Data..." }}
           </h2>
           <p class="text-muted-foreground text-xxs font-mono">
             {{
@@ -55,13 +57,13 @@ const handleCancel = () => props.abort("data-loading");
           </p>
         </div>
         <div
-          class="border-primary/80 bg-primary/10 flex size-12 items-center justify-center rounded border">
-          <CheckCheck v-if="status === 'completed'" class="text-primary size-6" />
-          <RefreshCw v-else class="text-primary animate-spin-slow size-5" />
+          class="border-primary/80 bg-primary/10 flex size-10 shrink-0 items-center justify-center rounded border sm:size-12">
+          <CheckCheck v-if="status === 'completed'" class="text-primary size-5 sm:size-6" />
+          <RefreshCw v-else class="text-primary animate-spin-slow size-4 sm:size-5" />
         </div>
       </div>
-      <div class="bg-border my-5 h-px w-full" />
-      <div class="space-y-4 px-2">
+      <div class="bg-border my-4 h-px w-full sm:my-5" />
+      <div class="space-y-3 sm:space-y-4 sm:px-2">
         <FetchStep
           title="Profile"
           :icon="User"
@@ -97,8 +99,9 @@ const handleCancel = () => props.abort("data-loading");
           </template>
         </FetchStep>
       </div>
-      <div class="bg-border my-5 h-px w-full" />
-      <div class="relative flex h-9 items-center justify-between gap-5">
+      <div class="bg-border my-4 h-px w-full sm:my-5" />
+      <div
+        class="flex flex-col gap-3 sm:relative sm:h-9 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
         <div class="flex flex-col gap-0.5 font-mono">
           <span class="text-muted-foreground/40 text-xxs uppercase">SYSTEM_STATUS</span>
           <span class="text-primary/40 text-xxs font-medium">STABLE // 12.4ms</span>
@@ -107,7 +110,7 @@ const handleCancel = () => props.abort("data-loading");
           <Button
             v-if="status === 'completed'"
             key="continue"
-            class="absolute top-1/2 right-1/2 w-32 translate-x-1/2 -translate-y-1/2 rounded text-xs font-bold uppercase"
+            class="h-7 w-full rounded text-xs font-bold uppercase sm:absolute sm:top-1/2 sm:right-1/2 sm:h-8 sm:w-32 sm:translate-x-1/2 sm:-translate-y-1/2"
             size="sm"
             @click="handleContinue">
             Continue
@@ -115,13 +118,13 @@ const handleCancel = () => props.abort("data-loading");
           <Button
             v-else
             key="cancel"
-            class="absolute top-1/2 right-1/2 w-32 translate-x-1/2 -translate-y-1/2 rounded text-xs font-bold uppercase"
+            class="h-7 w-full rounded text-xs font-bold uppercase sm:absolute sm:top-1/2 sm:right-1/2 sm:h-8 sm:w-32 sm:translate-x-1/2 sm:-translate-y-1/2"
             size="sm"
             @click="handleCancel">
             Cancel
           </Button>
         </Transition>
-        <div class="bg-muted relative h-4 w-32 overflow-hidden rounded-sm">
+        <div class="bg-muted relative hidden h-4 overflow-hidden rounded-sm sm:block sm:w-32">
           <div class="absolute inset-0 flex items-end gap-px px-1">
             <div class="bg-primary/20 h-[40%] w-full" />
             <div class="bg-primary/20 h-[60%] w-full" />

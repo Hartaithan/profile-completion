@@ -69,7 +69,7 @@ onUpdated(measureAll);
         ">
         <template v-if="trophies?.[row.index]?.kind === 'group'">
           <div
-            class="text-muted-foreground bg-popover border-b py-2 text-xs font-bold tracking-wider uppercase">
+            class="text-muted-foreground bg-popover border-b py-2 text-xs font-bold tracking-wider uppercase sm:text-sm">
             <h3 v-if="trophies?.[row.index]?.id === 'default'">Base game</h3>
             <h3 v-else>DLC {{ Number(trophies?.[row.index]?.id ?? 0) }}</h3>
           </div>
