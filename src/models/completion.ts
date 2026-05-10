@@ -66,3 +66,5 @@ export interface FetchCompletionParams {
   onProgress: (data: CompletionProgressData) => void;
   signal?: AbortSignal;
 }
+
+export type CompletionTarget = "platinum" | "complete";

@@ -1,6 +1,6 @@
-import type { CompletionPoints, CompletionProgress } from "@/models/completion";
+import type { CompletionPoints, CompletionProgress, CompletionTarget } from "@/models/completion";
 import type { CompletionGoal } from "@/models/goal";
-import type { TrophyCounts } from "@/models/trophy";
+import type { TrophyCounts, TrophyItem } from "@/models/trophy";
 import { getPoints } from "@/utils/progress";
 
 interface StatusParams {
@@ -41,4 +41,22 @@ export const getCompletionGoal = (params: GoalParams): CompletionGoal => {
   const denominator = (1 - targetValue) * gamePoints;
   if (denominator <= 0) return "unreachable";
   return Math.ceil(numerator / denominator);
+};
+
+export const completeItemTrophies = (
+  trophies: TrophyItem[],
+  target: CompletionTarget,
+): TrophyItem[] => {
+  const now = new Date().toISOString();
+  const result: TrophyItem[] = [];
+  for (const item of trophies) {
+    if (item.kind !== "trophy") {
+      result.push(item);
+    } else {
+      const earned = target === "platinum" ? item.group === "default" : true;
+      const earned_at = earned ? now : undefined;
+      result.push({ ...item, earned, earned_at });
+    }
+  }
+  return result;
 };

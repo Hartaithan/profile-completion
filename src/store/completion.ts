@@ -6,9 +6,10 @@ import {
   profileKey,
 } from "@/constants/storage";
 import type { FetchStatus } from "@/models/app";
-import type { CompletionProgress, NullableCompletion } from "@/models/completion";
+import type { CompletionProgress, CompletionTarget, NullableCompletion } from "@/models/completion";
 import type { Filters, Sorter } from "@/models/filters";
 import type { Profile } from "@/models/profile";
+import { completeItemTrophies } from "@/utils/completion";
 import { filterCompletion, sortCompletion } from "@/utils/data-transform";
 import { InitialCompletion } from "@/utils/initial-completion";
 import {
@@ -139,7 +140,7 @@ export const useCompletionStore = defineStore("completion", {
       InitialCompletion.invalidate();
       this.updateView();
     },
-    completeItem(id: string | undefined, target: "platinum" | "complete") {
+    completeItem(id: string | undefined, target: CompletionTarget) {
       if (!id || !this.calculated) return;
       const item = this.completion?.find((i) => i?.id === id);
       if (!item?.points || !item?.progress || !item?.base_counts) return;
@@ -150,6 +151,8 @@ export const useCompletionStore = defineStore("completion", {
       item.progress.earned = earned;
       item.progress.value = getProgress(earned, item.progress.total);
       this.recalculatePoints(delta);
+      const trophies = completeItemTrophies(item.trophies, target);
+      item.trophies = trophies;
       setForage(keys.completion, this.completion);
       this.updateView();
     },
