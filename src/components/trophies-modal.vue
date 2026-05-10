@@ -1,10 +1,19 @@
 <script setup lang="ts">
 import TrophyList from "@/components/trophy-list.vue";
 import type { TrophyItem } from "@/models/trophy";
+import { useCompletionStore } from "@/store/completion";
 import { Button } from "@/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/ui/dialog";
+import { ButtonGroup } from "@/ui/button-group";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/ui/dialog";
 import DialogDescription from "@/ui/dialog/DialogDescription.vue";
-import { SquarePenIcon } from "lucide-vue-next";
+import { CheckIcon, SquarePenIcon, XIcon } from "lucide-vue-next";
 
 interface Props {
   id: string | undefined;
@@ -13,6 +22,8 @@ interface Props {
 }
 
 defineProps<Props>();
+
+const store = useCompletionStore();
 </script>
 
 <template>
@@ -31,6 +42,18 @@ defineProps<Props>();
         <DialogDescription class="sr-only">{{ title }} Trophies Modal</DialogDescription>
       </DialogHeader>
       <TrophyList :id="id" :trophies="trophies" />
+      <DialogFooter>
+        <ButtonGroup class="w-full">
+          <Button class="flex-1" variant="outline" @click="store.completeAllTrophies(id)">
+            <CheckIcon class="size-4" />
+            Mark All
+          </Button>
+          <Button class="flex-1" variant="outline" @click="store.uncompleteAllTrophies(id)">
+            <XIcon class="size-4" />
+            Unmark All
+          </Button>
+        </ButtonGroup>
+      </DialogFooter>
     </DialogContent>
   </Dialog>
 </template>

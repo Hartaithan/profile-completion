@@ -9,7 +9,7 @@ import type { FetchStatus } from "@/models/app";
 import type { CompletionProgress, CompletionTarget, NullableCompletion } from "@/models/completion";
 import type { Filters, Sorter } from "@/models/filters";
 import type { Profile } from "@/models/profile";
-import { completeItemTrophies } from "@/utils/completion";
+import { completeItemTrophies, uncompleteItemTrophies } from "@/utils/completion";
 import { filterCompletion, sortCompletion } from "@/utils/data-transform";
 import { InitialCompletion } from "@/utils/initial-completion";
 import {
@@ -173,6 +173,33 @@ export const useCompletionStore = defineStore("completion", {
       item.progress.earned += delta;
       item.progress.value = getProgress(item.progress.earned, item.progress.total);
       this.recalculatePoints(delta);
+      setForage(keys.completion, this.completion);
+      this.updateView();
+    },
+    completeAllTrophies(id: string | undefined) {
+      if (!id || !this.calculated) return;
+      const item = this.completion?.find((i) => i?.id === id);
+      if (!item?.points || !item?.progress || !item?.base_counts) return;
+      const earned = item.points.total;
+      const delta = earned - item.progress.earned;
+      item.earned_counts = clone(item.counts);
+      item.progress.earned = earned;
+      item.progress.value = getProgress(earned, item.progress.total);
+      this.recalculatePoints(delta);
+      item.trophies = completeItemTrophies(item.trophies, "complete");
+      setForage(keys.completion, this.completion);
+      this.updateView();
+    },
+    uncompleteAllTrophies(id: string | undefined) {
+      if (!id || !this.calculated) return;
+      const item = this.completion?.find((i) => i?.id === id);
+      if (!item?.points || !item?.progress || !item?.base_counts) return;
+      const delta = -item.progress.earned;
+      item.earned_counts = { ...item.counts, platinum: 0, gold: 0, silver: 0, bronze: 0, total: 0 };
+      item.progress.earned = 0;
+      item.progress.value = getProgress(0, item.progress.total);
+      this.recalculatePoints(delta);
+      item.trophies = uncompleteItemTrophies(item.trophies);
       setForage(keys.completion, this.completion);
       this.updateView();
     },

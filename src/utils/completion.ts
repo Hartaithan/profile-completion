@@ -60,3 +60,12 @@ export const completeItemTrophies = (
   }
   return result;
 };
+
+export const uncompleteItemTrophies = (trophies: TrophyItem[]): TrophyItem[] => {
+  const result: TrophyItem[] = [];
+  for (const item of trophies) {
+    if (item.kind !== "trophy") result.push(item);
+    else result.push({ ...item, earned: false, earned_at: undefined });
+  }
+  return result;
+};
