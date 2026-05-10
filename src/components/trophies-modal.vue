@@ -25,7 +25,7 @@ defineProps<Props>();
     <DialogContent class="rounded-lg sm:max-w-xl">
       <DialogHeader
         class="border-border/30 flex-row items-center justify-between space-y-0 border-b">
-        <DialogTitle class="text-foreground text-2xl font-black tracking-tighter uppercase">
+        <DialogTitle class="text-foreground pr-6 text-2xl font-black tracking-tighter uppercase">
           {{ title }} Trophies
         </DialogTitle>
         <DialogDescription class="sr-only">{{ title }} Trophies Modal</DialogDescription>
