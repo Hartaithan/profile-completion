@@ -37,15 +37,28 @@ const goal = computed(() =>
       </p>
       <div class="flex min-h-11 items-end gap-2 sm:min-h-16 sm:gap-3">
         <TooltipProvider>
-          <template v-if="typeof goal === 'number'">
-            <span
-              class="text-foreground text-4xl leading-none font-black tracking-tighter sm:text-6xl">
-              {{ goal }}
-            </span>
-            <span class="text-primary text-base font-bold tracking-widest uppercase sm:text-xl">
-              games
-            </span>
-          </template>
+          <TooltipAdaptive
+            v-if="typeof goal === 'number'"
+            trigger-class="flex min-w-20 gap-2 items-end sm:min-w-24"
+            content-class="max-w-48">
+            <template #trigger>
+              <span
+                class="text-foreground text-4xl leading-none font-black tracking-tighter sm:text-6xl">
+                {{ goal }}
+              </span>
+              <span class="text-primary text-base font-bold tracking-widest uppercase sm:text-xl">
+                games
+              </span>
+            </template>
+            <template #content>
+              <p class="text-center">
+                This means that you need to complete
+                <b>{{ goal }}</b>
+                completely new games, with the selected trophy count, that you don't currently have
+                on your profile
+              </p>
+            </template>
+          </TooltipAdaptive>
           <TooltipAdaptive
             v-else-if="goal === 'error'"
             trigger-class="flex min-w-20 gap-2 items-end sm:min-w-24"
