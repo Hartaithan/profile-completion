@@ -8,14 +8,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/ui/dropdown-menu";
+import { capture } from "@/utils/analytics";
 import { MenuIcon } from "lucide-vue-next";
 
 const store = useCompletionStore();
 const goal = useGoalStore();
 
+const restore = () => {
+  store.restore();
+  capture("completion-restore");
+};
+
 const reset = () => {
   store.reset();
   goal.reset();
+  capture("completion-reset");
 };
 </script>
 
@@ -27,7 +34,7 @@ const reset = () => {
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent class="content" align="end">
-      <DropdownMenuItem @click="store.restore">Reset to default</DropdownMenuItem>
+      <DropdownMenuItem @click="restore">Reset to default</DropdownMenuItem>
       <DropdownMenuItem @click="reset">Reset all data</DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>

@@ -27,6 +27,7 @@
     "localforage": "^1.10.0",
     "lucide-vue-next": "^1.0.0",
     "pinia": "^3.0.4",
+    "posthog-js": "^1.372.10",
     "reka-ui": "^2.9.7",
     "tailwind-merge": "^3.5.0",
     "vue": "^3.5.31",

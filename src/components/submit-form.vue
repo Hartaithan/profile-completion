@@ -4,6 +4,7 @@ import { useAbortController } from "@/hooks/use-abort-controller";
 import type { CompletionProgressData } from "@/models/completion";
 import { useCompletionStore } from "@/store/completion";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/ui/input-group";
+import { capture } from "@/utils/analytics";
 import { API } from "@/utils/api";
 import { readError } from "@/utils/error";
 import { showExpiresToast } from "@/utils/toast";
@@ -56,6 +57,7 @@ const handleSubmit: (event: SubmitEvent) => void = async (event) => {
   try {
     if (id.length === 0) throw new Error(messages.empty);
     store.setStatus("profile-loading");
+    capture("submit-profile", { id });
 
     const { profile, expires: profileExpires } = await API.getProfile({ id, signal: getSignal() });
     if (!profile) throw new Error(messages.fetch);
@@ -63,6 +65,7 @@ const handleSubmit: (event: SubmitEvent) => void = async (event) => {
     expires = profileExpires;
 
     store.setStatus("completion-loading");
+    capture("submit-completion", { id, expires });
     const {
       list,
       progress,
@@ -76,10 +79,16 @@ const handleSubmit: (event: SubmitEvent) => void = async (event) => {
     store.setCompletion(list || [], "completed");
     store.setCalculated(progress);
     showExpiresToast(expires);
+    capture("submit-complete", {
+      id,
+      progress: JSON.stringify(progress),
+      expires,
+    });
   } catch (error) {
     const message = readError(error);
     toast.error(message);
-    console.info("error", message, error);
+    capture("submit-error", { id, message });
+    console.error("error", message, error);
     store.setStatus("idle");
   }
 };
