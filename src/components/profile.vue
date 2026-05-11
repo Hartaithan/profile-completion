@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ProfileAvatar from "@/components/profile-avatar.vue";
 import ProfileStatItem from "@/components/profile-stat-item.vue";
 import { useCompletionStore } from "@/store/completion";
 import { Skeleton } from "@/ui/skeleton";
@@ -19,13 +20,7 @@ const store = useCompletionStore();
   <div
     v-if="store.status !== 'profile-loading' && store.profile"
     class="container mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
-    <div
-      class="bg-card border-border/50 size-20 shrink-0 overflow-hidden rounded-lg border p-1 sm:size-24">
-      <img
-        class="h-full w-full rounded-lg object-cover"
-        :src="store.profile?.avatar_url"
-        :alt="`${store.profile?.name}'s avatar`" />
-    </div>
+    <ProfileAvatar :url="store.profile.avatar_url" :name="store.profile.name" />
     <div class="flex w-full flex-col">
       <h1 class="text-foreground mb-2 text-2xl leading-none font-black uppercase sm:text-3xl">
         {{ store.profile?.name ?? "Trophy Hunter" }}
