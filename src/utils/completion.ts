@@ -1,7 +1,12 @@
-import type { CompletionPoints, CompletionProgress, CompletionTarget } from "@/models/completion";
+import type {
+  CompletionPoints,
+  CompletionProgress,
+  CompletionTarget,
+  NullableCompletion,
+} from "@/models/completion";
 import type { CompletionGoal } from "@/models/goal";
-import type { TrophyCounts, TrophyItem } from "@/models/trophy";
-import { getPoints } from "@/utils/progress";
+import type { TrophyCounts } from "@/models/trophy";
+import { getPoints, getProgress } from "@/utils/progress";
 
 interface StatusParams {
   points: CompletionPoints | null | undefined;
@@ -44,28 +49,37 @@ export const getCompletionGoal = (params: GoalParams): CompletionGoal => {
 };
 
 export const completeItemTrophies = (
-  trophies: TrophyItem[],
+  item: NullableCompletion | undefined,
   target: CompletionTarget,
-): TrophyItem[] => {
+) => {
+  if (!item) return;
   const now = new Date().toISOString();
-  const result: TrophyItem[] = [];
-  for (const item of trophies) {
-    if (item.kind !== "trophy") {
-      result.push(item);
-    } else {
-      const earned = target === "platinum" ? item.group === "default" : true;
-      const earned_at = earned ? now : undefined;
-      result.push({ ...item, earned, earned_at });
-    }
+  for (const trophy of item.trophies) {
+    if (trophy.kind !== "trophy") continue;
+    const earned = target === "platinum" ? trophy.group === "default" : true;
+    trophy.earned = earned;
+    trophy.earned_at = earned ? now : undefined;
   }
-  return result;
 };
 
-export const uncompleteItemTrophies = (trophies: TrophyItem[]): TrophyItem[] => {
-  const result: TrophyItem[] = [];
-  for (const item of trophies) {
-    if (item.kind !== "trophy") result.push(item);
-    else result.push({ ...item, earned: false, earned_at: undefined });
+export const uncompleteAllTrophies = (item: NullableCompletion | undefined) => {
+  if (!item) return;
+  for (const trophy of item.trophies) {
+    if (trophy.kind !== "trophy") continue;
+    trophy.earned = false;
+    trophy.earned_at = undefined;
   }
-  return result;
+};
+
+export const applyItemProgress = (
+  item: NullableCompletion,
+  earned: number,
+  earnedCounts: NonNullable<NullableCompletion>["earned_counts"],
+): number => {
+  if (!item || !item?.progress) return 0;
+  const delta = earned - item.progress.earned;
+  item.earned_counts = earnedCounts;
+  item.progress.earned = earned;
+  item.progress.value = getProgress(earned, item.progress.total);
+  return delta;
 };

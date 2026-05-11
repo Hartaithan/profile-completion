@@ -1,5 +1,5 @@
 import type { CachedResponse } from "@/models/app";
-import type { TrophyCounts, TrophyItem } from "@/models/trophy";
+import type { Trophy, TrophyCounts, TrophyItem } from "@/models/trophy";
 
 export type Platform = "PS5" | "PS4" | "PS3" | "PSVITA" | "PSPC";
 
@@ -68,3 +68,8 @@ export interface FetchCompletionParams {
 }
 
 export type CompletionTarget = "platinum" | "complete";
+
+export type CompletionMaps = {
+  completionMap: Record<string, Completion>;
+  trophyMap: Record<string, Record<number, Trophy>>;
+};

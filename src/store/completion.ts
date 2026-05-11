@@ -6,10 +6,17 @@ import {
   profileKey,
 } from "@/constants/storage";
 import type { FetchStatus } from "@/models/app";
-import type { CompletionProgress, CompletionTarget, NullableCompletion } from "@/models/completion";
+import type {
+  Completion,
+  CompletionProgress,
+  CompletionTarget,
+  NullableCompletion,
+} from "@/models/completion";
 import type { Filters, Sorter } from "@/models/filters";
 import type { Profile } from "@/models/profile";
-import { completeItemTrophies, uncompleteItemTrophies } from "@/utils/completion";
+import type { Trophy } from "@/models/trophy";
+import { applyItemProgress, completeItemTrophies, uncompleteAllTrophies } from "@/utils/completion";
+import { buildCompletionMap, syncMapsForItem } from "@/utils/completion-maps";
 import { filterCompletion, sortCompletion } from "@/utils/data-transform";
 import { InitialCompletion } from "@/utils/initial-completion";
 import {
@@ -23,7 +30,6 @@ import {
 import { getPoint, getProgress } from "@/utils/progress";
 import { clone, cloneAndPersist, persist } from "@/utils/store";
 import { defineStore } from "pinia";
-import { toRaw } from "vue";
 
 const keys = {
   profile: profileKey,
@@ -47,6 +53,8 @@ export interface CompletionStore {
   calculated: CompletionProgress | null;
   completion: NullableCompletion[];
   view: NullableCompletion[];
+  completionMap: Record<string, Completion>;
+  trophyMap: Record<string, Record<number, Trophy>>;
 }
 
 type Store = CompletionStore;
@@ -60,6 +68,8 @@ const defaultState: Store = {
   calculated: null,
   completion: [],
   view: [],
+  completionMap: {},
+  trophyMap: {},
 };
 
 const getDefaultState = (): Store => ({
@@ -85,15 +95,21 @@ export const useCompletionStore = defineStore("completion", {
       try {
         const completion = await readForage<Store["completion"]>(keys.completion, []);
         this.completion = completion;
-        this.view = clone(completion);
+        this.assignMaps(this.completion);
+        this.updateView();
       } catch (error) {
         console.error("unable to initialize completion store", error);
       } finally {
         this.status = "idle";
       }
     },
+    assignMaps(completion: NullableCompletion[]) {
+      const maps = buildCompletionMap(completion);
+      this.completionMap = maps.completionMap;
+      this.trophyMap = maps.trophyMap;
+    },
     updateView() {
-      let items = toRaw<NullableCompletion[]>(this.completion);
+      let items: NullableCompletion[] = this.completion;
       if (this.filters && Object.keys(this.filters).length > 0)
         items = filterCompletion(items, this.filters);
       if (this.sorter) items = sortCompletion(items, this.sorter);
@@ -138,34 +154,30 @@ export const useCompletionStore = defineStore("completion", {
       this.completion = persist(keys.completion, value, "forage");
       persist(keys.initialCompletion, value, "forage");
       InitialCompletion.invalidate();
+      this.assignMaps(this.completion);
       this.updateView();
     },
     completeItem(id: string | undefined, target: CompletionTarget) {
       if (!id || !this.calculated) return;
-      const item = this.completion?.find((i) => i?.id === id);
+      const item = this.completionMap[id];
       if (!item?.points || !item?.progress || !item?.base_counts) return;
       const isPlatinum = target === "platinum";
       const earned = isPlatinum ? item.points.base : item.points.total;
-      const delta = earned - item.progress.earned;
-      item.earned_counts = clone(isPlatinum ? item.base_counts : item.counts);
-      item.progress.earned = earned;
-      item.progress.value = getProgress(earned, item.progress.total);
+      const counts = clone(isPlatinum ? item.base_counts : item.counts);
+      const delta = applyItemProgress(item, earned, counts);
       this.recalculatePoints(delta);
-      const trophies = completeItemTrophies(item.trophies, target);
-      item.trophies = trophies;
+      completeItemTrophies(this.completionMap[id], target);
       setForage(keys.completion, this.completion);
       this.updateView();
     },
     completeTrophy(id: string | undefined, trophyId: number | undefined) {
       if (!id || trophyId === undefined || !this.calculated) return;
-      const item = this.completion?.find((i) => i?.id === id);
+      const item = this.completionMap[id];
       if (!item?.trophies || !item?.progress || !item?.earned_counts) return;
-      const trophy = item.trophies.find((t) => t.kind === "trophy" && t.id === trophyId);
+      const trophy = this.trophyMap[id]?.[trophyId];
       if (!trophy || trophy.kind !== "trophy") return;
-      const earned = trophy.earned;
-      const modifier = earned ? -1 : 1;
-      const points = getPoint(trophy.type);
-      const delta = points * modifier;
+      const modifier = trophy.earned ? -1 : 1;
+      const delta = getPoint(trophy.type) * modifier;
       trophy.earned = !trophy.earned;
       trophy.earned_at = trophy.earned ? new Date().toISOString() : undefined;
       item.earned_counts[trophy.type] += modifier;
@@ -178,34 +190,29 @@ export const useCompletionStore = defineStore("completion", {
     },
     completeAllTrophies(id: string | undefined) {
       if (!id || !this.calculated) return;
-      const item = this.completion?.find((i) => i?.id === id);
+      const item = this.completionMap[id];
       if (!item?.points || !item?.progress || !item?.base_counts) return;
-      const earned = item.points.total;
-      const delta = earned - item.progress.earned;
-      item.earned_counts = clone(item.counts);
-      item.progress.earned = earned;
-      item.progress.value = getProgress(earned, item.progress.total);
+      const delta = applyItemProgress(item, item.points.total, clone(item.counts));
       this.recalculatePoints(delta);
-      item.trophies = completeItemTrophies(item.trophies, "complete");
+      completeItemTrophies(this.completionMap[id], "complete");
       setForage(keys.completion, this.completion);
       this.updateView();
     },
     uncompleteAllTrophies(id: string | undefined) {
       if (!id || !this.calculated) return;
-      const item = this.completion?.find((i) => i?.id === id);
+      const item = this.completionMap[id];
       if (!item?.points || !item?.progress || !item?.base_counts) return;
-      const delta = -item.progress.earned;
-      item.earned_counts = { ...item.counts, platinum: 0, gold: 0, silver: 0, bronze: 0, total: 0 };
-      item.progress.earned = 0;
-      item.progress.value = getProgress(0, item.progress.total);
+      const counts = { ...item.counts, platinum: 0, gold: 0, silver: 0, bronze: 0, total: 0 };
+      const delta = applyItemProgress(item, 0, counts);
       this.recalculatePoints(delta);
-      item.trophies = uncompleteItemTrophies(item.trophies);
+      uncompleteAllTrophies(this.completionMap[id]);
       setForage(keys.completion, this.completion);
       this.updateView();
     },
     async restore() {
       const completion = await InitialCompletion.get();
       this.completion = cloneAndPersist(keys.completion, completion, "forage");
+      this.assignMaps(this.completion);
       const calculated = readStorage(keys.initialCalculated, defaultState.calculated);
       this.calculated = cloneAndPersist(keys.calculated, calculated);
       this.updateView();
@@ -220,7 +227,9 @@ export const useCompletionStore = defineStore("completion", {
       const initial = completion[index];
       if (!initial?.progress) return;
       const delta = initial.progress.earned - item.progress.earned;
-      this.completion[index] = clone(initial);
+      const restored = clone(initial);
+      this.completion[index] = restored;
+      if (restored) syncMapsForItem(this.completionMap, this.trophyMap, restored);
       this.recalculatePoints(delta);
       setForage(keys.completion, this.completion);
       this.updateView();
