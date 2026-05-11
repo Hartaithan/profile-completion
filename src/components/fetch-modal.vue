@@ -112,7 +112,8 @@ const handleCancel = () => props.abort("data-loading");
             key="continue"
             class="h-7 w-full rounded text-xs font-bold uppercase sm:absolute sm:top-1/2 sm:right-1/2 sm:h-8 sm:w-32 sm:translate-x-1/2 sm:-translate-y-1/2"
             size="sm"
-            @click="handleContinue">
+            @click="handleContinue"
+            aria-label="Close modal">
             Continue
           </Button>
           <Button
@@ -120,7 +121,8 @@ const handleCancel = () => props.abort("data-loading");
             key="cancel"
             class="h-7 w-full rounded text-xs font-bold uppercase sm:absolute sm:top-1/2 sm:right-1/2 sm:h-8 sm:w-32 sm:translate-x-1/2 sm:-translate-y-1/2"
             size="sm"
-            @click="handleCancel">
+            @click="handleCancel"
+            aria-label="Cancel the data fetching">
             Cancel
           </Button>
         </Transition>

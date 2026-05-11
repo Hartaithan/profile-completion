@@ -23,7 +23,8 @@ store.$subscribe(() => store.persist());
   <Dialog>
     <DialogTrigger as-child>
       <Button
-        class="bg-primary text-primary-foreground hover:bg-foreground hover:text-background h-7 w-full rounded-lg px-6 py-2.5 text-xs font-black tracking-widest uppercase shadow-lg transition-all active:scale-95 sm:h-9 sm:px-8 sm:py-3 md:w-auto">
+        class="bg-primary text-primary-foreground hover:bg-foreground hover:text-background h-7 w-full rounded-lg px-6 py-2.5 text-xs font-black tracking-widest uppercase shadow-lg transition-all active:scale-95 sm:h-9 sm:px-8 sm:py-3 md:w-auto"
+        aria-label="Edit the target">
         Edit Target
       </Button>
     </DialogTrigger>

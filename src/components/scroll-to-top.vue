@@ -33,6 +33,7 @@ onUnmounted(() => {
       size="icon"
       variant="outline"
       class="fixed right-6 bottom-6 shadow-lg"
+      aria-label="Scroll to top"
       @click="scrollToTop">
       <ArrowUp class="size-4" />
     </Button>

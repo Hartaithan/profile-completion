@@ -105,10 +105,18 @@ const handleSubmit: (event: SubmitEvent) => void = async (event) => {
         spellcheck="false"
         autocorrect="off" />
       <InputGroupAddon align="inline-end">
-        <InputGroupButton v-if="hasValue" @click="clear" size="icon-xs" type="button">
+        <InputGroupButton
+          v-if="hasValue"
+          @click="clear"
+          size="icon-xs"
+          type="button"
+          aria-label="Clear the input">
           <XIcon />
         </InputGroupButton>
-        <InputGroupButton size="icon-xs" type="submit">
+        <InputGroupButton
+          size="icon-xs"
+          type="submit"
+          aria-label="Submit the PSN ID to fetch the profile">
           <SendHorizontal />
         </InputGroupButton>
       </InputGroupAddon>

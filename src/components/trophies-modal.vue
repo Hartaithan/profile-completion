@@ -29,7 +29,11 @@ const store = useCompletionStore();
 <template>
   <Dialog>
     <DialogTrigger as-child>
-      <Button class="bg-card/90 size-9 rounded" variant="outline" size="icon">
+      <Button
+        class="bg-card/90 size-9 rounded"
+        variant="outline"
+        size="icon"
+        :aria-label="`Open the ${title} trophies modal`">
         <SquarePenIcon class="size-5" />
       </Button>
     </DialogTrigger>
@@ -44,11 +48,19 @@ const store = useCompletionStore();
       <TrophyList :id="id" :trophies="trophies" />
       <DialogFooter>
         <ButtonGroup class="w-full">
-          <Button class="flex-1" variant="outline" @click="store.completeAllTrophies(id)">
+          <Button
+            class="flex-1"
+            variant="outline"
+            @click="store.completeAllTrophies(id)"
+            aria-label="Mark all trophies as completed">
             <CheckIcon class="size-4" />
             Mark All
           </Button>
-          <Button class="flex-1" variant="outline" @click="store.uncompleteAllTrophies(id)">
+          <Button
+            class="flex-1"
+            variant="outline"
+            @click="store.uncompleteAllTrophies(id)"
+            aria-label="Unmark all trophies">
             <XIcon class="size-4" />
             Unmark All
           </Button>
