@@ -84,6 +84,7 @@ const handleSubmit: (event: SubmitEvent) => void = async (event) => {
       progress: JSON.stringify(progress),
       expires,
     });
+    clear();
   } catch (error) {
     const message = readError(error);
     toast.error(message);
