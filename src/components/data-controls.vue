@@ -26,7 +26,9 @@ const filterPlatforms = makeFilter(completion.filters, "platforms", completion.s
     v-if="!completion.loading && completion.completion.length > 0"
     class="container mt-4 grid grid-cols-1 gap-2 sm:mt-6 sm:grid-cols-2 md:grid-cols-3">
     <Select v-model="sorter">
-      <SelectTrigger class="w-full data-[size=default]:h-8 sm:data-[size=default]:h-9">
+      <SelectTrigger
+        class="w-full data-[size=default]:h-8 sm:data-[size=default]:h-9"
+        aria-label="Choose sort order">
         <SelectValue placeholder="Default sorting" />
       </SelectTrigger>
       <SelectContent>
@@ -40,7 +42,9 @@ const filterPlatforms = makeFilter(completion.filters, "platforms", completion.s
       </SelectContent>
     </Select>
     <Select v-model="filterCompletion">
-      <SelectTrigger class="w-full data-[size=default]:h-8 sm:data-[size=default]:h-9">
+      <SelectTrigger
+        class="w-full data-[size=default]:h-8 sm:data-[size=default]:h-9"
+        aria-label="Choose completion status">
         <SelectValue placeholder="All statuses" />
       </SelectTrigger>
       <SelectContent>

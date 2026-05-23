@@ -47,9 +47,9 @@ defineExpose({ el: root });
         class="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="min-w-0 flex-1">
           <div class="flex items-center gap-x-2">
-            <h4 class="text-foreground truncate text-sm font-black tracking-tight uppercase">
+            <h1 class="text-foreground truncate text-sm font-black tracking-tight uppercase">
               {{ completion?.title }}
-            </h4>
+            </h1>
             <span
               v-if="completion?.platforms?.length"
               class="text-muted-foreground text-xxs min-w-12 font-bold uppercase sm:text-xs">

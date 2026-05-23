@@ -106,7 +106,7 @@ const handleUpdate = (value: unknown) => {
             @keydown.enter.prevent />
         </ComboboxInput>
       </TagsInputRoot>
-      <ComboboxTrigger>
+      <ComboboxTrigger aria-label="Toggle options list" :aria-expanded="open">
         <ChevronDown class="text-muted-foreground size-4 opacity-50" />
       </ComboboxTrigger>
     </ComboboxAnchor>
