@@ -1,7 +1,18 @@
-import posthog from "posthog-js";
+import type posthog from "posthog-js";
 
-export const init = () => {
+type PostHog = typeof posthog;
+let instance: PostHog | null = null;
+
+const load = async (): Promise<PostHog> => {
+  if (instance) return instance;
+  const { default: posthog } = await import("posthog-js");
+  instance = posthog;
+  return instance;
+};
+
+export const init = async () => {
   if (!import.meta.env.PROD) return;
+  const posthog = await load();
   posthog.init(import.meta.env.VITE_POSTHOG_KEY, {
     api_host: import.meta.env.VITE_URL + "/payload",
     ui_host: import.meta.env.VITE_POSTHOG_HOST,
@@ -10,10 +21,11 @@ export const init = () => {
   });
 };
 
-type CaptureParams = Parameters<(typeof posthog)["capture"]>;
+type CaptureParams = Parameters<PostHog["capture"]>;
 
-export const capture = (...params: CaptureParams) => {
+export const capture = async (...params: CaptureParams) => {
   if (!import.meta.env.PROD) return;
+  const posthog = await load();
   const [event, ...rest] = params;
   posthog.capture("pr-co-" + event, ...rest);
 };
