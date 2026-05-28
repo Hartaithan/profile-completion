@@ -33,7 +33,9 @@ const goal = computed(() =>
       <span class="text-xxs text-primary font-bold tracking-widest uppercase">Completion Goal</span>
       <p
         class="text-muted-foreground mt-1 text-xs font-bold tracking-tight uppercase sm:mt-2 sm:text-sm">
-        Remaining games to achieve {{ store.percent }}% completion
+        Remaining to reach
+        <span class="text-primary">{{ store.percent }}%</span>
+        completion:
       </p>
       <div class="flex min-h-11 items-end gap-2 sm:min-h-16 sm:gap-3">
         <TooltipProvider>
@@ -47,7 +49,7 @@ const goal = computed(() =>
                 {{ goal }}
               </span>
               <span class="text-primary text-base font-bold tracking-widest uppercase sm:text-xl">
-                games
+                new games
               </span>
             </template>
             <template #content>
@@ -112,7 +114,7 @@ const goal = computed(() =>
         </TooltipProvider>
       </div>
       <p class="text-xxs text-muted-foreground mt-1 font-bold tracking-wide uppercase sm:mt-2">
-        Each game must have {{ store.counts.platinum }} Platinum, {{ store.counts.gold }} Gold,
+        Each game must include {{ store.counts.platinum }} Platinum, {{ store.counts.gold }} Gold,
         {{ store.counts.silver }} Silver, {{ store.counts.bronze }} Bronze trophies
       </p>
     </div>
