@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import CompletionGoal from "@/components/completion-goal.vue";
 import CompletionList from "@/components/completion-list.vue";
+import CrossServiceLink from "@/components/cross-service-link.vue";
 import DataControls from "@/components/data-controls.vue";
 import Header from "@/components/header.vue";
 import ProfileTrophyCounts from "@/components/profile-trophy-counts.vue";
@@ -22,4 +23,5 @@ import { Toaster } from "@/ui/sonner";
   <Teleport to="html">
     <Toaster theme="dark" position="top-right" richColors closeButton />
   </Teleport>
+  <CrossServiceLink />
 </template>
