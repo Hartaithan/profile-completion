@@ -18,6 +18,20 @@ export const init = async () => {
     ui_host: import.meta.env.VITE_POSTHOG_HOST,
     person_profiles: "identified_only",
     defaults: "2026-01-30",
+    // only basic events
+    autocapture: false,
+    capture_pageview: true,
+    capture_pageleave: true,
+    // disable unnecessary features
+    rageclick: false,
+    disable_surveys: true,
+    capture_dead_clicks: false,
+    capture_performance: false,
+    disable_session_recording: true,
+    // disable feature flags and extra network requests
+    advanced_disable_flags: true,
+    advanced_disable_toolbar_metrics: true,
+    advanced_disable_feature_flags_on_first_load: true,
   });
 };
 
