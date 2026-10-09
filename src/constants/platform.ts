@@ -1,4 +1,4 @@
-import type { Platform } from "@/models/completion";
+import type { Platform } from "@hartaithan/trophy-scout/types";
 
 export const platformLabels: Record<Platform, string> = {
   PS5: "Playstation 5",

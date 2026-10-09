@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { Trophy } from "@/models/trophy";
 import { useCompletionStore } from "@/store/completion";
 import { Checkbox } from "@/ui/checkbox";
 import { Label } from "@/ui/label";
+import type { CompletionTrophy } from "@hartaithan/trophy-scout/types";
 import { TrophyIcon } from "lucide-vue-next";
 
 interface Props {
   item: string | undefined;
-  trophy: Trophy | undefined;
+  trophy: CompletionTrophy | undefined;
 }
 
 const props = defineProps<Props>();

@@ -1,6 +1,6 @@
 import { initialCompletionKey } from "@/constants/storage";
-import type { NullableCompletion } from "@/models/completion";
 import { readForage } from "@/utils/local-storage";
+import type { NullableCompletion } from "@hartaithan/trophy-scout/types";
 
 class InitialCompletionService {
   private cache: NullableCompletion[] | null = null;

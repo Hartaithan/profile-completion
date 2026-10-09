@@ -1,4 +1,6 @@
-import type { TrophyCounts, TrophyType } from "@/models/trophy";
+import type { TrophyCounts } from "@hartaithan/trophy-scout/types";
+
+type TrophyType = keyof TrophyCounts;
 
 const weights: Record<TrophyType, number> = {
   platinum: 300,
@@ -14,7 +16,7 @@ export const getPoint = (type: TrophyType): number => {
   return weights[type] ?? 0;
 };
 
-export const getPoints = (counts: TrophyCounts | undefined): number => {
+export const getPoints = (counts: Omit<TrophyCounts, "total"> | undefined): number => {
   let points: number = 0;
   if (counts === undefined) return points;
   const entries = Object.entries(counts);

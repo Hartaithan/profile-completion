@@ -1,5 +1,5 @@
-import type { Completion, NullableCompletion } from "@/models/completion";
 import type { Filters, SortDirection, Sorter } from "@/models/filters";
+import type { Completion, NullableCompletion } from "@hartaithan/trophy-scout/types";
 import type { AcceptableValue } from "reka-ui";
 import { computed } from "vue";
 

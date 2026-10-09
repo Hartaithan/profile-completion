@@ -1,12 +1,13 @@
+import type { CompletionGoal } from "@/models/goal";
+import type { TrophyProgressType } from "@/models/trophy";
+import { getPoints, getProgress } from "@/utils/progress";
 import type {
   CompletionPoints,
   CompletionProgress,
-  CompletionTarget,
+  CompletionType,
   NullableCompletion,
-} from "@/models/completion";
-import type { CompletionGoal } from "@/models/goal";
-import type { TrophyCounts } from "@/models/trophy";
-import { getPoints, getProgress } from "@/utils/progress";
+  TrophyCounts,
+} from "@hartaithan/trophy-scout/types";
 
 interface StatusParams {
   points: CompletionPoints | null | undefined;
@@ -15,7 +16,7 @@ interface StatusParams {
 }
 
 interface StatusResponse {
-  type: "platinum" | "completed" | null;
+  type: TrophyProgressType;
   hasPlatinum: boolean;
   hasDLC: boolean;
 }
@@ -32,7 +33,7 @@ export const getCompletionStatus = (params: StatusParams): StatusResponse => {
 
 interface GoalParams {
   progress: CompletionProgress | null;
-  counts: TrophyCounts;
+  counts: Omit<TrophyCounts, "total">;
   target: number;
 }
 
@@ -50,7 +51,7 @@ export const getCompletionGoal = (params: GoalParams): CompletionGoal => {
 
 export const completeItemTrophies = (
   item: NullableCompletion | undefined,
-  target: CompletionTarget,
+  target: CompletionType,
 ) => {
   if (!item) return;
   const now = new Date().toISOString();

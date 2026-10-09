@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import FetchModal from "@/components/fetch-modal.vue";
 import { useAbortController } from "@/hooks/use-abort-controller";
-import type { CompletionProgressData } from "@/models/completion";
 import { useCompletionStore } from "@/store/completion";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/ui/input-group";
 import { capture } from "@/utils/analytics";
 import { API } from "@/utils/api";
 import { readError } from "@/utils/error";
 import { showExpiresToast } from "@/utils/toast";
+import type { CompletionProgressData } from "@hartaithan/trophy-scout/types";
 import { SendHorizontal, XIcon } from "lucide-vue-next";
 import { ref } from "vue";
 import { toast } from "vue-sonner";

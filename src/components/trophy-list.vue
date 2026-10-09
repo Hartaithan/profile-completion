@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import TrophyContent from "@/components/trophy-content.vue";
 import { useStickyIndexes } from "@/hooks/use-sticky-headers";
-import type { Trophy, TrophyItem } from "@/models/trophy";
+import type { CompletionTrophy, CompletionTrophyItem } from "@hartaithan/trophy-scout/types";
 import { useVirtualizer } from "@tanstack/vue-virtual";
 import { computed, onMounted, onUpdated, ref, shallowRef } from "vue";
 
 interface Props {
   id: string | undefined;
-  trophies: TrophyItem[] | undefined;
+  trophies: CompletionTrophyItem[] | undefined;
 }
 
 const props = defineProps<Props>();
 const parent = ref<HTMLElement | null>(null);
 
-const getTrophy = (item: TrophyItem | undefined): Trophy | undefined => {
+const getTrophy = (item: CompletionTrophyItem | undefined): CompletionTrophy | undefined => {
   if (item?.kind === "group") return;
   return item;
 };

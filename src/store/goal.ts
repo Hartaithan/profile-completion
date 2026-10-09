@@ -1,11 +1,11 @@
 import { goalKey } from "@/constants/storage";
-import type { TrophyCounts } from "@/models/trophy";
 import { readStorage, removeStorage, setStorage } from "@/utils/local-storage";
+import type { TrophyCounts } from "@hartaithan/trophy-scout/types";
 import { defineStore } from "pinia";
 
 export interface GoalStore {
   percent: number;
-  counts: TrophyCounts;
+  counts: Omit<TrophyCounts, "total">;
 }
 
 type Store = GoalStore;

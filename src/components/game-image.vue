@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Platform } from "@/models/completion";
+import type { Platform } from "@hartaithan/trophy-scout/types";
 import { useAttrs, type ImgHTMLAttributes } from "vue";
 
 interface Props {

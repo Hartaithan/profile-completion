@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import TrophyList from "@/components/trophy-list.vue";
-import type { TrophyItem } from "@/models/trophy";
 import { useCompletionStore } from "@/store/completion";
 import { Button } from "@/ui/button";
 import { ButtonGroup } from "@/ui/button-group";
@@ -13,12 +12,13 @@ import {
   DialogTrigger,
 } from "@/ui/dialog";
 import DialogDescription from "@/ui/dialog/DialogDescription.vue";
+import type { CompletionTrophyItem } from "@hartaithan/trophy-scout/types";
 import { CheckIcon, SquarePenIcon, XIcon } from "lucide-vue-next";
 
 interface Props {
   id: string | undefined;
   title: string | undefined;
-  trophies: TrophyItem[] | undefined;
+  trophies: CompletionTrophyItem[] | undefined;
 }
 
 defineProps<Props>();

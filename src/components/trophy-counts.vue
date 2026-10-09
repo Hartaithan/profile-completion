@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TrophyCounts } from "@/models/trophy";
+import type { TrophyCounts } from "@hartaithan/trophy-scout/types";
 import { useAttrs } from "vue";
 
 interface Props {

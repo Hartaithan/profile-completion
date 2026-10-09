@@ -6,15 +6,7 @@ import {
   profileKey,
 } from "@/constants/storage";
 import type { FetchStatus } from "@/models/app";
-import type {
-  Completion,
-  CompletionProgress,
-  CompletionTarget,
-  NullableCompletion,
-} from "@/models/completion";
 import type { Filters, Sorter } from "@/models/filters";
-import type { Profile } from "@/models/profile";
-import type { Trophy } from "@/models/trophy";
 import { applyItemProgress, completeItemTrophies, uncompleteAllTrophies } from "@/utils/completion";
 import { buildCompletionMap, syncMapsForItem } from "@/utils/completion-maps";
 import { filterCompletion, sortCompletion } from "@/utils/data-transform";
@@ -29,6 +21,14 @@ import {
 } from "@/utils/local-storage";
 import { getPoint, getProgress } from "@/utils/progress";
 import { clone, cloneAndPersist, persist } from "@/utils/store";
+import type {
+  Completion,
+  CompletionProgress,
+  CompletionTrophy,
+  CompletionType,
+  NullableCompletion,
+  Profile,
+} from "@hartaithan/trophy-scout/types";
 import { defineStore } from "pinia";
 
 const keys = {
@@ -54,7 +54,7 @@ export interface CompletionStore {
   completion: NullableCompletion[];
   view: NullableCompletion[];
   completionMap: Record<string, Completion>;
-  trophyMap: Record<string, Record<number, Trophy>>;
+  trophyMap: Record<string, Record<number, CompletionTrophy>>;
 }
 
 type Store = CompletionStore;
@@ -157,7 +157,7 @@ export const useCompletionStore = defineStore("completion", {
       this.assignMaps(this.completion);
       this.updateView();
     },
-    completeItem(id: string | undefined, target: CompletionTarget) {
+    completeItem(id: string | undefined, target: CompletionType) {
       if (!id || !this.calculated) return;
       const item = this.completionMap[id];
       if (!item?.points || !item?.progress || !item?.base_counts) return;

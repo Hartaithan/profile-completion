@@ -4,10 +4,10 @@ import GameImage from "@/components/game-image.vue";
 import TrophiesModal from "@/components/trophies-modal.vue";
 import TrophyCounts from "@/components/trophy-counts.vue";
 import { platformShortLabels } from "@/constants/platform";
-import type { Completion } from "@/models/completion";
 import { getCompletionStatus } from "@/utils/completion";
 import { getImageURL } from "@/utils/image";
 import { formatProgress } from "@/utils/progress";
+import type { Completion } from "@hartaithan/trophy-scout/types";
 import { computed, ref, useAttrs } from "vue";
 
 interface Props {

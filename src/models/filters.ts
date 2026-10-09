@@ -1,4 +1,4 @@
-import type { Completion, Platform } from "@/models/completion";
+import type { Completion, Platform } from "@hartaithan/trophy-scout/types";
 
 export type SortDirection = "asc" | "desc";
 
