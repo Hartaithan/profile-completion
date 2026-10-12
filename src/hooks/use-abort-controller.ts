@@ -1,26 +1,17 @@
 import { ref } from "vue";
 
-interface Params {
-  message?: string;
-}
+export type AbortHandler = () => void;
 
-export type AbortHandler = (section: string) => void;
-
-const defaultMessage = "Request was canceled by the user";
-
-export const useAbortController = (params?: Params) => {
-  const message = params?.message ?? defaultMessage;
-
+export const useAbortController = () => {
   const controller = ref<AbortController | null>(null);
 
-  const abort: AbortHandler = (section) => {
+  const abort: AbortHandler = () => {
     if (!controller.value) return;
-    controller.value.abort(message);
-    console.info(`${section}-cancelled`);
+    controller.value.abort("user");
   };
 
   const getSignal = () => {
-    if (controller.value) controller.value.abort();
+    if (controller.value) controller.value.abort("superseded");
     controller.value = new AbortController();
     return controller.value.signal;
   };

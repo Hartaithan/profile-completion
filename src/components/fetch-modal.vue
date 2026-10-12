@@ -4,7 +4,7 @@ import type { AbortHandler } from "@/hooks/use-abort-controller";
 import type { FetchStatus } from "@/models/app";
 import { useCompletionStore } from "@/store/completion";
 import { Button } from "@/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogOverlay, DialogTitle } from "@/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/ui/dialog";
 import { Progress } from "@/ui/progress";
 import { getProgressResult } from "@/utils/fetch-progress";
 import { Check, CheckCheck, Gamepad2, RefreshCw, User } from "lucide-vue-next";
@@ -32,12 +32,11 @@ const { setStatus } = store;
 const result = computed(() => getProgressResult(progress.value.current, progress.value.total));
 
 const handleContinue = () => setStatus("idle");
-const handleCancel = () => props.abort("data-loading");
+const handleCancel = () => props.abort();
 </script>
 
 <template>
   <Dialog :open="status !== 'idle' && status !== 'initializing'">
-    <DialogOverlay class="bg-popover/5 fixed inset-0 backdrop-blur" />
     <DialogContent
       class="bg-popover/80 gap-0 rounded p-3 sm:max-w-xl sm:p-4"
       :show-close-button="false">

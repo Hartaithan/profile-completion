@@ -3,10 +3,9 @@ import FetchModal from "@/components/fetch-modal.vue";
 import { useAbortController } from "@/hooks/use-abort-controller";
 import { useCompletionStore } from "@/store/completion";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/ui/input-group";
-import { capture } from "@/utils/analytics";
 import { API } from "@/utils/api";
-import { readError } from "@/utils/error";
 import { showExpiresToast } from "@/utils/toast";
+import { TrophyScoutError } from "@hartaithan/trophy-scout";
 import type { CompletionProgressData } from "@hartaithan/trophy-scout/types";
 import { SendHorizontal, XIcon } from "lucide-vue-next";
 import { ref } from "vue";
@@ -22,14 +21,13 @@ interface From extends HTMLFormElement {
 
 const messages = {
   empty: "Enter your PSN ID. This field cannot be empty",
-  cancel: "Data download was canceled by the user",
   fetch: "Unable to fetch profile",
 };
 
 const store = useCompletionStore();
 const hasValue = ref<boolean>(false);
 const form = ref<From | null>(null);
-const { abort, getSignal } = useAbortController({ message: messages.cancel });
+const { abort, getSignal } = useAbortController();
 
 const onInput = (e: Event) => {
   const target = e.target as HTMLInputElement;
@@ -52,45 +50,44 @@ const onProgress = (data: CompletionProgressData) => {
 const handleSubmit: (event: SubmitEvent) => void = async (event) => {
   const { elements } = event.target as From;
   const id = elements?.id.value.trim();
-  let expires: string | undefined;
+
+  if (id.length === 0) {
+    toast.error(messages.empty);
+    return;
+  }
+
+  const flow = API.flow("fetch", { psn_id: id, data: "completion", trigger: "form" });
+  const signal = getSignal();
 
   try {
-    if (id.length === 0) throw new Error(messages.empty);
     store.setStatus("profile-loading");
-    capture("submit-profile", { id });
-
-    const { profile, expires: profileExpires } = await API.getProfile({ id, signal: getSignal() });
-    if (!profile) throw new Error(messages.fetch);
+    const { profile } = await API.getProfile({ id, signal, flow });
+    if (!profile) throw new TrophyScoutError(messages.fetch);
     store.setProfile(profile);
-    expires = profileExpires;
 
     store.setStatus("completion-loading");
-    capture("submit-completion", { id, expires });
-    const {
-      list,
-      progress,
-      expires: completionExpires,
-    } = await API.getCompletion({
+    const { list, progress, expires } = await API.getCompletion({
       id,
       onProgress,
-      signal: getSignal(),
+      signal,
+      flow,
     });
-    expires = completionExpires;
     store.setCompletion(list || [], "completed");
     store.setCalculated(progress);
     showExpiresToast(expires);
-    capture("submit-complete", {
-      id,
-      progress: JSON.stringify(progress),
-      expires,
+
+    flow.complete({
+      completion_percent: progress.value,
+      earned_count: progress.earned,
+      total_count: progress.total,
+      game_count: list?.length ?? 0,
     });
     clear();
   } catch (error) {
-    const message = readError(error);
-    toast.error(message);
-    capture("submit-error", { id, message });
-    console.error("error", message, error);
     store.setStatus("idle");
+    if (flow.fail(error) === "failed") {
+      toast.error(API.getErrorMessage(error));
+    }
   }
 };
 </script>

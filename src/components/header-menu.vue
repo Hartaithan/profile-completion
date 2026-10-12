@@ -16,13 +16,13 @@ const goal = useGoalStore();
 
 const restore = () => {
   store.restore();
-  capture("completion-restore");
+  capture("completion_restored");
 };
 
 const reset = () => {
   store.reset();
   goal.reset();
-  capture("completion-reset");
+  capture("completion_data_reset");
 };
 </script>
 

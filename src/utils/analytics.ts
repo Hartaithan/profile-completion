@@ -1,14 +1,21 @@
+import { APP_NAME } from "@/constants/app";
 import type posthog from "posthog-js";
+import type { PostHogConfig } from "posthog-js";
 
-type PostHog = typeof posthog;
+type PostHogModule = typeof posthog;
+type PostHog = Parameters<NonNullable<PostHogConfig["loaded"]>>[0];
+
+let module: PostHogModule | null = null;
 let instance: PostHog | null = null;
 
-const load = async (): Promise<PostHog> => {
-  if (instance) return instance;
+const load = async (): Promise<PostHogModule> => {
+  if (module) return module;
   const { default: posthog } = await import("posthog-js");
-  instance = posthog;
-  return instance;
+  module = posthog;
+  return module;
 };
+
+export const getLoadedPostHog = () => instance;
 
 export const init = async () => {
   if (!import.meta.env.PROD) return;
@@ -32,16 +39,17 @@ export const init = async () => {
     advanced_disable_flags: true,
     advanced_disable_toolbar_metrics: true,
     advanced_disable_feature_flags_on_first_load: true,
+    capture_exceptions: {
+      capture_unhandled_errors: true,
+      capture_unhandled_rejections: true,
+    },
+    loaded: (loaded) => {
+      loaded.register({ app: APP_NAME, app_version: __APP_VERSION__ });
+      instance = loaded;
+    },
   });
 };
 
-type CaptureParams = Parameters<PostHog["capture"]>;
-
-export const capture = async (...params: CaptureParams) => {
-  if (!import.meta.env.PROD) return;
-  const posthog = await load();
-  const [event, ...rest] = params;
-  posthog.capture("pr-co-" + event, ...rest);
+export const capture = (...params: Parameters<PostHog["capture"]>) => {
+  return getLoadedPostHog()?.capture(...params);
 };
-
-export default { init, capture };

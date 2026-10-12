@@ -1,6 +1,6 @@
 {
   "name": "-profile-completion",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -19,7 +19,7 @@
     "format": "prettier . --write"
   },
   "dependencies": {
-    "@hartaithan/trophy-scout": "^1.0.0",
+    "@hartaithan/trophy-scout": "^2.0.0",
     "@tanstack/vue-virtual": "^3.13.23",
     "@vueuse/core": "^14.3.0",
     "class-variance-authority": "^0.7.1",
